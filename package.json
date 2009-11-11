@@ -1,0 +1,6 @@
+{
+    "name": "fireconsole",
+    "dependencies": [
+        "narwhal"
+    ]
+}
