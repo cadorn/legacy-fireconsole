@@ -1,4 +1,30 @@
 {
     "schema": "1.1",
-    "packages": {}
+    "location": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+    "packages": {
+        "nr-devtools": {
+            "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
+            "name": "devtools"
+        },
+        "firefox-extension": {
+            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path": "packages/firefox-extension"
+        },
+        "dev-sidebar": {
+            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path": "packages/dev-sidebar"
+        },
+        "firebug": {
+            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path": "packages/firebug"
+        },
+        "reps": {
+            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path": "packages/reps"
+        },
+        "xul-ui": {
+            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path": "packages/xul-ui"
+        }
+    }
 }

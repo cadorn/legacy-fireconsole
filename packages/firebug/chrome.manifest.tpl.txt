@@ -1,0 +1,2 @@
+
+overlay chrome://firebug/content/firebugOverlay.xul  __Package.OverlayBaseURL__firebug.xul

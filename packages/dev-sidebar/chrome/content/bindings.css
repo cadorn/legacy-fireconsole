@@ -1,0 +1,8 @@
+
+#ActionList {
+  -moz-binding: url("__Package.ContentBaseURL__bindings.xml#ActionList");
+}
+
+button.ActionButton {
+  -moz-binding: url("__Package.ContentBaseURL__bindings.xml#ActionButton");
+}

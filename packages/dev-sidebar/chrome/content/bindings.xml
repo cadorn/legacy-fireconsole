@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<bindings xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<binding id="ActionList">
+    <content>
+    </content>
+    <implementation>
+
+        <constructor><![CDATA[
+            
+           var binding = __Package.RegisterBindingMacro__(this, "ActionList");
+            
+        ]]></constructor>
+
+        <method name="addAction">
+            <parameter name="label"/>
+            <parameter name="callback"/>
+            <body><![CDATA[
+                var action = document.createElement("button");
+                action.setAttribute("class", "ActionButton");
+                action.setAttribute("label", label);
+                action.callback = callback;
+                this.appendChild(action);
+            ]]></body>
+        </method>
+
+        <method name="removeAllActions">
+            <body><![CDATA[
+                if ( this.hasChildNodes() ) {
+                    while ( this.childNodes.length >= 1 ) {
+                        this.removeChild( this.firstChild );       
+                    } 
+                }
+            ]]></body>
+        </method>
+
+    </implementation>
+
+</binding>
+
+
+<binding id="ActionButton" extends="chrome://global/content/bindings/button.xml#button">
+    <handlers>
+        <handler event="command" button="0"><![CDATA[
+            this.callback();
+        ]]></handler>
+    </handlers>
+</binding>
+
+</bindings>

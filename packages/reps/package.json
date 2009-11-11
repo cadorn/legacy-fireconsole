@@ -1,0 +1,24 @@
+{
+    "name": "reps",
+    "using": {
+        "nr-common": {
+            "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
+            "name": "common"
+        },
+        "firebug": {
+            "catalog": "http://github.com/cadorn/firephp-extension/raw/master/catalog.json",
+            "name": "firebug"
+        },
+        "domplate": {
+            "location": "http://github.com/cadorn/domplate/zipball/master/"
+        },
+        "reps-lang-php": {
+            "catalog": "http://github.com/cadorn/domplate-reps/raw/master/catalog.json",
+            "name": "lang-php"
+        },
+        "reps-structures": {
+            "catalog": "http://github.com/cadorn/domplate-reps/raw/master/catalog.json",
+            "name": "structures"
+        }
+    }
+}

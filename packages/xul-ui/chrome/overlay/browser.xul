@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="__Package.OverlayBaseURL__bindings.css" type="text/css"?>
+
+<overlay id="%%PP%%_UI_Overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <popupset id="mainPopupSet">
+
+    <__PP__PanelList/>
+
+  </popupset>
+
+</overlay>

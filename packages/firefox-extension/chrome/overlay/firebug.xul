@@ -1,0 +1,56 @@
+<?xml version="1.0"?> 
+
+<?xml-stylesheet href="__Package.SkinBaseURL__FireConsole.css" type="text/css"?>
+
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         xmlns:html="http://www.w3.org/1999/xhtml">
+
+    <script src="__Program.NarwhalizeURL__" type="application/x-javascript"/>
+    <script type="application/x-javascript">
+        var __PP__bridge = require("ui-bridge", "__module[package]__").init(this);
+    </script>
+
+    <menupopup id="menu_ToolsPopup">
+        <menu id="menu_fireconsole" class="menuitem-iconic" image="__Package.SkinBaseURL__FireConsole_16.png"
+              label="FireConsole" insertafter="menu_firebug">
+            <menupopup>
+        
+                <menuitem class="menuitem-iconic fireconsoleMenuWelcomeItem" label="FireConsole Headquarters" oncommand="__PP__bridge.visitWebsite('hq')"/>
+                <menuseparator/>
+                <menuitem label="FireConsole Website" oncommand="__PP__bridge.visitWebsite('main')"/>
+                <menuitem label="Documentation" oncommand="__PP__bridge.visitWebsite('docs')"/>
+                <menuitem label="Forums / Help" oncommand="__PP__bridge.visitWebsite('discuss')"/>
+                <menuitem label="Issues Tracker" oncommand="__PP__bridge.visitWebsite('issues')"/>
+                <menuseparator/>
+                <menuitem label="About" oncommand="__PP__bridge.openAboutDialog()"/>
+                <menuitem label="Donate" oncommand="__PP__bridge.visitWebsite('donate')"/>
+
+            </menupopup>
+        </menu>
+    </menupopup>
+    
+    
+    <hbox id="fbPanelBar1-buttons">
+
+        <toolbarbutton id="fireconsoleMenu" type="menu" insertafter="fbFirebugMenu">
+                    
+            <menupopup id="fireconsoleMenuPopup">
+                
+                <menuitem class="menuitem-iconic fireconsoleMenuWelcomeItem" label="FireConsole Headquarters" oncommand="__PP__bridge.visitWebsite('hq')"/>
+                <menuseparator/>
+                <menuitem label="FireConsole Website" oncommand="__PP__bridge.visitWebsite('main')"/>
+                <menuitem label="Documentation" oncommand="__PP__bridge.visitWebsite('docs')"/>
+                <menuitem label="Forums / Help" oncommand="__PP__bridge.visitWebsite('discuss')"/>
+                <menuitem label="Issues Tracker" oncommand="__PP__bridge.visitWebsite('issues')"/>
+                <menuseparator/>
+                <menuitem label="About" oncommand="__PP__bridge.openAboutDialog()"/>
+                <menuitem label="Donate" oncommand="__PP__bridge.visitWebsite('donate')"/>
+                
+            </menupopup>
+
+        </toolbarbutton>
+
+    </hbox>
+
+</overlay>

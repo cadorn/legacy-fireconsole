@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "__Package.LocaleBaseURL__sidebar.dtd">
+
+<overlay id="__PP__Overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  
+  <menupopup id="viewSidebarMenu">
+    <menuitem key="__PP__key_OpenSidebar" observes="__PP__broadcaster_Sidebar"  />
+  </menupopup>
+  
+  <keyset id="mainKeyset">
+    <key id="__PP__key_OpenSidebar" command="__PP__broadcaster_Sidebar"
+         key="&__PP__key_OpenSidebar.commandkey;" 
+         modifiers="&__PP__key_OpenSidebar.modifierskey;" />
+  </keyset>
+  
+  <broadcasterset id="mainBroadcasterSet">
+      
+    <broadcaster id="__PP__broadcaster_Sidebar" 
+                 label="&__PP__Sidebar.title;"
+                 autoCheck="false"
+                 type="checkbox"
+                 group="sidebar"
+                 sidebarurl="__Package.ContentBaseURL__sidebar.xul"
+                 sidebartitle="&__PP__Sidebar.title;"
+                 oncommand="toggleSidebar('__PP__broadcaster_Sidebar');" />
+  </broadcasterset>
+
+</overlay>

@@ -1,0 +1,9 @@
+{
+    "name": "xul-ui",
+    "using": {
+        "nr-common": {
+            "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
+            "name": "common"
+        }
+    }
+}

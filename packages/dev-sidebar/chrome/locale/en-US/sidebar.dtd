@@ -1,0 +1,5 @@
+
+<!ENTITY __PP__Sidebar.title "NarwhalRunner Developer Sidebar">
+
+<!ENTITY __PP__key_OpenSidebar.commandkey "D">
+<!ENTITY __PP__key_OpenSidebar.modifierskey "shift accel">

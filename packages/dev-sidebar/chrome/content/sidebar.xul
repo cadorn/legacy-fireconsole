@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css" ?>
+<?xml-stylesheet href="chrome://browser/skin/browser.css" type="text/css" ?>
+
+<?xml-stylesheet href="__Package.ContentBaseURL__bindings.css" type="text/css"?>
+
+<!DOCTYPE page SYSTEM "__Package.LocaleBaseURL__sidebar.dtd">
+
+<page id="Page"
+      title="&__PP__Sidebar.title;"
+      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+
+  <script type="application/x-javascript">
+      __Package.RegisterContainerMacro__(this, "ui/sidebar", "Sidebar");
+  </script>
+
+  <vbox id="ActionList" flex="1">
+  </vbox>
+
+</page>

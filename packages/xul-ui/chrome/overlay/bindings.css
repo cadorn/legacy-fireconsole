@@ -1,0 +1,93 @@
+
+__PP__PanelList {
+  -moz-binding: url("__Package.OverlayBaseURL__bindings.xml#__PP__PanelList");
+}
+
+__PP__iframepanel {
+  -moz-binding: url("__Package.OverlayBaseURL__bindings.xml#__PP__IFramePanel");
+}
+
+__PP__divpanel {
+  -moz-binding: url("__Package.OverlayBaseURL__bindings.xml#__PP__DivPanel");
+}
+
+
+panel.__PP__IFramePanel {
+  -moz-appearance: none;
+  background-color: rgba(68,68,68,0.9);
+  border: 1px solid rgba(255,255,255,0.15);
+  -moz-border-radius: 8px;
+  padding: 5px 5px 5px 5px;
+  margin-top: -3px;
+  -moz-margin-start: 11px;
+  color:  #ffffff;
+  min-width: 280px;
+}
+
+
+label.__PP__IFramePanel-Title {
+  margin-top: 8px;
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 110%;
+  color: #bae5ff;
+  margin-left: 10px;
+}
+
+
+div.__PP__IFramePanel-Nob {
+  width: 12px;
+  height: 12px;
+  border: 3px solid;
+  -moz-border-top-colors: rgba(0,0,0,0.35) rgba(26,26,26,0.5) rgba(255,255,255,0.4);
+  -moz-border-right-colors: rgba(53,53,53,1) rgba(53,53,53,1) rgba(162,162,162,1);
+  -moz-border-bottom-colors: rgba(128,128,128,0.35) rgba(0,0,0,0.5) rgba(255,255,255,0.15);
+  -moz-border-left-colors: rgba(0,0,0,0.35) rgba(26,26,26,0.5) rgba(255,255,255,0.4);
+  -moz-border-radius: 7px;
+}
+
+div.__PP__IFramePanel-Nob-show {
+    background-color: #FF0000;
+}
+
+button.__PP__IFramePanel {
+  -moz-appearance: none;
+  background: url("chrome://browser/skin/hud-style-button-middle-background.png") repeat-x #464646 center center;
+  border: 3px solid;
+  -moz-border-top-colors: rgba(0,0,0,0.35) rgba(26,26,26,0.5) rgba(255,255,255,0.4);
+  -moz-border-right-colors: rgba(53,53,53,1) rgba(53,53,53,1) rgba(162,162,162,1);
+  -moz-border-bottom-colors: rgba(128,128,128,0.35) rgba(0,0,0,0.5) rgba(255,255,255,0.15);
+  -moz-border-left-colors: rgba(0,0,0,0.35) rgba(26,26,26,0.5) rgba(255,255,255,0.4);
+  -moz-border-radius: 20px;
+  padding: 1px 9px;
+  margin: 4px;
+  min-height: 0px;
+  color:  #ffffff;  
+}
+
+iframe.__PP__IFramePanel {
+  
+  -moz-border-radius: 8px;
+  background-color: white;
+  margin: 8px;
+  height: 200px;
+  width: 200px;
+  
+}
+
+div.__PP__DivPanel {
+
+  -moz-border-radius: 8px;
+  background-color: white;
+  color: black;
+  margin: 8px;
+  
+  padding: 10px;
+  
+  min-width: 200px;
+  min-height: 200px;
+  
+  overflow: auto;
+
+}
+

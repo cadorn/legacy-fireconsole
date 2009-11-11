@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+
+<bindings xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:html="http://www.w3.org/1999/xhtml">
+
+<binding id="__PP__PanelList">
+    <content>
+
+    </content>
+    <implementation>
+
+        <constructor><![CDATA[
+        
+           var binding = __Package.RegisterBindingMacro__(this, "PanelList");
+
+        ]]></constructor>
+
+        <method name="createIFramePanel">
+            <parameter name="id"/>
+            <body><![CDATA[
+                var panel = document.createElement("__PP__iframepanel");
+                panel.setAttribute("id", id);
+                this.appendChild(panel);
+                return panel;
+            ]]></body>
+        </method>
+
+
+        <method name="createDivPanel">
+            <parameter name="id"/>
+            <body><![CDATA[
+                var panel = document.createElement("__PP__divpanel");
+                panel.setAttribute("id", id);
+                this.appendChild(panel);
+                return panel;
+            ]]></body>
+        </method>
+
+    </implementation>
+
+</binding>
+
+<binding id="__PP__IFramePanel">
+    <content>
+        
+        <xul:panel anonid="panel" 
+                   class="__PP__IFramePanel"
+                   hidden="false"
+                   noautofocus="false"
+                   noautohide="true"
+                   norestorefocus="true">
+    
+            <xul:vbox flex="1">
+    
+                <xul:hbox>
+
+                    <xul:vbox>
+                    
+                        <html:div class="__PP__IFramePanel-Nob" anonid="nob_nw"></html:div>                    
+                        <xul:spacer flex="1"/>
+
+                    </xul:vbox>
+
+                    <xul:label anonid="title" class="__PP__IFramePanel-Title" value=""/>
+                    
+                    <xul:spacer flex="1"/>
+    
+                    <xul:button class="__PP__IFramePanel" anonid="button_Close" label="Close"/>
+
+                </xul:hbox>
+        
+                <xul:iframe anonid="iframe" class="__PP__IFramePanel" flex="1" src="about:blank"/>
+
+                <xul:hbox>
+                    
+                    <xul:spacer flex="1"/>
+    
+                    <html:div class="__PP__IFramePanel-Nob" anonid="nob_se"></html:div>
+
+                </xul:hbox>
+    
+            </xul:vbox>
+        </xul:panel>
+    
+    </content>
+    <implementation>
+
+        <constructor><![CDATA[
+            this.panel = document.getAnonymousElementByAttribute(this, "anonid", "panel");
+            this.iframe = document.getAnonymousElementByAttribute(this, "anonid", "iframe");
+            this.title = document.getAnonymousElementByAttribute(this, "anonid", "title");
+            this.button_close = document.getAnonymousElementByAttribute(this, "anonid", "button_Close");
+            this.nob_nw = document.getAnonymousElementByAttribute(this, "anonid", "nob_nw");
+            this.nob_se = document.getAnonymousElementByAttribute(this, "anonid", "nob_se");
+        ]]></constructor>
+
+    </implementation>
+
+</binding>
+
+
+<binding id="__PP__DivPanel">
+    <content>
+        
+        <xul:panel anonid="panel" 
+                   class="__PP__IFramePanel"
+                   hidden="false"
+                   noautofocus="false"
+                   noautohide="true"
+                   norestorefocus="true">
+    
+            <xul:vbox flex="1">
+    
+                <xul:hbox>
+
+                    <xul:vbox>
+                    
+                        <html:div class="__PP__IFramePanel-Nob" anonid="nob_nw"></html:div>                    
+                        <xul:spacer flex="1"/>
+
+                    </xul:vbox>
+
+                    <xul:label anonid="title" class="__PP__IFramePanel-Title" value=""/>
+                    
+                    <xul:spacer flex="1"/>
+    
+                    <xul:button class="__PP__IFramePanel" anonid="button_Close" label="Close"/>
+
+                </xul:hbox>
+        
+                <html:div anonid="div" class="__PP__DivPanel" flex="1" xmlns="http://www.w3.org/1999/xhtml"></html:div>
+
+                <xul:hbox>
+                    
+                    <xul:spacer flex="1"/>
+    
+                    <html:div class="__PP__IFramePanel-Nob" anonid="nob_se"></html:div>
+
+                </xul:hbox>
+    
+            </xul:vbox>
+        </xul:panel>
+    
+    </content>
+    <implementation>
+
+        <constructor><![CDATA[
+            this.panel = document.getAnonymousElementByAttribute(this, "anonid", "panel");
+            this.div = document.getAnonymousElementByAttribute(this, "anonid", "div");
+            this.title = document.getAnonymousElementByAttribute(this, "anonid", "title");
+            this.button_close = document.getAnonymousElementByAttribute(this, "anonid", "button_Close");
+            this.nob_nw = document.getAnonymousElementByAttribute(this, "anonid", "nob_nw");
+            this.nob_se = document.getAnonymousElementByAttribute(this, "anonid", "nob_se");
+        ]]></constructor>
+
+    </implementation>
+
+</binding>
+
+
+</bindings>

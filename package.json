@@ -1,6 +1,36 @@
 {
     "name": "fireconsole",
-    "dependencies": [
-        "narwhal"
-    ]
+    "license": "MIT",
+    "description": "FireConsole Firefox Extension development environment",
+    "keywords": [
+        "javascript",
+        "firefox",
+        "narwhal",
+        "extension",
+        "firephp",
+        "php"
+    ],
+    "author": "Christoph Dorn (http://www.christophdorn.com/)",
+    "using": {
+        "firefox-extension": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "firefox-extension"
+        },
+        "dev-sidebar": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "dev-sidebar"
+        },
+        "firebug": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "firebug"
+        },
+        "reps": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "reps"
+        },
+        "xul-ui": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "xul-ui"
+        }
+    }
 }

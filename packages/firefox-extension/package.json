@@ -1,0 +1,73 @@
+{
+    "name": "firefox-extension",
+    "dependencies": [
+        "github.com/cadorn/narwhal/raw/experimental/catalogs/jack"
+     ],
+    "using": {
+        "nr-extension": {
+            "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
+            "name": "extension"
+        },
+        "nr-common": {
+            "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
+            "name": "common"
+        },
+        "jack": {
+            "catalog": "http://github.com/cadorn/narwhal/raw/experimental/catalogs/default.catalog.json",
+            "name": "jack"
+        },
+        "wildfire": {
+            "catalog": "http://github.com/cadorn/wildfire/raw/master/catalog.json",
+            "name": "js"
+        },
+        "dev-sidebar": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "dev-sidebar"
+        },
+        "firebug": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "firebug"
+        },
+        "xul-ui": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "xul-ui"
+        },
+        "reps": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "reps"
+        }
+    },
+    "build": {
+        "defaultTarget": "dev",
+        "targets": {
+            "dev": "nr-extension:build/dev",
+            "dist": "nr-extension:build/dist"
+        }
+    },
+    "pinf": {
+        "schema": "1.0",
+        "Version": "1",
+        "ReleaseNumber": "",
+        "Release": "0a{PINF.ReleaseNumber}",
+        "Location": "https://s3.amazonaws.com/sourcemint.org/cadorn.org/github/fireconsole/packages/firefox-extension/{PINF.Version}/",
+    },
+    "narwhalrunner": {
+        "InternalName": "fireconsole",
+        "ID": "fireconsole@id.cadorn.org",
+        "Type": "extension",
+        "Name": "FireConsole",
+        "Version": "{PINF.Version}.{PINF.Release}",
+        "Vendor": "Christoph Dorn",
+        "Creator": "Christoph Dorn",
+        "Copyright": "Copyright (c) 2007-2009 Christoph Dorn",
+        "Description": "Firebug Extension for Server Logging",
+        "HomepageURL": "http://www.fireconsole.org/",
+        "IconURL": "chrome://fireconsole/skin/FD51967A5910A1D4403359D254676DE2/FireConsole_32.png",
+        "OptionsURL": "",
+        "UpdateURL": "{PINF.Location}update.rdf?app.os=%APP_OS%&amp;app.version=%APP_VERSION%&amp;item.status=%ITEM_STATUS%&amp;item.version=%ITEM_VERSION%&amp;app.locale=%APP_LOCALE%",
+        "UpdateKey": "",
+        "UpdateLinkURL": "{PINF.Location}{PINF.Release}.xpi",
+        "UpdateInfoURL": "{PINF.Location}UpdateInfo.xml",
+        "StatusURL": "http://contribute.fireconsole.org/"
+    }
+}

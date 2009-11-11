@@ -1,0 +1,32 @@
+
+#fireconsoleMenu {
+    margin: 0px;
+    padding: 0;
+    list-style-image: url(__Package.SkinBaseURL__FireConsoleMenu.png);
+}
+
+#fireconsoleMenu > .toolbarbutton-icon {
+    padding: 0;
+}
+
+#fireconsoleMenu:hover {
+    list-style-image: url(__Package.SkinBaseURL__FireConsoleMenuHover.png);
+}
+
+#fireconsoleMenu:hover:active,
+#fireconsoleMenu[open="true"] {
+    list-style-image: url(__Package.SkinBaseURL__FireConsoleMenuHover.png);
+}
+
+#fireconsoleMenu > .toolbarbutton-text,
+#fireconsoleMenu > .toolbarbutton-menu-dropmarker {
+    display: none;
+}
+
+.fireconsoleMenuWelcomeItem {
+  font-weight: bold;
+}
+
+.fireconsoleMenuWelcomeItem:hover {
+  color: white;
+}

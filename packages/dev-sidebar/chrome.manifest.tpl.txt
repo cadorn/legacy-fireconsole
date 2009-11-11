@@ -1,0 +1,2 @@
+
+overlay chrome://browser/content/browser.xul    __Package.OverlayBaseURL__browser.xul
