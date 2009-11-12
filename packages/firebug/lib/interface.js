@@ -243,6 +243,9 @@ exports.init = function(chrome)
     }});
 }
 
+exports.isAvailable = function() {
+    return !(!Firebug);
+}
 
 exports.getFirebug = function()
 {

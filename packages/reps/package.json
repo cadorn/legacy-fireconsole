@@ -6,7 +6,7 @@
             "name": "common"
         },
         "firebug": {
-            "catalog": "http://github.com/cadorn/firephp-extension/raw/master/catalog.json",
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
             "name": "firebug"
         },
         "domplate": {

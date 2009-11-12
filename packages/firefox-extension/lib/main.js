@@ -13,6 +13,7 @@ var HEADER_PARSER = require("HeaderParser", "wildfire");
 var REPS = require("Reps", "reps");
 
 var VARIABLE_VIEWER = require("./VariableViewer");
+var PAGE_INJECTOR = require("./PageInjector");
 var SANDBOX = require("sandbox").Sandbox;
 
 
@@ -23,6 +24,13 @@ var FORCE_REP_RELOAD = true;
 var DEV = require("console", "dev-sidebar");
 
 exports.main = function(args) {
+    
+    
+    // ensure firebug is available
+    if(!FIREBUG_INTERFACE.isAvailable()) {
+        CHROME_UTIL.openNewTab(APP.getAppPackage().getTemplateVariables()["Package.AccessibleContentBaseURL"] + "FirebugNotInstalled.htm");
+        return;
+    }
     
     
     DEV.action('Reload Page', function() {
@@ -97,6 +105,9 @@ var NetMonitorListener = {
     onResponseBody: function(context, file)
     {
         try {
+            
+            PAGE_INJECTOR.injectAPI(context.window);
+            
             var srequire = require;
             if(FORCE_REP_RELOAD) {    
                 var modules = {}
