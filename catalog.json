@@ -21,6 +21,14 @@
         "firefox-extension-xul-ui": {
             "location": "http://github.com/cadorn/fireconsole/zipball/master/",
             "path": "packages/firefox-extension/packages/xul-ui"
+        },
+        "lib-php": {
+            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path": "packages/lib-php"
+        },
+        "lib-js": {
+            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path": "packages/lib-js"
         }
     }
 }

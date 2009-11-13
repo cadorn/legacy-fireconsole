@@ -15,6 +15,14 @@
         "firefox-extension": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
             "name": "firefox-extension"
+        },
+        "lib-php": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "lib-php"
+        },
+        "lib-js": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "lib-js"
         }
     }
 }
