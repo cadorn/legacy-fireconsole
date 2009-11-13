@@ -12,6 +12,10 @@
             "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
             "name": "common"
         },
+        "dev-sidebar": {
+            "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
+            "name": "dev-sidebar"
+        },
         "jack": {
             "catalog": "http://github.com/cadorn/narwhal/raw/experimental/catalogs/default.catalog.json",
             "name": "jack"
@@ -20,21 +24,17 @@
             "catalog": "http://github.com/cadorn/wildfire/raw/master/catalog.json",
             "name": "js"
         },
-        "dev-sidebar": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "dev-sidebar"
-        },
         "firebug": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "firebug"
+            "name": "firefox-extension-firebug"
         },
         "xul-ui": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "xul-ui"
+            "name": "firefox-extension-xul-ui"
         },
         "reps": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "reps"
+            "name": "firefox-extension-reps"
         }
     },
     "build": {

@@ -15,22 +15,6 @@
         "firefox-extension": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
             "name": "firefox-extension"
-        },
-        "dev-sidebar": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "dev-sidebar"
-        },
-        "firebug": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "firebug"
-        },
-        "reps": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "reps"
-        },
-        "xul-ui": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "xul-ui"
         }
     }
 }

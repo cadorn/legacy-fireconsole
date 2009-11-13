@@ -10,21 +10,17 @@
             "location": "http://github.com/cadorn/fireconsole/zipball/master/",
             "path": "packages/firefox-extension"
         },
-        "dev-sidebar": {
+        "firefox-extension-firebug": {
             "location": "http://github.com/cadorn/fireconsole/zipball/master/",
-            "path": "packages/dev-sidebar"
+            "path": "packages/firefox-extension/packages/firebug"
         },
-        "firebug": {
+        "firefox-extension-reps": {
             "location": "http://github.com/cadorn/fireconsole/zipball/master/",
-            "path": "packages/firebug"
+            "path": "packages/firefox-extension/packages/reps"
         },
-        "reps": {
+        "firefox-extension-xul-ui": {
             "location": "http://github.com/cadorn/fireconsole/zipball/master/",
-            "path": "packages/reps"
-        },
-        "xul-ui": {
-            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
-            "path": "packages/xul-ui"
+            "path": "packages/firefox-extension/packages/xul-ui"
         }
     }
 }

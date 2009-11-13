@@ -7,7 +7,7 @@
         },
         "firebug": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "firebug"
+            "name": "firefox-extension-firebug"
         },
         "domplate": {
             "location": "http://github.com/cadorn/domplate/zipball/master/"
