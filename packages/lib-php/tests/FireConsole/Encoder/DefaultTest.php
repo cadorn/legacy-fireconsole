@@ -4,7 +4,11 @@ require_once dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'TestHe
 require_once 'PHPUnit/Framework.php';
 
 require_once 'FireConsole/Encoder/Default.php';
- 
+
+
+mp_require('functions/mp_json_to_array', 'modular-php-util');
+
+
 class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
 {
     public function testBasicVariables()
@@ -26,7 +30,7 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
 
             $encoder = new FireConsole_Encoder_Default();
             $encoder->setOrigin($test[0]);
-            $json = $encoder->encode();
+            $json = mp_json_to_array($encoder->encode());
             
             if(!$test[1]) {
                 // NOTE: This is just to add tests. Leave the test pattern empty and it will print out result.
@@ -51,7 +55,7 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         
         $encoder = new FireConsole_Encoder_Default();
         $encoder->setOrigin($variable);
-        $json = $encoder->encode();
+        $json = mp_json_to_array($encoder->encode());
         
         $this->assertEquals($json['origin'], unserialize('a:2:{s:4:"type";s:6:"object";s:8:"instance";i:0;}'));
         $this->assertEquals($json['instances'][0]['class'], 'FireConsole_Encoder_DefaultTest__Class1');
@@ -67,7 +71,7 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         
         $encoder = new FireConsole_Encoder_Default();
         $encoder->setOrigin($variable);
-        $json = $encoder->encode();
+        $json = mp_json_to_array($encoder->encode());
 
         $this->assertEquals(sizeof($json['instances'][0]['members']), 6);
 
@@ -94,7 +98,7 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         
         $encoder = new FireConsole_Encoder_Default();
         $encoder->setOrigin($variable);
-        $json = $encoder->encode();
+        $json = mp_json_to_array($encoder->encode());
 
         $this->assertEquals(sizeof($json['instances'][0]['members']), 7);
 
@@ -127,7 +131,7 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         
         $encoder = new FireConsole_Encoder_Default();
         $encoder->setOrigin($variable);
-        $json = $encoder->encode();
+        $json = mp_json_to_array($encoder->encode());
 
         $this->assertEquals($json['instances'][0]['members'], unserialize('a:3:{i:0;a:3:{s:4:"name";s:4:"var1";s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:8:"Test Var";}}i:1;a:3:{s:10:"undeclared";i:1;s:4:"name";s:7:"object1";s:5:"value";a:2:{s:4:"type";s:6:"object";s:8:"instance";i:0;}}i:2;a:3:{s:10:"undeclared";i:1;s:4:"name";s:7:"object2";s:5:"value";a:2:{s:4:"type";s:6:"object";s:8:"instance";i:1;}}}'));
         $this->assertEquals($json['instances'][1]['members'], unserialize('a:3:{i:0;a:3:{s:4:"name";s:4:"var1";s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:8:"Test Var";}}i:1;a:3:{s:10:"undeclared";i:1;s:4:"name";s:7:"object1";s:5:"value";a:2:{s:4:"type";s:6:"object";s:8:"instance";i:1;}}i:2;a:3:{s:10:"undeclared";i:1;s:4:"name";s:7:"object2";s:5:"value";a:2:{s:4:"type";s:6:"object";s:8:"instance";i:0;}}}'));

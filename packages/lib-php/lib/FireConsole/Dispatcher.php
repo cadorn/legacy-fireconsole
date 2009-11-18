@@ -9,11 +9,11 @@ class FireConsole_Dispatcher
     public function setChannel($channel)
     {
         if(is_string($channel)) {
-//            $class = 'Wildfire_channel_' . $channel;
-//            $channel = new $class();
+            require_once 'Wildfire/Channel/' . $channel . '.php';
+            $class = 'Wildfire_Channel_' . $channel;
+            $channel = new $class();
         }
-        $this->channel = $channel;
-        return true;
+        return $this->channel = $channel;
     }
     
     public function setMessageFactory($messageFactory)
@@ -22,11 +22,11 @@ class FireConsole_Dispatcher
         return true;
     }
     
-    private function getChannel()
+    public function getChannel()
     {
         if(!$this->channel) {
-//            require_once 'Wildfire/Channel/HttpHeader.php';
-//            $this->channel = new Wildfire_Channel_HttpHeader();
+            require_once 'Wildfire/Channel/HttpHeader.php';
+            $this->channel = new Wildfire_Channel_HttpHeader();
         }
         return $this->channel;
     }
@@ -34,13 +34,13 @@ class FireConsole_Dispatcher
     private function getNewMessage($meta)
     {
         if(!$this->messageFactory) {
-//            require_once 'Wildfire/Message.php';
-//            $this->channel = new Wildfire_Message();
+            require_once 'Wildfire/Message.php';
+            return new Wildfire_Message();
         }
         return $this->messageFactory->newMessage($meta);
     }
 
-    private function getEncoder()
+    public function getEncoder()
     {
         if(!$this->encoder) {
             require_once 'FireConsole/Encoder/Default.php';
@@ -49,7 +49,7 @@ class FireConsole_Dispatcher
         return $this->encoder;
     }
 
-    public function send($data, $meta)
+    public function send($data, $meta='')
     {
         $message = $this->getNewMessage($meta);
         $message->setMeta(json_encode($meta));

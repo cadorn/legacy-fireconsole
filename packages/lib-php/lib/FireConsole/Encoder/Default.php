@@ -3,13 +3,12 @@
 require_once 'Zend/Reflection/Class.php';
 
 class FireConsole_Encoder_Default {
+
     const UNDEFINED = '_U_N_D_E_F_I_N_E_D_';
     
     protected $options = array('maxObjectDepth' => 10,
                                'maxArrayDepth' => 20,
-                               'useNativeJsonEncode' => true,
-                               'includeLineNumbers' => true);    
-    
+                               'includeLanguageMeta' => true);    
     
     
     /**
@@ -22,19 +21,26 @@ class FireConsole_Encoder_Default {
      * @Insight Filter = On
      */
     protected $_instances = array();
-        
     
     
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = $value;
+    }    
     
     public function setOrigin($variable)
     {
         $this->_origin = $variable;
+        
+        // reset some variables
+        $this->_instances = array();
+
         return true;
     }
     
-    public function encode($data=UNDEFINED, $meta=UNDEFINED)
+    public function encode($data=self::UNDEFINED, $meta=self::UNDEFINED)
     {
-        if($data!=UNDEFINED) {
+        if($data!==self::UNDEFINED) {
             $this->setOrigin($data);
         }
         
@@ -52,33 +58,53 @@ class FireConsole_Encoder_Default {
             }
         }
         
-        return $graph;
+        return json_encode($graph);
     }
 
 
     protected function _encodeVariable($Variable, $ObjectDepth = 1, $ArrayDepth = 1)
     {
+/*        
         if($Variable===self::UNDEFINED) {
-            return array('type'=>'undefined');
+            $var = array('type'=>'constant', 'constant'=>'undefined');
+            if($this->options['includeLanguageMeta']) {
+                $var['fc.lang.type'] = 'undefined';
+            }
+            return $var;
         } else
+*/
+
         if(is_null($Variable)) {
-            return array('type'=>'null');
+            $var = array('type'=>'constant', 'constant'=>'null');
+            if($this->options['includeLanguageMeta']) {
+                $var['fc.lang.type'] = 'null';
+            }
+            return $var;
         } else
         if(is_bool($Variable)) {
-            return array('type'=>'boolean', 'value'=> ($Variable)?'1':'0');
+            $var = array('type'=>'constant', 'constant'=>($Variable)?'true':'false');
+            if($this->options['includeLanguageMeta']) {
+                $var['fc.lang.type'] = 'boolean';
+            }
+            return $var;
         } else
         if(is_int($Variable)) {
-            return array('type'=>'integer', 'value'=> $Variable);
+            $var = array('type'=>'text', 'text'=>(string)$Variable);
+            if($this->options['includeLanguageMeta']) {
+                $var['fc.lang.type'] = 'integer';
+            }
+            return $var;
         } else
         if(is_float($Variable)) {
-            return array('type'=>'float', 'value'=> $Variable);
-        } else
-        if(is_double($Variable)) {
-            return array('type'=>'double', 'value'=> $Variable);
+            $var = array('type'=>'text', 'text'=>(string)$Variable);
+            if($this->options['includeLanguageMeta']) {
+                $var['fc.lang.type'] = 'float';
+            }
+            return $var;
         } else
         if(is_object($Variable)) {
             
-            return array('type'=>'object', 'instance'=> $this->_encodeInstance($Variable));
+            return array('type'=>'reference', 'reference'=> $this->_encodeInstance($Variable));
             
         } else
         if(is_array($Variable)) {
@@ -92,16 +118,31 @@ class FireConsole_Encoder_Default {
         } else
         if(is_resource($Variable)) {
             // TODO: Try and get more info about resource
-            return array('type'=>'resource', 'value'=> '');
+            $var = array('type'=>'text', 'text'=>(string)$Variable);
+            if($this->options['includeLanguageMeta']) {
+                $var['fc.lang.type'] = 'resource';
+            }
+            return $var;
         } else
         if(is_string($Variable)) {
+            $var = array('type'=>'text');
+            // TODO: Add info about encoding
             if(self::is_utf8($Variable)) {
-              return array('type'=>'string', 'value'=> $Variable);
+                $var['text'] = $Variable;
             } else {
-              return array('type'=>'string', 'value'=> utf8_encode($Variable));
+                $var['text'] = utf8_encode($Variable);
             }
+            if($this->options['includeLanguageMeta']) {
+                $var['fc.lang.type'] = 'string';
+            }
+            return $var;
+            
         } else {
-            return array('type'=>'unknown', 'value'=> $Variable);
+            $var = array('type'=>'text', 'text'=>(string)$Variable);
+            if($this->options['includeLanguageMeta']) {
+                $var['fc.lang.type'] = 'unknown';
+            }
+            return $var;
         }        
     }
     
@@ -167,24 +208,27 @@ class FireConsole_Encoder_Default {
     
     protected function _encodeObject($Object, $ObjectDepth = 1, $ArrayDepth = 1)
     {
-        $return = array();
+        $return = array('type'=>'dictionary');
 
         if ($ObjectDepth > $this->options['maxObjectDepth']) {
           return array('notice'=>'Max Object Depth ('.$this->options['maxObjectDepth'].')');
         }
-                
-        $return['class'] = $class = get_class($Object);
+
+        $class = get_class($Object);
+        if($this->options['includeLanguageMeta']) {
+            $return['fc.lang.class'] = $class;
+        }
         
         $classAnnotations = $this->_getClassAnnotations($class);
 
         $properties = $this->_getClassProperties($class);
-
         $reflectionClass = new ReflectionClass($class);  
         
-        $return['file'] = $reflectionClass->getFileName();
-            
+        if($this->options['includeLanguageMeta']) {
+            $return['fc.lang.file'] = $reflectionClass->getFileName();
+        }
+        
         $members = (array)$Object;
-
         foreach( $properties as $name => $property ) {
           
           if($name=='__fc_tpl_id') {
@@ -258,7 +302,18 @@ class FireConsole_Encoder_Default {
             }
           }
           
-          $return['members'][] = $info;
+          $return['dictionary'][$info['name']] = $info['value'];
+          if(isset($info['notice'])) {
+              $return['dictionary'][$info['name']]['fc.lang.notice'] = $info['notice'];
+          }
+          if(isset($info['visibility'])) {
+              $return['dictionary'][$info['name']]['fc.lang.visibility'] = $info['visibility'];
+          }
+          if(isset($info['static'])) {
+              $return['dictionary'][$info['name']]['fc.lang.static'] = $info['static'];
+          }
+          
+//          $return['members'][] = $info;
         }
         
         // Include all members that are not defined in the class
@@ -295,10 +350,16 @@ class FireConsole_Encoder_Default {
                 $info['value'] = $this->_encodeVariable($value, $ObjectDepth + 1, 1);
             }
 
-            $return['members'][] = $info;    
+            $return['dictionary'][$info['name']] = $info['value'];
+            $return['dictionary'][$info['name']]['fc.lang.undeclared'] = 1;
+            if(isset($info['notice'])) {
+              $return['dictionary'][$info['name']]['fc.lang.notice'] = $info['notice'];
+            }
+
+//            $return['members'][] = $info;    
           }
         }
-        
+
         return $return;
     }
 

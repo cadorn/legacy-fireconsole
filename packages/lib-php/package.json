@@ -1,3 +1,21 @@
 {
-    "name": "lib-php"
+    "name": "lib-php",
+    "using": {
+        "modular-php-core": {
+            "catalog": "http://github.com/cadorn/modular-php/raw/master/catalog.json",
+            "name": "core"
+        },
+        "modular-php-phpgi": {
+            "catalog": "http://github.com/cadorn/modular-php/raw/master/catalog.json",
+            "name": "phpgi"
+        },
+        "modular-php-util": {
+            "catalog": "http://github.com/cadorn/modular-php/raw/master/catalog.json",
+            "name": "util"
+        },
+        "wildfire": {
+            "catalog": "http://github.com/cadorn/wildfire/raw/master/catalog.json",
+            "name": "lib-php"
+        }
+    }
 }

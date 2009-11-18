@@ -1,0 +1,7 @@
+
+testSplitMessages():
+
+    {"origin":{"type":"text","text":"line 0\nline 1\nline 2"}}
+    {"origin":{"type":"text","text":"line 0\nline 1\nline 2"}}
+
+break;

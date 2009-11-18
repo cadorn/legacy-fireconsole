@@ -20,9 +20,9 @@
             "catalog": "http://github.com/cadorn/narwhal/raw/experimental/catalogs/default.catalog.json",
             "name": "jack"
         },
-        "wildfire": {
+        "wildfire-js": {
             "catalog": "http://github.com/cadorn/wildfire/raw/master/catalog.json",
-            "name": "js"
+            "name": "lib-js"
         },
         "firebug": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
@@ -49,7 +49,7 @@
         "Version": "1",
         "ReleaseNumber": "",
         "Release": "0a{PINF.ReleaseNumber}",
-        "Location": "https://s3.amazonaws.com/sourcemint.org/cadorn.org/github/fireconsole/packages/firefox-extension/{PINF.Version}/",
+        "Location": "https://s3.amazonaws.com/sourcemint.org/cadorn.org/github/fireconsole/packages/firefox-extension/{PINF.Version}/"
     },
     "narwhalrunner": {
         "InternalName": "fireconsole",

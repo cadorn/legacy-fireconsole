@@ -1,0 +1,45 @@
+
+testText():
+
+    {"origin":{"type":"text","text":"Hello World"}}
+    {"origin":{"type":"text","text":"1"}}
+    {"origin":{"type":"text","text":"10.5"}}
+    {"origin":{"type":"text","text":"51"}}
+    {"origin":{"type":"text","text":"Resource id #460"}}
+
+break;
+
+testConstant():
+
+    {"origin":{"type":"constant","constant":"null"}}
+    {"origin":{"type":"constant","constant":"true"}}
+    {"origin":{"type":"constant","constant":"false"}}
+
+break;
+
+testArray():
+    
+    {"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}
+    {"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}
+    {"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}
+    {"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
+    {"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}],[{"type":"text","text":"3"},{"type":"array","array":[{"type":"text","text":"4"}]}]]}}
+        
+break;
+
+testInstance():
+
+    {"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary"}]}
+    {"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1","fc.lang.visibility":"public"}}}]}
+
+break;
