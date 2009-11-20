@@ -30,22 +30,37 @@ class app_test_RunTest extends PHPGI_App
         $listener = new app_test_RunTest__TestListener();
         $result->addListener($listener);
         $suite->run($result);
+
+        $response = array();
         
         $errors = $listener->getErrors();
         if($errors) {
+            $response['errors'] = array();
             foreach( $errors as $error ) {
-                var_dump($error);
+                $response['errors'][] = $error;
             }
         }
         
         $failures = $listener->getFailures();
         if($failures) {
+            $response['failures'] = array();
             foreach( $failures as $failure ) {
-                var_dump($failure);
+                $response['failures'][] = $failure;
             }
         }
-        
-        return array('status'=> 200, 'body'=> 'Ok');
+         
+        $messages = $listener->getMessages();
+        if($messages) {
+            $response['messages'] = array();
+            foreach($messages as $message ) {
+                $response['messages'][] = array(
+                    'meta' => json_decode($message->getMeta()),
+                    'data' => json_decode($message->getData())
+                );
+            }
+        }
+
+        return array('status'=> 200, 'body'=> $response);
     }
 }
 
@@ -57,6 +72,7 @@ class app_test_RunTest__TestListener implements PHPUnit_Framework_TestListener
 {
     private $errors = array();
     private $failures = array();
+    private $messages = array();
     
     public function getErrors()
     {
@@ -66,6 +82,11 @@ class app_test_RunTest__TestListener implements PHPUnit_Framework_TestListener
     public function getFailures()
     {
         return $this->failures;
+    }
+    
+    public function getMessages()
+    {
+        return $this->messages;
     }
     
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -94,6 +115,13 @@ class app_test_RunTest__TestListener implements PHPUnit_Framework_TestListener
     
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
+        $channel = $test->getChannel();
+        $messages = $channel->getOutgoing();
+        if($messages) {
+            foreach( $messages as $message ) {
+                $this->messages[] = $message;
+            }
+        }
     }
     
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)

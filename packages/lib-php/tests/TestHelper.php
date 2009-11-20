@@ -38,6 +38,11 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
         $this->channelFlushing = $oo;
     }
     
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+    
     public function setUp()
     {
         $this->dispatcher = new FireConsole_Dispatcher();

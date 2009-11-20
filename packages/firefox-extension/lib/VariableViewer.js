@@ -115,7 +115,8 @@ function renderRep(document, div, data) {
         return code;        
     });
 
-    var rep = REPS.factory(data[0].Type, "VariableViewer");
+    var rep = REPS.factory("", "VariableViewer");
+//    var rep = REPS.factory(data[0].Type, "VariableViewer");
 
     rep.tag.replace({
         "object": data

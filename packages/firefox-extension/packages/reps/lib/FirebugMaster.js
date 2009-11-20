@@ -1,4 +1,7 @@
 
+function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
+
+
 var UTIL = require("util", "nr-common");
 var DOMPLATE = require("domplate", "domplate");
 var COLLECTION = require("collection", "domplate");
@@ -42,11 +45,12 @@ var FirebugMaster = exports.FirebugMaster = function() {
                               
                              IF("$object|_getLabel", SPAN({class: "label"}, "$object|_getLabel")),
                               
-                             TAG("$object|_getTag", {object: "$object|_getValue"})),
+                             TAG("$object|_getTag", {node: "$object|_getValue"})),
                     
                     _getTag: function(object)
                     {
-                        var rep = that.getRepForObject(object[1], object[0]);
+                        var rep = that.getRepForNode(object.getOrigin());
+//                        var rep = that.getRepForObject(object[1], object[0]);
                         if(UTIL.has(rep, "shortTag")) {
                             return rep.shortTag;
                         }
@@ -55,16 +59,16 @@ var FirebugMaster = exports.FirebugMaster = function() {
                     
                     _getLabel: function(object)
                     {
-                        if(UTIL.has(object[0], "Label") && object[0].Label) {
-                            return object[0].Label+":";
-                        } else {
+//                        if(UTIL.has(object[0], "Label") && object[0].Label) {
+//                            return object[0].Label+":";
+//                        } else {
                             return "";
-                        }
+//                        }
                     },
         
                     _getValue: function(object)
                     {
-                        return object[1];
+                        return object.getOrigin();
                     },
         
                     _appender: function(object, row, rep)

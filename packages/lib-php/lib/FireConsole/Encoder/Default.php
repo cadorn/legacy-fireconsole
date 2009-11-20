@@ -304,15 +304,16 @@ class FireConsole_Encoder_Default {
           
           $return['dictionary'][$info['name']] = $info['value'];
           if(isset($info['notice'])) {
-              $return['dictionary'][$info['name']]['fc.lang.notice'] = $info['notice'];
+              $return['dictionary'][$info['name']]['fc.encoder.notice'] = $info['notice'];
           }
-          if(isset($info['visibility'])) {
-              $return['dictionary'][$info['name']]['fc.lang.visibility'] = $info['visibility'];
+          if($this->options['includeLanguageMeta']) {
+              if(isset($info['visibility'])) {
+                  $return['dictionary'][$info['name']]['fc.lang.visibility'] = $info['visibility'];
+              }
+              if(isset($info['static'])) {
+                  $return['dictionary'][$info['name']]['fc.lang.static'] = $info['static'];
+              }
           }
-          if(isset($info['static'])) {
-              $return['dictionary'][$info['name']]['fc.lang.static'] = $info['static'];
-          }
-          
 //          $return['members'][] = $info;
         }
         
@@ -351,9 +352,11 @@ class FireConsole_Encoder_Default {
             }
 
             $return['dictionary'][$info['name']] = $info['value'];
-            $return['dictionary'][$info['name']]['fc.lang.undeclared'] = 1;
+            if($this->options['includeLanguageMeta']) {
+                $return['dictionary'][$info['name']]['fc.lang.undeclared'] = 1;
+            }
             if(isset($info['notice'])) {
-              $return['dictionary'][$info['name']]['fc.lang.notice'] = $info['notice'];
+              $return['dictionary'][$info['name']]['fc.encoder.notice'] = $info['notice'];
             }
 
 //            $return['members'][] = $info;    

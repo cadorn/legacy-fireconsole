@@ -24,17 +24,18 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
                     tag: DIV({class: "VariableViewerRep",
                               _repObject: "$object"},
                               
-                             TAG("$object|_getTag", {object: "$object|_getValue"})),
+                             TAG("$object|_getTag", {node: "$object|_getValue"})),
                     
                     _getTag: function(object)
                     {
-                        var rep = that.getRepForObject(object[1], object[0]);
+                        var rep = that.getRepForNode(object.getOrigin());
+//                        var rep = that.getRepForObject(object[1], object[0]);
                         return rep.tag;
                     },
                     
                     _getValue: function(object)
                     {
-                        return object[1];
+                        return object.getOrigin();
                     },
         
                     _appender: function(object, row, rep)

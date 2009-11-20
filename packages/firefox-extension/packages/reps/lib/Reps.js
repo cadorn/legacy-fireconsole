@@ -34,8 +34,11 @@ var Master = exports.Master = function() {}
 Master.prototype.construct = function(collection) {
     this.collection = COLLECTION.Collection();
     this.collection.addCollection(collection);
-    this.collection.addCollection(require("collection", "reps-structures").getCollection());
-    this.collection.addCollection(require("collection", "reps-lang-php").getCollection());
+ 
+    this.collection.addCollection(require("collection", "reps-fc-object-graph").getCollection());
+   
+//    this.collection.addCollection(require("collection", "reps-structures").getCollection());
+//    this.collection.addCollection(require("collection", "reps-lang-php").getCollection());
     this.tags = DOMPLATE.tags;
 }
 
@@ -44,13 +47,16 @@ Master.prototype.getCollection = function()
     return this.collection;
 }
 
-Master.prototype.getRepForObject = function(object, meta)
+//Master.prototype.getRepForObject = function(object, meta)
+Master.prototype.getRepForNode = function(node)
 {
     // Try and get specific rep first
-    var rep = this.collection.getForObject(object, meta);
+    var rep = this.collection.getForNode(node);
+//    var rep = this.collection.getForObject(object, meta);
     // Fall back to Firebug reps
     if(!rep) {
-        rep = FIREBUG_INTERFACE.getFirebug().getRep(object);
+//        rep = FIREBUG_INTERFACE.getFirebug().getRep(node.value);
+        throw "No rep found for node!";
     }
     return rep;
 };
