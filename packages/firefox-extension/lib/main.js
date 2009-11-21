@@ -16,7 +16,7 @@ var OBJECT_GRAPH = require("./ObjectGraph");
 var DEV = require("console", "dev-sidebar");
 
 
-var FORCE_REP_RELOAD = true;
+var FORCE_REP_RELOAD = false;
 
 
 exports.main = function(args) {

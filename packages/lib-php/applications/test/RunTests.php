@@ -3,27 +3,27 @@
 require_once('PHPUnit/Framework/TestListener.php');
 
 
-class app_test_RunTest extends PHPGI_App
+class app_test_RunTests extends PHPGI_App
 {
     public function run($env)
     {
         $qs = array();
         parse_str($env->get('QUERY_STRING'), $qs);
-        if(!isset($qs['path']) || strpos($qs['path'], '.')!==false) {
+        if(!isset($qs['suite']) || strpos($qs['suite'], '.')!==false) {
             return array('status'=> 403);
         }
         
         $dir = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR .
                'tests' . DIRECTORY_SEPARATOR .
                'Client';
-        $file = $dir . DIRECTORY_SEPARATOR . $qs['path'] . 'Test.php';
+        $file = $dir . DIRECTORY_SEPARATOR . $qs['suite'] . 'Test.php';
         if(!file_exists($file)) {
             return array('status'=> 403);
         }
         
         require($file);
         
-        $class = 'Client_' . str_replace('/','_', $qs['path']) . 'Test';
+        $class = 'Client_' . str_replace('/','_', $qs['suite']) . 'Test';
 
         $suite = new PHPUnit_Framework_TestSuite($class);
         $result = new PHPUnit_Framework_TestResult;
@@ -64,7 +64,7 @@ class app_test_RunTest extends PHPGI_App
     }
 }
 
-$app = PHPGI_Wrapper::getMiddleware('Json')->app(new app_test_RunTest());
+$app = PHPGI_Wrapper::getMiddleware('Json')->app(new app_test_RunTests());
 
 
 
