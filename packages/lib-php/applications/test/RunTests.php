@@ -25,11 +25,20 @@ class app_test_RunTests extends PHPGI_App
         
         $class = 'Client_' . str_replace('/','_', $qs['suite']) . 'Test';
 
-        $suite = new PHPUnit_Framework_TestSuite($class);
-        $result = new PHPUnit_Framework_TestResult;
         $listener = new app_test_RunTest__TestListener();
-        $result->addListener($listener);
-        $suite->run($result);
+
+        if($qs['test']) {
+            $suite = new $class();
+            $suite->setName($qs['test']);
+            $result = new PHPUnit_Framework_TestResult();
+            $result->addListener($listener);
+            $suite->run($result);
+        } else {
+            $suite = new PHPUnit_Framework_TestSuite($class);
+            $result = new PHPUnit_Framework_TestResult();
+            $result->addListener($listener);
+            $suite->run($result);
+        }
 
         $response = array();
         
