@@ -1,7 +1,6 @@
 
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
-
 var SANDBOX = require("sandbox").Sandbox;
 var CHROME = require("chrome", "nr-common");
 var CHROME_UTIL = require("chrome-util", "nr-common");
@@ -95,7 +94,7 @@ var ServerMessageListener = {
                     "modules": modules
                 });
                 srequire = function(id, pkg) {
-                    return sandbox(id, null, false, false, pkg, module["package"]);
+                    return sandbox(id, null, pkg, module["package"]);
                 }
             }
         

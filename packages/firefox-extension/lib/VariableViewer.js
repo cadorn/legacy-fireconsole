@@ -98,7 +98,7 @@ function renderRep(document, div, data) {
             "modules": modules
         });
         srequire = function(id, pkg) {
-            return sandbox(id, null, false, false, pkg, module["package"]);
+            return sandbox(id, null, pkg, module["package"]);
         }
     }
 

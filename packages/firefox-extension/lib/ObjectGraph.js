@@ -59,8 +59,24 @@ function generateNodesFromData(objectGraph, data) {
 }
 
 
+
+var Node = function(objectGraph, type, value) {
+    this.type = type;
+    this.value = value;
+    
+    if(type=="reference") {
+        this.getInstance = function() {
+            return objectGraph.getInstance(value);
+        }
+    }
+}
+
+Node.prototype.getTemplateId = function() {
+    
+}
+
 var ObjectGraph = function() {}
-ObjectGraph.prototype = Object.create(Node);
+ObjectGraph.prototype = Object.create(new Node());
 
 ObjectGraph.prototype.setOrigin = function(node) {
     this.origin = node;
@@ -78,18 +94,4 @@ ObjectGraph.prototype.getInstance = function(index) {
     return this.instances[index];
 }
 
-var Node = function(objectGraph, type, value) {
-    this.type = type;
-    this.value = value;
-    
-    if(type=="reference") {
-        this.getInstance = function() {
-            return objectGraph.getInstance(value);
-        }
-    }
-}
-
-Node.prototype.getTemplateId = function() {
-    
-}
 
