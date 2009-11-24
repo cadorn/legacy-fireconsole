@@ -30,7 +30,6 @@
         </menu>
     </menupopup>
     
-    
     <hbox id="fbPanelBar1-buttons">
 
         <toolbarbutton id="fireconsoleMenu" type="menu" insertafter="fbFirebugMenu">

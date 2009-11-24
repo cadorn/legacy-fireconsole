@@ -9,9 +9,10 @@ var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
 var REPS = require("Reps", "reps");
 var VARIABLE_VIEWER = require("./VariableViewer");
-var PAGE_INJECTOR = require("./PageInjector");
 var MESSAGE_BUS = require("./MessageBus");
 var OBJECT_GRAPH = require("./ObjectGraph");
+var SECURITY = require("./Security");
+var TEMPLATE_PACK = require("./TemplatePack");
 var DEV = require("console", "dev-sidebar");
 
 
@@ -40,20 +41,22 @@ exports.main = function(args) {
     });
 */
 
+    SECURITY.initialize();
+
     FIREBUG_CONSOLE.registerCss(REPS.getMaster("Firebug").getCss());
 
 
     MESSAGE_BUS.initialize({
-        "ServerMessageListener": ServerMessageListener
+        "ConsoleMessageListener": ConsoleMessageListener
     });
     VARIABLE_VIEWER.initialize();
-
 
 
     // handle clean shutdown
     var onUnload  = function() {
         VARIABLE_VIEWER.shutdown();
         MESSAGE_BUS.shutdown();
+        SECURITY.shutdown();
     }
     var window = CHROME.get().window;
     window.addEventListener("unload", onUnload, false);
@@ -66,15 +69,13 @@ exports.main = function(args) {
 
 
 
-var ServerMessageListener = {
+var ConsoleMessageListener = {
     
     lastStartTime: null,
     
     onMessageReceived: function(message, context) {
         try {
-            
-            PAGE_INJECTOR.injectAPI(context.FirebugNetMonitorListener.context.window);
-            
+
             var srequire = require;
             if(FORCE_REP_RELOAD && this.lastStartTime!==context.FirebugNetMonitorListener.file.startTime) {    
             

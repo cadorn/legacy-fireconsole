@@ -13,6 +13,7 @@ if(!class_exists('ModularPHP_Bootstrap')) {
 
 require_once 'PHPUnit/Framework.php';
 require_once 'FireConsole/Dispatcher.php';
+require_once 'Wildfire/Channel/HttpHeader.php';
 
 abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
     
@@ -22,7 +23,7 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
     
     private $disptacher = null;    
     private $channel = null;
-    private $channelName = 'Test';
+    private $channelName = null;
     private $channelFlushing = false;
     
     private $resultInfo = null;
@@ -46,36 +47,64 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
     public function setUp()
     {
         $this->dispatcher = new FireConsole_Dispatcher();
-        $this->channel = $this->dispatcher->setChannel($this->channelName);
+        $this->channel = $this->dispatcher->setChannel(
+            ($this->channelName!==null)?
+                $this->channelName
+                : new ObjectGraphTestCase__Channel());
     }    
     
     public function tearDown()
     {
         $info = $this->getTestResultInfo();
-        
+
         $messages = $this->channel->getOutgoing();
 
         if(!self::DEBUG) {
-            $this->assertEquals(sizeof($messages), sizeof($info[$this->getName()]), 'number of messages');        
+            $this->assertEquals(sizeof($messages), sizeof($info[$this->getName()]['messages']), 'number of messages');        
         }
         
         for( $i=0 ; $i<sizeof($messages) ; $i++ ) {
-            $data = $messages[$i]->getData();
-            
             if(self::DEBUG) {
                 print('Comparison #'.$i.':'."\n");
                 print('     Got: '. $messages[$i]->getData()."\n");
-                print('  Expect: '. $info[$this->getName()][$i]."\n");
+                print('  Expect: '. $info[$this->getName()]['messages'][$i]."\n");
             }
             
             $this->assertEquals(
                 $messages[$i]->getData(),
-                $info[$this->getName()][$i]
+                $info[$this->getName()]['messages'][$i]
             );
         }
         
-        if($this->channelFlushing) {
-            $this->channel->flush();
+        $this->channel->flush();
+        
+        // Only verify headers if our test channel is being used
+        if(false && $this->channel instanceof ObjectGraphTestCase__Channel) {
+        
+            $headers = $this->channel->getHeaders();
+            
+            if(self::DEBUG) {
+                foreach( $headers as $header ) {
+                    print($header . "\n");
+                }
+            }
+            
+            if(!self::DEBUG) {
+                $this->assertEquals(sizeof($headers), sizeof($info[$this->getName()]['headers']), 'number of headers');        
+            }
+            
+            for( $i=0 ; $i<sizeof($headers) ; $i++ ) {
+                if(self::DEBUG) {
+                    print('Comparison #'.$i.':'."\n");
+                    print('     Got: '. $headers[$i]."\n");
+                    print('  Expect: '. $info[$this->getName()]['headers'][$i]."\n");
+                }
+                
+                $this->assertEquals(
+                    $headers[$i],
+                    $info[$this->getName()]['headers'][$i]
+                );
+            }
         }
     }    
     
@@ -92,19 +121,38 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
         }
         
         $contents = file_get_contents($file);
-        if(!preg_match_all('/[$|\n](\w*)\(\):\s*\n(.*?)\nbreak;/si', $contents, $m)) {
+        if(!preg_match_all('/[$|\n](\w*)\(\)\[([^\]]*)\]:\s*\n(.*?)\nbreak;/si', $contents, $m)) {
             throw new Exception('Could not parse test file: ' . $file);
         }
-        
+
         $this->resultInfo = array();
         for( $i=0 ; $i<sizeof($m[1]) ; $i++ ) {
-            $parts = explode("\n", trim($m[2][$i]));
+            $parts = explode("\n", trim($m[3][$i]));
             for( $j=0 ; $j<sizeof($parts) ; $j++ ) {
                 $parts[$j] = trim($parts[$j]);
             }
-            $this->resultInfo[$m[1][$i]] = $parts;
+            if(!isset($this->resultInfo[$m[1][$i]])) {
+                $this->resultInfo[$m[1][$i]] = array();
+            }
+            $this->resultInfo[$m[1][$i]][$m[2][$i]] = $parts;
         }
         return $this->resultInfo;
     }
     
+}
+
+class ObjectGraphTestCase__Channel extends Wildfire_Channel_HttpHeader {
+    
+    private $headers = array();
+       
+    public function setHeader($name, $value) {
+        $this->headers[$name] = $value;
+    }
+    public function getHeaders() {
+        $headers = array();
+        foreach( $this->headers as $name => $value ) {
+            $headers[] = json_encode(array($name, $value));
+        }
+        return $headers;
+    }
 }

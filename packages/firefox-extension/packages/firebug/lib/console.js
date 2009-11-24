@@ -11,10 +11,34 @@ var INTERFACE = require("./interface");
 var selectedRow = null;
 
 
-exports.log = function() {
-    var console = INTERFACE.getConsole();
-    console.log.apply(console, arguments);
+function logFormatted(args, className, linkToSource, noThrottle)
+{
+    var context = INTERFACE.getActiveContext();
+    if(!context) return;
+    var sourceLink = null;//linkToSource ? getStackLink() : null;
+    return INTERFACE.getConsole().logFormatted(args, context, className, noThrottle, sourceLink);
 }
+
+// concole.* API (same as in browser)
+// @see http://code.google.com/p/fbug/source/browse/branches/firebug1.5/content/firebug/consoleInjector.js
+
+exports.log = function() {
+    logFormatted(arguments, "log");
+}
+
+exports.group = function() {
+    var context = INTERFACE.getActiveContext();
+    if(!context) return;
+    var sourceLink = null;//getStackLink();
+    INTERFACE.getConsole().openGroup(arguments, context, "group", null, false, sourceLink);
+}
+
+exports.groupEnd = function() {
+    var context = INTERFACE.getActiveContext();
+    if(!context) return;
+    INTERFACE.getConsole().closeGroup(context);
+}
+
 
 
 exports.registerCss = function(css)

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style id="style">
+        HTML, BODY {
+            padding: 0px;
+            margin: 0px;
+            max-width: 100%;
+            max-height: 100%;
+            height: 100%;
+        }
+        BODY {
+            background-color: black;
+            padding: 1px;
+            margin-top: -2px;
+        }
+        #page {
+            background-color: #8C2318;
+            max-width: 100%;
+            max-height: 100%;
+            height: 100%;
+        }
+        #top-line {
+            width: 100%;
+            background-color: black;
+            height: 2px;
+        }
+        #content {
+            width: inherit;
+            padding: 20px;
+            padding-top: 0px;
+            color: white;
+            font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+        A {
+            color: #ABA7DB;
+        }
+        DIV.template-pack-info {
+            border: 1px solid #F0D000;
+            padding: 10px;
+            padding-top: 5px;
+            padding-bottom: 0px;
+            font-size: 12px;
+        }
+        DIV.template-pack-info > H1 {
+            font-size: 14px;
+            margin-top: 0px;
+            color: #F0D000;
+        }
+        #install-button {
+            font-size: 14px;
+            background-color: green;
+        }
+        #dismiss-button {
+            font-size: 14px;
+            background-color: red;
+        }
+        #domain {
+            font-weight: bold;
+        }
+        #install-log {
+            background-color: black;
+            color: white;
+            width: 100%;
+            height: 100px;
+            font-family: Courier;
+            overflow: auto;
+            display: none;
+            padding: 5px;
+            font-size: 12px;
+        }
+        #install-log.show {
+            display: block;
+        }
+    </style>
+    <script>
+        var packData;
+        function setData(data) {
+            packData = data;
+            var obj = document.getElementById("domain");
+            obj.innerHTML = data.domain;
+            obj = document.getElementById("project-url");
+            obj.innerHTML = data["project.url"];
+            obj = document.getElementById("source-url");
+            obj.innerHTML = data["source.url"];
+            obj = document.getElementById("download-url");
+            obj.innerHTML = data["download.archive.url"];
+            obj = document.getElementById("profile-fireconsole-path");
+            obj.innerHTML = data["profile.fireconsole.path"];
+        }
+        function launchURL(type) {
+            packData.launchURLCallback(packData[type+".url"]);
+        }
+        function confirmInstall() {
+            packData.confirmInstallCallback();
+        }
+        function dismissInstall() {
+            packData.dismissInstallCallback();
+        }
+        function log(message, color) {
+            color = color || "white";
+            var obj = document.getElementById("install-log");
+            obj.setAttribute("class", "show");
+            obj.innerHTML += "<span style=\"color:" + color + ";\">" + message + "</span><br/>";
+            obj.scrollTop = obj.scrollHeight;
+        }
+    </script>
+</head><body><div id="page">
+    <div id="top-line"></div>
+    <div id="content">
+        
+        <p><span id="domain"></span> wants to use a <i>Template Pack</i> that you do not have installed or authorized for use by this domain.</p>
+        
+        <div class="template-pack-info">
+            <h1>Template Pack Information</h1>
+            <p>Project: <a id="project-url" href="javascript:launchURL('project');"></a></p>
+            <p>Source: <a id="source-url" href="javascript:launchURL('source');"></a></p>
+            <p>Download: <a id="download-url" href="javascript:launchURL('download.archive');"></a></p>
+        </div>
+        
+        <p>Installing <i>Template Packs</i> poses a <span style="color: #FF0000; font-weight: bold;">security risk</span><sup>*</sup> and you are encouraged to
+        only install this pack if you trust the source.</p>
+        
+        <p style="text-align: right; font-style: italic; font-size: 10px;"><sup>*</sup> We are working on sandboxing template packs to remove any security hazards.</p>
+        
+        <p><i>Template Packs</i> are installed to: <span id="profile-fireconsole-path"></span></p>
+        
+        <br/>
+        <br/>
+
+        <div align="middle">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="left">
+                        <input onClick="confirmInstall()" type="button" id="install-button" value="I trust this Template Pack - Install"/>
+                    </td>
+                    <td align="right">
+                        <input onClick="dismissInstall()" type="button" id="dismiss-button" value="I DO NOT trust this Template Pack"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 20px;">
+                        <div id="install-log"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</div></body></html>

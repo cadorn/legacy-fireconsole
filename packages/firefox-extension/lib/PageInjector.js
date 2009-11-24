@@ -8,7 +8,7 @@ exports.injectAPI = function(window) {
     if(window.FireConsole) {
         return;
     }
-    
+
     window.FireConsole = {
         "version": APP.getInfo().Version,
         "loadAPI": function() {

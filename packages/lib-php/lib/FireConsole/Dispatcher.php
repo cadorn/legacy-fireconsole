@@ -15,7 +15,26 @@ class FireConsole_Dispatcher
         }
         return $this->channel = $channel;
     }
-    
+
+    public function registerTemplatePack($info) {
+        if(!isset($info['project.url'])) {
+            throw new Exception("'project.url' not provided!");
+        }
+        if(!isset($info['source.url'])) {
+            throw new Exception("'source.url' not provided!");
+        }
+        if(!isset($info['download.archive.url'])) {
+            throw new Exception("'download.archive.url' not provided!");
+        }
+        $message = $this->getNewMessage(null);
+        $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/TemplatePack");
+        $message->setData(json_encode(array(
+            "action" => "require",
+            "info" => $info
+        )));
+        $this->channel->enqueueOutgoing($message);
+    }
+
     public function setMessageFactory($messageFactory)
     {
         $this->messageFactory = $messageFactory;
@@ -52,6 +71,7 @@ class FireConsole_Dispatcher
     public function send($data, $meta='')
     {
         $message = $this->getNewMessage($meta);
+        $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Console");
         $message->setMeta(json_encode($meta));
         $message->setData($this->getEncoder()->encode($data, $meta));
         $this->channel->enqueueOutgoing($message);

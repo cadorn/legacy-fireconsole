@@ -9,8 +9,10 @@ FireConsoleAPI.prototype.getVersion = function() {
     return top.FireConsole.version;
 }
 
-FireConsoleAPI.prototype.test = function() {
-    dispatchChromeEvent("test");
+FireConsoleAPI.prototype.test = function(suite) {
+    dispatchChromeEvent("test", {
+        "suite": suite
+    });
 }
 
 FireConsoleAPI.prototype.getPath = function(name) {
@@ -38,11 +40,14 @@ event.initEvent("fireconsole-api-ready", true, false);
 top.document.dispatchEvent(event);   
 
 function dispatchChromeEvent(name, params) {
+    var element = top.document.createElement("FireConsoleContentEvenData");
+    element.setAttribute("___eventName", name);
+    element.setAttribute("params", (params || ""));
+    top.document.documentElement.appendChild(element);
     
-    // TODO: Communicate with extension
-    
-    console.log("Version: " + top.FireConsoleAPI.getVersion());
-        
+    var evt = top.document.createEvent("Events");
+    evt.initEvent("FireConsoleContentEvent", true, false);
+    element.dispatchEvent(evt);
 }
 
 function dispatchPageEvent(name, params) {

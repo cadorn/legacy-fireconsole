@@ -12,39 +12,55 @@ var pkg = APP.getPackage(module["package"]),
     pkgPrefix = pkg.getPackagePrefix();
 
 
-var options = null;
-var id = null;
-var binding = null;
-var x = null;
-var y = null;
-var width = null;
-var height = null;
+//var options = null;
+//var id = null;
+//var binding = null;
+//var x = null;
+//var y = null;
+//var width = null;
+//var height = null;
+
 
 var IFramePanel = exports.IFramePanel = function () {}
 
 IFramePanel.prototype = new UTIL.prototypes.Listener();
 
-IFramePanel.prototype.init = function (_options) {
+
+/**
+ * options: {
+ *     "id": Unique App-wide ID for panel
+ *     "title": Panel title
+ *     "url": URL to load
+ *     "close.button.label": Label for close button
+ * }
+ */
+IFramePanel.prototype.init = function (options) {
     
-    options = _options;
+    this.options = options;
+    if(!UTIL.has(this.options, "close.button.label")) {
+        this.options["close.button.label"] = "Close";
+    }
+    
+    this.id = this.options.id;
     
     var self = this;
 
     // Create panel using bindings
 
-    binding = self._createPanel(APP.getInternalName() + id);
+    this.binding = self._createPanel(APP.getInternalName() + this.id);
 
-    binding.panel.addEventListener("popuphidden", function(event) {
+    this.binding.panel.addEventListener("popuphidden", function(event) {
         self.dispatch("onClosed",[]);
     }, false);
     
-    binding.title.setAttribute("value", options.title);
+    this.binding.title.setAttribute("value", this.options.title);
 
-    binding.button_close.onclick = function() {
+    this.binding.button_close.onclick = function() {
         self.hide();
     }
+    this.binding.button_close.setAttribute("label", this.options["close.button.label"]);
 
-    self.load((options.url || "about:blank"));
+    self.load((this.options.url || "about:blank"));
     
     
 
@@ -53,7 +69,7 @@ IFramePanel.prototype.init = function (_options) {
     var moveMode = false,
         dragInfo = false;
 
-    binding.panel.onmousemove = function(event) {
+    this.binding.panel.onmousemove = function(event) {
         if(dragInfo!==false) {
             var xo = event.screenX - dragInfo.mouseOrigin[0];
             var yo = event.screenY - dragInfo.mouseOrigin[1];
@@ -65,7 +81,7 @@ IFramePanel.prototype.init = function (_options) {
                     var browser = CHROME_UTIL.getBrowser().selectedBrowser;
                     // NOTE: We need to add the browser.contentWindow position to anchor the panel
                     //       origin which results in very odd x and y values. This is likely a bug in xulrunner.
-                    binding.panel.moveTo(
+                    self.binding.panel.moveTo(
                         (browser.contentWindow.screenX + dragInfo.panelBox[0] + xo),
                         (browser.contentWindow.screenY + 20 + dragInfo.panelBox[1] + yo)
                     );
@@ -82,7 +98,7 @@ IFramePanel.prototype.init = function (_options) {
             detectMouseMode(event);
         }
     }
-    binding.panel.onmousedown = function(event) {
+    this.binding.panel.onmousedown = function(event) {
         detectMouseMode(event);
         dragInfo = {
             "mouseOrigin": [
@@ -90,15 +106,15 @@ IFramePanel.prototype.init = function (_options) {
                 event.screenY
             ],
             "panelBox": [
-                binding.panel.boxObject.screenX,
-                binding.panel.boxObject.screenY,   
-                binding.panel.boxObject.width,
-                binding.panel.boxObject.height            
+                self.binding.panel.boxObject.screenX,
+                self.binding.panel.boxObject.screenY,   
+                self.binding.panel.boxObject.width,
+                self.binding.panel.boxObject.height            
             ],
             "changeOffset": [0, 0]
         }
     }
-    binding.panel.onmouseup = function(event) {
+    this.binding.panel.onmouseup = function(event) {
         if(dragInfo!==false) {
             if(moveMode=="nw" && dragInfo.changeOffset[0]!=0 && dragInfo.changeOffset[1]!=0) {
                 // NOTE: all these three statements are needed to properly persist the new size
@@ -115,10 +131,10 @@ IFramePanel.prototype.init = function (_options) {
     }
     
     function detectMouseMode(event) {
-        var x = event.screenX - binding.panel.boxObject.screenX,
-            y = event.screenY - binding.panel.boxObject.screenY,
-            w = binding.panel.boxObject.width,
-            h = binding.panel.boxObject.height;
+        var x = event.screenX - self.binding.panel.boxObject.screenX,
+            y = event.screenY - self.binding.panel.boxObject.screenY,
+            w = self.binding.panel.boxObject.width,
+            h = self.binding.panel.boxObject.height;
         if(x >=7 && x <= w - 100 && y >=7 && y <= 35) {
             setMoveMode("nw");
         } else
@@ -132,20 +148,20 @@ IFramePanel.prototype.init = function (_options) {
         if(mode=="nw") {
             if(moveMode!="nw") {
                 setMoveMode(false);
-                UTIL.dom.setClass(binding.nob_nw, pkgPrefix + "IFramePanel-Nob-show");
+                UTIL.dom.setClass(self.binding.nob_nw, pkgPrefix + "IFramePanel-Nob-show");
                 moveMode = "nw";
             }
         } else
         if(mode=="se") {
             if(moveMode!="se") {
                 setMoveMode(false);
-                UTIL.dom.setClass(binding.nob_se, pkgPrefix + "IFramePanel-Nob-show");
+                UTIL.dom.setClass(self.binding.nob_se, pkgPrefix + "IFramePanel-Nob-show");
                 moveMode = "se";
             }
         } else {
             if(moveMode!==false) {
-                UTIL.dom.removeClass(binding.nob_nw, pkgPrefix + "IFramePanel-Nob-show");
-                UTIL.dom.removeClass(binding.nob_se, pkgPrefix + "IFramePanel-Nob-show");
+                UTIL.dom.removeClass(self.binding.nob_nw, pkgPrefix + "IFramePanel-Nob-show");
+                UTIL.dom.removeClass(self.binding.nob_se, pkgPrefix + "IFramePanel-Nob-show");
                 moveMode = false;
             }
         }
@@ -162,43 +178,44 @@ IFramePanel.prototype._createPanel = function(id) {
 };
 
 IFramePanel.prototype.getBinding = function() {
-    return binding;
+    return this.binding;
 }
 
 IFramePanel.prototype.getIFrame = function() {
     return this.getBinding().iframe;
 }
 
-IFramePanel.prototype.moveTo = function(_x, _y) {
-    x = _x;
-    y = _y;
-    binding.panel.moveTo(x, y);
+IFramePanel.prototype.moveTo = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.binding.panel.moveTo(this.x, this.y);
 };
 
-IFramePanel.prototype.sizeTo = function(_width, _height) {
-    width = _width;
-    height = _height;
-    binding.panel.sizeTo(width, height);
+IFramePanel.prototype.sizeTo = function(width, height) {
+    this.width = width;
+    this.height = height;
+    this.binding.panel.sizeTo(this.width, this.height);
 };
 
 IFramePanel.prototype.load = function(url) {
-    binding.iframe.setAttribute("src", url);
+    this.binding.iframe.setAttribute("src", url);
 };
 
 IFramePanel.prototype.reload = function(onLoadCallback) {
     if(onLoadCallback) {
+        var self = this;
         var onLoad = function() {
-            binding.iframe.removeEventListener("load", onLoad, true);
+            self.binding.iframe.removeEventListener("load", onLoad, true);
             onLoadCallback();
         }
-        binding.iframe.addEventListener("load", onLoad, true);
+        this.binding.iframe.addEventListener("load", onLoad, true);
     }
-    binding.iframe.webNavigation.reload(Ci.nsIWebNavigation.LOAD_FLAGS_NONE);
+    this.binding.iframe.webNavigation.reload(Ci.nsIWebNavigation.LOAD_FLAGS_NONE);
 };
 
 IFramePanel.prototype.isShowing = function()
 {
-    if (binding.panel.state == 'open') {
+    if (this.binding.panel.state == 'open') {
         return true;
     }
     return false;
@@ -210,7 +227,7 @@ IFramePanel.prototype.show = function()
         return;
     }
     
-    if(!x || !y || !width || !height) {
+    if(!this.x || !this.y || !this.width || !this.height) {
         
         var browser = CHROME_UTIL.getBrowser().selectedBrowser;
 
@@ -224,12 +241,12 @@ IFramePanel.prototype.show = function()
 
         this.sizeTo(w, h);
         
-        x = (bx + (bw - w) / 2);
-        y = (by + (bh - h) / 2);
+        this.x = (bx + (bw - w) / 2);
+        this.y = (by + (bh - h) / 2);
 
-        binding.panel.openPopupAtScreen(x, y);
+        this.binding.panel.openPopupAtScreen(this.x, this.y);
     } else {
-        binding.panel.openPopupAtScreen(x, y);
+        this.binding.panel.openPopupAtScreen(this.x, this.y);
     }
 };
 
@@ -239,7 +256,7 @@ IFramePanel.prototype.hide = function()
         return ;
     }
 
-    binding.panel.hidePopup();
+    this.binding.panel.hidePopup();
 };
 
 

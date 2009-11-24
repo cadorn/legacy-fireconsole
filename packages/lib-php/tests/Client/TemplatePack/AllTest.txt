@@ -1,0 +1,20 @@
+
+testCustomPack()[messages]:
+
+    {"action":"require","info":{"project.url":"http:\/\/github.com\/cadorn\/fireconsole\/tree\/master","source.url":"http:\/\/github.com\/cadorn\/fireconsole\/tree\/master\/packages\/test-template-pack","download.archive.url":"http:\/\/github.com\/cadorn\/fireconsole\/zipball\/master\/","download.archive.path":"packages\/test-template-pack"}}
+    {"origin":{"type":"text","text":"Hello World"}}
+
+break;
+
+
+testCustomPack()[headers]:
+
+    ["x-wf-protocol-1","http:\/\/meta.wildfirehq.org\/Protocol\/Component\/0.1"]
+    ["x-wf-sender-1-1","http:\/\/pinf.org\/cadorn.org\/wildfire\/packages\/lib-php"]
+    ["x-wf-receiver-1-1-1","http:\/\/pinf.org\/cadorn.org\/fireconsole\/meta\/TemplatePack"]
+    ["x-wf-1-index",2]
+    ["x-wf-1-1-1-1","341||{\"action\":\"require\",\"info\":{\"project.url\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/tree\\\/master\",\"source.url\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/tree\\\/master\\\/packages\\\/test-template-pack\",\"download.archive.url\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/zipball\\\/master\\\/\",\"download.archive.path\":\"packages\\\/test-template-pack\"}}|"]
+    ["x-wf-receiver-1-1-2","http:\/\/pinf.org\/cadorn.org\/fireconsole\/meta\/Console"]
+    ["x-wf-1-1-2-2","70|{\"fc.tpl.id\":\"tpl-ID\"}|{\"origin\":{\"type\":\"text\",\"text\":\"Hello World\"}}|"]
+
+break;

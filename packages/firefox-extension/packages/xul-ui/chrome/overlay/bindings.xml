@@ -67,7 +67,7 @@
                     
                     <xul:spacer flex="1"/>
     
-                    <xul:button class="__PP__IFramePanel" anonid="button_Close" label="Close"/>
+                    <xul:button class="__PP__IFramePanel" anonid="button_Close"/>
 
                 </xul:hbox>
         

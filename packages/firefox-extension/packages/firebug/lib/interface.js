@@ -1,4 +1,6 @@
 
+// @see http://groups.google.com/group/firebug-working-group/web/firebug-events-listeners
+
 exports.getModuleId = function() {
     return module.id;
 }
@@ -12,7 +14,10 @@ var Firebug,
     FirebugInterface,
     Listener,
     ModuleListener,
-    NetMonitorListener;
+    NetMonitorListener,
+    ConsoleListener;
+
+var activeContext;
 
 FirebugInterface = {
     
@@ -27,6 +32,9 @@ FirebugInterface = {
             case 'Module':
                 ModuleListener._addListener(events, listener);
                 break;
+            case 'Console':
+                ConsoleListener._addListener(events, listener);
+                break;
         }
     },
 
@@ -38,6 +46,9 @@ FirebugInterface = {
                 break;
             case 'Module':
                 ModuleListener._removeListener(listener);
+                break;
+            case 'Console':
+                ConsoleListener._removeListener(listener);
                 break;
         }
     }
@@ -146,11 +157,20 @@ exports.init = function(chrome)
              **********************************************************************/
         
             /**
+             * A context object has been created for a page.
+             */
+            this.initContext = function(context, state)
+            {
+                ModuleListener._dispatch('initContext', [context, state]);
+            }
+        
+            /**
              * A page associated with the context has been closed.
              */
             this.destroyContext = function(context, state)
             {
                 ModuleListener._dispatch('destroyContext', [context, state]);
+                activeContext = null;
             }
         
             /**
@@ -158,6 +178,7 @@ exports.init = function(chrome)
              */
             this.showContext = function(browser, context)
             {
+                activeContext = context;
                 ModuleListener._dispatch('showContext', [browser, context]);
             }
             
@@ -237,6 +258,22 @@ exports.init = function(chrome)
             }
         });
 
+        /**********************************************************************
+         * Firebug.Console
+         **********************************************************************/
+        
+        ConsoleListener = UTIL.object.extend(Listener, {
+            
+            _target: Firebug.Console,
+            
+            /**
+             * Firebug's console object has been inserted into a page.
+             */
+            onConsoleInjected: function(context, win)
+            {
+                this._dispatch('onConsoleInjected', [context, win]);
+            }
+        });
 
         // register the module with firebug
         Firebug.registerModule(Firebug.__PP__Module);
@@ -253,6 +290,11 @@ exports.getFirebug = function()
         throw "Firebug not initialized";
     }
     return Firebug;
+}
+
+exports.getActiveContext = function()
+{
+    return activeContext;
 }
 
 exports.getReps = function() {

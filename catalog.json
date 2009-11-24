@@ -29,6 +29,10 @@
         "lib-js": {
             "location": "http://github.com/cadorn/fireconsole/zipball/master/",
             "path": "packages/lib-js"
+        },
+        "test-template-pack": {
+            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path": "packages/test-template-pack"
         }
     }
 }

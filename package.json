@@ -23,6 +23,10 @@
         "lib-js": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
             "name": "lib-js"
+        },
+        "test-template-pack": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "test-template-pack"
         }
     }
 }
