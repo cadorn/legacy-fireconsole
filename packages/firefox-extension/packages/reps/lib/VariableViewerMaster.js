@@ -1,16 +1,17 @@
 
 var UTIL = require("util", "nr-common");
 var DOMPLATE = require("domplate", "domplate");
-var COLLECTION = require("collection", "domplate");
+//var COLLECTION = require("collection", "domplate");
 var REPS = require("./Reps");
+
 
 var VariableViewerMaster = exports.VariableViewerMaster = function() {
     var that = this;
     
-    var collection = COLLECTION.Collection();
-    collection.addCss(require.loader.resolve("./VariableViewerMaster.css", module.id));
+//    var collection = COLLECTION.Collection();
+//    collection.addCss(require.loader.resolve("./VariableViewerMaster.css", module.id));
 
-    this.construct(collection);
+//    this.construct(collection);
 
     this.rep = function() {
         try {
@@ -19,23 +20,25 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
                 // Extend the default firebug rep
                 return DOMPLATE.domplate({
                     
-                    priorityClassName: "",
+                    "priorityClassName": "",
                     
-                    tag: DIV({class: "VariableViewerRep",
-                              _repObject: "$object"},
+                    tag: DIV({"class": "VariableViewerRep",
+                              "_repObject": "$object"},
                               
-                             TAG("$object|_getTag", {node: "$object|_getValue"})),
+                             TAG("$object|_getTag", {"node": "$object|_getValue"})),
                     
                     _getTag: function(object)
                     {
-                        var rep = that.getRepForNode(object.getOrigin());
-//                        var rep = that.getRepForObject(object[1], object[0]);
+                        var rep = that.getTemplate().rep;
                         return rep.tag;
+                        
+//                        var rep = that.getRepForNode(object.getOrigin());
+//                        return rep.tag;
                     },
                     
                     _getValue: function(object)
                     {
-                        return object.getOrigin();
+                        return object.og.getOrigin();
                     },
         
                     _appender: function(object, row, rep)
@@ -71,7 +74,7 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
         } catch(e) {
             print(e, 'ERROR');
         }    
-    }();    
+    }();      
 };
 VariableViewerMaster.prototype = new REPS.Master();
 

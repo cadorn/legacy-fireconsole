@@ -35,6 +35,11 @@ class Client_FcObjectGraph_AllTest extends ObjectGraphTestCase
     /**
      * @see http://github.com/cadorn/domplate-reps/blob/master/packages/fc-object-graph/lib/array.js
      */
+    public function test1Array()
+    {
+        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
+        $this->dispatcher->send(array(1, 2));
+    }
     public function testArray()
     {
         $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);

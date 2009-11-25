@@ -3,12 +3,19 @@ function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
 
 var UTIL = require("util", "nr-common");
+var CHROME_UTIL = require("chrome-util", "nr-common");
+
 var DOMPLATE = require("domplate", "domplate");
 var COLLECTION = require("collection", "domplate");
 var FIREBUG_INTERFACE = require("interface", "firebug");
+var FIREBUG_CONSOLE = require("console", "firebug");
 var REPS = require("./Reps");
+var SEA = require("narwhal/tusk/sea");
+var APP = require("app", "nr-common").getApp();
 
 var Firebug = FIREBUG_INTERFACE.getFirebug();
+
+var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "TemplatePacks"));
 
 
 var FirebugMaster = exports.FirebugMaster = function() {
@@ -27,7 +34,7 @@ var FirebugMaster = exports.FirebugMaster = function() {
                 return Firebug.ConsolePanel.prototype.appendCloseGroup;
         }
         return null;
-    };
+    };   
     
     this.rep = function() {
         try {
@@ -36,16 +43,16 @@ var FirebugMaster = exports.FirebugMaster = function() {
                 // Extend the default firebug rep
                 return DOMPLATE.domplate(Firebug.Rep, {
                     
-                    className: "__PP__-FirebugRow",
-                    priorityClassName: "",
+                    "className": "__PP__-FirebugRow",
+                    "priorityClassName": "",
                     
-                    tag: DIV({class: "MasterRep $priorityClassName",
-                              _repObject: "$object",
-                              onmouseover:"$onMouseOver", onmouseout:"$onMouseOut", onclick:"$onClick"},
+                    tag: DIV({"class": "MasterRep $priorityClassName",
+                              "_repObject": "$object",
+                              "onmouseover":"$onMouseOver", "onmouseout":"$onMouseOut", "onclick":"$onClick"},
                               
-                             IF("$object|_getLabel", SPAN({class: "label"}, "$object|_getLabel")),
+                             IF("$object|_getLabel", SPAN({"class": "label"}, "$object|_getLabel")),
                               
-                             TAG("$object|_getTag", {node: "$object|_getValue"})),
+                             TAG("$object|_getTag", {"node": "$object|_getValue"})),
                     
                     _getTag: function(object)
                     {
@@ -60,16 +67,16 @@ var FirebugMaster = exports.FirebugMaster = function() {
                     
                     _getLabel: function(object)
                     {
-//                        if(UTIL.has(object[0], "Label") && object[0].Label) {
-//                            return object[0].Label+":";
-//                        } else {
+                        if(UTIL.has(object.meta, "fc.msg.label")) {
+                            return object.meta["fc.msg.label"]+":";
+                        } else {
                             return "";
-//                        }
+                        }
                     },
         
                     _getValue: function(object)
                     {
-                        return object.getOrigin();
+                        return object.og.getOrigin();
                     },
         
                     _appender: function(object, row, rep)
@@ -148,7 +155,27 @@ var FirebugMaster = exports.FirebugMaster = function() {
             }
         }
     }
+        
+    this.setTemplate = function(template, forceReload)
+    {
+        this.__proto__.setTemplate(template, forceReload);
+        var resources = template.pack.getResources();
+        if(resources && UTIL.has(resources, "css")) {
+            var pkg;
+            FIREBUG_CONSOLE.registerCss(resources.css, function(code, info) {
+                code = code.replace(/__KEY__/g, info.key);
+                if(templatePackSea.hasPackage(info["package"])) {
+                    pkg = templatePackSea.getPackage(info["package"]);
+                } else {
+                    pkg = APP.getSea().getPackage(info["package"]);
+                }
+                code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
+                return code;
+            }, forceReload);
+        }
+    }     
 };
+
 FirebugMaster.prototype = new REPS.Master();
 
 

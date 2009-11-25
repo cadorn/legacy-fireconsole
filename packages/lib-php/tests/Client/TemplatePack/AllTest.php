@@ -9,7 +9,19 @@ class Client_TemplatePack_AllTest extends ObjectGraphTestCase
     public function testCustomPack()
     {
         $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
-        
+
+/*
+        $this->dispatcher->registerTemplatePack('
+            {
+                "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+                "path": "packages/test-template-pack",
+                "notes": {
+                    "project.url": "",
+                    "source.url": ""
+                }
+            }
+        ');
+*/        
         $this->dispatcher->registerTemplatePack(array(
             "project.url" => "http://github.com/cadorn/fireconsole/tree/master",
             "source.url" => "http://github.com/cadorn/fireconsole/tree/master/packages/test-template-pack",

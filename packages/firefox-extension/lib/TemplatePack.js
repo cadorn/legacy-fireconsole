@@ -15,17 +15,7 @@ var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 var SECURITY = require("./Security");
 
 
-
-// Tell the template loader which extra packages to load into the sandbox
-TEMPLATE_PACK_LOADER.addSandboxPackage(APP.getInfo().ID);
-// Tell the template loader where to find template packs
-TEMPLATE_PACK_LOADER.addRepositoryPath(FILE.Path(getTemplatePackBasePath().path));
-
-// Load default fc-object-graph template pack
-var fcObjectGraphTemplatePack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/domplate-reps/raw/master/fc-object-graph");
-
-
-
+var fcObjectGraphTemplatePack;
 var templatePacks = {};
 
 exports.factory = function(info) {
@@ -255,4 +245,17 @@ function unzip(archiveFile, targetFile, logger) {
         return itemLocation;
     }
 }
+
+
+
+
+
+// Tell the template loader which extra packages to load into the sandbox
+TEMPLATE_PACK_LOADER.addSandboxPackage(APP.getInfo().ID);
+// Tell the template loader where to find template packs
+TEMPLATE_PACK_LOADER.addRepositoryPath(FILE.Path(getTemplatePackBasePath().path));
+
+// Load default fc-object-graph template pack
+fcObjectGraphTemplatePack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/domplate-reps/raw/master/fc-object-graph");
+
 

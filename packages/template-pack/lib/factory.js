@@ -1,6 +1,8 @@
 
 var FILE = require("file");
 var UTIL = require("util");
+var MD5 = require("md5");
+var STRUCT = require("struct");
 
 exports.Factory = function(factoryModule) {
     var Factory = function() {};
@@ -8,11 +10,36 @@ exports.Factory = function(factoryModule) {
 
     var templates = [];
     var templatesDict = {};
+    
+    var resourcePath = FILE.Path(factoryModule.path).dirname().dirname().join("resources");
+    var key = "_"+STRUCT.bin2hex(MD5.hash(factoryModule.path))+"_";
+    
+    var resources = {"css": []};
+    self.addCss = function(path) {
+        path = resourcePath.join(path);
+        if(!path.exists()) {
+            throw "resource not found at: " + path;
+        }
+        resources.css.push({
+            "package": factoryModule["package"],
+            "path": path.valueOf(),
+            "key": key,
+            "resourcePath": resourcePath.valueOf()
+        });
+    }
+    
+    self.getResources = function() {
+        return resources;
+    }
+    
+    self.getKey = function() {
+        return key;
+    }
 
     self.registerTemplate = function(id) {
         try {
             var template = require(id, factoryModule["package"]).template;
-            template.setTemplatePack(self);
+            template.setPack(self);
             templates.push(template);
             templatesDict[template.id] = template;
         } catch(e) {

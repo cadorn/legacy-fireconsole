@@ -17,6 +17,12 @@ testConstant()[messages]:
 
 break;
 
+test1Array()[messages]:
+
+    {"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}
+
+break;
+
 testArray()[messages]:
     
     {"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}

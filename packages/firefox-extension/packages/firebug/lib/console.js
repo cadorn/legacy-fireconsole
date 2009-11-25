@@ -12,6 +12,8 @@ var APP = require("app", "nr-common").getApp();
 var selectedRow = null;
 
 
+var CSSTracker;
+
 function logFormatted(args, className, linkToSource, noThrottle)
 {
     var context = INTERFACE.getActiveContext();
@@ -27,6 +29,14 @@ exports.log = function() {
     logFormatted(arguments, "log");
 }
 
+exports.info = function() {
+    logFormatted(arguments, "info");
+}
+
+exports.warn = function() {
+    logFormatted(arguments, "warn");
+}
+
 exports.group = function() {
     var context = INTERFACE.getActiveContext();
     if(!context) return;
@@ -40,18 +50,25 @@ exports.groupEnd = function() {
     INTERFACE.getConsole().closeGroup(context);
 }
 
+exports.getCSSTracker = function() {
+    if(!CSSTracker) {
+        CSSTracker = exports.CSSTracker();
+    }
+    return CSSTracker;
+}
+
 
 
 exports.registerCss = function(css, preProcessCallback, forceReload)
 {
     for (var i = 0; i < css.length; i++) {
-        CSSTracker.registerCSS(css[i], preProcessCallback, forceReload);
+        exports.getCSSTracker().registerCSS(css[i], preProcessCallback, forceReload);
     }
 }
 
 exports.logRep = function(rep, data, context)
 {
-    CSSTracker.checkCSS(context);
+    exports.getCSSTracker().checkCSS(context.getPanel('console').document);
 
     INTERFACE.getConsole().logRow(
         rep._appender,             // appender
@@ -97,38 +114,39 @@ exports.clearSelection = function()
 }
 
 
-var CSSTracker = {
+exports.CSSTracker = function() {
+    var CSSTracker = function() {};
+    var self = new CSSTracker();
     
-    url: null,
-    css: [],
-    fileMTimes: {},
+    self.url = null;
+    self.css = [];
+    self.fileMTimes = {};
     
-    registerCSS: function(css, preProcessCallback, forceReload)
+    self.registerCSS = function(css, preProcessCallback, forceReload)
     {
         // only add if CSS with same path does not already exist
-        for( var i=0 ; i<this.css.length ; i++ ) {
-            if(this.css[i][0].path==css.path) {
-                this.css[i] = [css, preProcessCallback, forceReload];
+        for( var i=0 ; i<self.css.length ; i++ ) {
+            if(self.css[i][0].path==css.path) {
+                self.css[i] = [css, preProcessCallback, forceReload];
                 css = null;
                 break;
             }
         }
         if(css!==null) {
-            this.css.push([css, preProcessCallback, forceReload]);
+            self.css.push([css, preProcessCallback, forceReload]);
         }
-    },
+    };
 
-    checkCSS: function(context)
+    self.checkCSS = function(doc)
     {
-        var self = this;
         var idPrefix = APP.getInternalName() + '-firebug-css-',
-            doc = context.getPanel('console').document,
             heads = doc.getElementsByTagName("head"),
             id,
             file,
             found,
             code;
-        this.css.forEach(function(css) {
+        self.css.forEach(function(css) {
+dump(css);
             if(UTIL.has(self.fileMTimes, css[0].path)) {
                 if(""+self.fileMTimes[css[0].path]==""+FILE.Path(css[0].path).mtime()) {
                     // css file has not changed
@@ -136,6 +154,7 @@ var CSSTracker = {
                 }
             }
             file = FILE.Path(css[0].path);
+print(file);
             self.fileMTimes[css[0].path] = file.mtime();
             id = idPrefix + STRUCT.bin2hex(MD5.hash(css[0].path));
             found = doc.getElementById(id);
@@ -157,5 +176,6 @@ var CSSTracker = {
                 }
             }
         })
-    }
+    };
+    return self;
 }

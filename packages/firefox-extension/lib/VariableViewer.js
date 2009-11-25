@@ -2,13 +2,18 @@
 
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
-
+var UTIL = require("util");
 var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
+var CHROME_UTIL = require("chrome-util", "nr-common");
 var REPS = require("Reps", "reps");
 var IFRAME_PANEL = require("IFramePanel", "xul-ui");
 var APP = require("app", "nr-common").getApp();
 var SANDBOX = require("sandbox").Sandbox;
+var TEMPLATE_PACK = require("./TemplatePack");
+var SEA = require("narwhal/tusk/sea");
+
+var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "TemplatePacks"));
 
 var panel,
     messageData;
@@ -20,8 +25,7 @@ exports.initialize = function(app)
     panel = new IFRAME_PANEL.IFramePanel().init({
         id: "VariableViewer",
         title: "Variable Viewer",
-//        url: "http://localhost:11009/"
-        url: APP.getPackage(module["package"]).getContentBaseUrl() + 'VariableViewer.htm'
+        url: APP.getPackage(module["package"]).getContentBaseUrl() + 'VariableViewerPanel.htm'
     });
     
     REPS.getMaster("Firebug").addListener(MasterRepListener);
@@ -67,23 +71,62 @@ var MasterRepListener = exports.MasterRepListener = {
     onClick: function(event, object)
     {
         var row = FIREBUG_CONSOLE.selectRow(event.target);
+/*        
         if(FORCE_REP_RELOAD) {
             panel.reload(function() {
                 var doc = panel.getIFrame().contentDocument;
                 renderRep(doc, doc.getElementById("content"), row.repObject);
             });
         } else {
+*/
             var doc = panel.getIFrame().contentDocument;
             renderRep(doc, doc.getElementById("content"), row.repObject);
-        }
+//        }
         panel.show();
     }
 }
 
 
 
+var CSSTracker = FIREBUG_CONSOLE.CSSTracker();
+
 
 function renderRep(document, div, data) {
+
+    var template = TEMPLATE_PACK.getTemplate(data.meta, FORCE_REP_RELOAD);
+    if(!template) {
+        template = TEMPLATE_PACK.seekTemplate(data.og.getOrigin());
+    }
+
+    var resources = template.pack.getResources();
+    if(resources && UTIL.has(resources, "css")) {
+        var pkg;
+        resources.css.forEach(function(css) {
+            CSSTracker.registerCSS(css, function(code, info) {
+                code = code.replace(/__KEY__/g, info.key);
+                if(templatePackSea.hasPackage(info["package"])) {
+                    pkg = templatePackSea.getPackage(info["package"]);
+                } else {
+                    pkg = APP.getSea().getPackage(info["package"]);
+                }
+                code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
+                return code;
+            }, FORCE_REP_RELOAD);
+        });
+    }
+
+    CSSTracker.checkCSS(document);
+
+    var master = REPS.getMaster("VariableViewer");
+    master.setTemplate(template, FORCE_REP_RELOAD);
+    var rep = master.rep;
+
+    rep.tag.replace({
+        "object": data
+    }, div);
+
+/*
+return;
     
     var srequire = require;    
     if(FORCE_REP_RELOAD) {    
@@ -121,5 +164,5 @@ function renderRep(document, div, data) {
     rep.tag.replace({
         "object": data
     }, div);
-
+*/
 }

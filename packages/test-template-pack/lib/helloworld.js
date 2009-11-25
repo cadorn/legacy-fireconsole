@@ -2,17 +2,18 @@
 var TEMPLATE = require("template", "template-pack");
 var template = exports.template = TEMPLATE.Template(module);
 
-template.addCss("common.css");
+template.onLoad = function(pack, tags){with(tags) {
 
-template.setRep(function(tags){with(tags) {
+    pack.addCss("common.css");
+
     return {
 
         tag:
-            DIV({"class": template.getKey()+"helloworld"}, "$node.value"),
+            DIV({"class": pack.getKey()+"helloworld"}, "$node.value"),
     
         shortTag:
-            DIV({"class": template.getKey()+"helloworld"}, "$node.value")
+            DIV({"class": pack.getKey()+"helloworld"}, "$node.value")
 
     }    
-}});
+}};
 

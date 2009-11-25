@@ -75,65 +75,19 @@ var ConsoleMessageListener = {
     
     onMessageReceived: function(message, context) {
         try {
-/*
-            var srequire = require;
-            if(FORCE_REP_RELOAD && this.lastStartTime!==context.FirebugNetMonitorListener.file.startTime) {    
-            
-                // clear the console first
-                context.FirebugNetMonitorListener.context.getPanel("console").clear();
-                
-                // TODO: Log message that we are in debug mode and templates are getting reloaded
-
-                var modules = {}
-                modules[FIREBUG_INTERFACE.getModuleId()] = FIREBUG_INTERFACE;
-                modules["packages"] = require("packages");
-            
-                var sandbox = SANDBOX({
-                    "system": system,
-                    "loader": require.loader,
-                    "debug": require.loader.debug,
-                    "modules": modules
-                });
-                srequire = function(id, pkg) {
-                    return sandbox(id, null, pkg, module["package"]);
-                }
-            }
-        
-            var REPS = srequire("Reps", "reps");
-    
-            if(FORCE_REP_RELOAD && this.lastContext!==context) {
-                REPS.getMaster("Firebug").addListener(VARIABLE_VIEWER.MasterRepListener);
-                FIREBUG_CONSOLE.registerCss(REPS.getMaster("Firebug").getCss());
-            }
-
-            this.lastStartTime = context.FirebugNetMonitorListener.file.startTime;
-*/
-
-//FIREBUG_CONSOLE.log(message);
+            var FORCE_RELOAD = true;
 
             var og = OBJECT_GRAPH.generateFromMessage(message);
+            var meta = JSON.decode(message.getMeta());
 
-var FORCE_RELOAD = true;
-
-            var template = TEMPLATE_PACK.getTemplate(JSON.decode(message.getMeta()), FORCE_RELOAD);
+            var template = TEMPLATE_PACK.getTemplate(meta, FORCE_RELOAD);
             if(!template) {
                 template = TEMPLATE_PACK.seekTemplate(og.getOrigin());
             }
-print(template.toString());            
             var master = REPS.getMaster("Firebug");
             master.setTemplate(template, FORCE_RELOAD);
-            var rep = master.rep;
 
-
-//                rep = REPS.factory("", "Firebug");
-
-
-
-//print(og.getOrigin().type);
-        
-//FIREBUG_CONSOLE.log(og.getOrigin());
-        
-            FIREBUG_CONSOLE.logRep(rep, og, context.FirebugNetMonitorListener.context);
+            FIREBUG_CONSOLE.logRep(master.rep, {"meta": meta, "og": og}, context.FirebugNetMonitorListener.context);
     
         } catch(e) {
             print(e, 'ERROR');
