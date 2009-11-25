@@ -1,3 +1,9 @@
 {
-    "name": "test-template-pack"
+    "name": "test-template-pack",
+    "using": {
+        "template-pack": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "template-pack"
+        }
+    }
 }

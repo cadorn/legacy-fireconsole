@@ -27,7 +27,7 @@ class FireConsole_Dispatcher
             throw new Exception("'download.archive.url' not provided!");
         }
         $message = $this->getNewMessage(null);
-        $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/TemplatePack");
+        $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/TemplatePack/0.1");
         $message->setData(json_encode(array(
             "action" => "require",
             "info" => $info
@@ -71,7 +71,7 @@ class FireConsole_Dispatcher
     public function send($data, $meta='')
     {
         $message = $this->getNewMessage($meta);
-        $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Console");
+        $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
         $message->setMeta(json_encode($meta));
         $message->setData($this->getEncoder()->encode($data, $meta));
         $this->channel->enqueueOutgoing($message);

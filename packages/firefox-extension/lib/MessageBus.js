@@ -23,11 +23,11 @@ exports.initialize = function(options)
     OBSERVER_SERVICE.addObserver(OnModifyRequestObserver, "http-on-modify-request", false);
 
     templatePackReceiver = WILDFIRE.Receiver();
-    templatePackReceiver.setId("http://pinf.org/cadorn.org/fireconsole/meta/TemplatePack");
+    templatePackReceiver.setId("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/TemplatePack/0.1");
     templatePackReceiver.addListener(TemplatePackReceiverListener);
 
     fireConsoleReceiver = WILDFIRE.Receiver();
-    fireConsoleReceiver.setId("http://pinf.org/cadorn.org/fireconsole/meta/Console");
+    fireConsoleReceiver.setId("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
     fireConsoleReceiver.addListener(options.ConsoleMessageListener);
 
     httpheaderChannel = WILDFIRE.HttpHeaderChannel();
@@ -55,8 +55,8 @@ var TemplatePackReceiverListener = {
             if(data.action=="require") {
                 data = data.info;
                 data.domain = context.FirebugNetMonitorListener.context.window.location.hostname;
-                var pack = TEMPLATE_PACK.TemplatePack(data);
-                pack.getCollection();
+                // Load the template pack to make it available to the renderer
+                TEMPLATE_PACK.factory(data).load();
             }
         } catch(e) {
             print("ERROR: "+e);

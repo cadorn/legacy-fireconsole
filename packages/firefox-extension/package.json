@@ -35,6 +35,10 @@
         "reps": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
             "name": "firefox-extension-reps"
+        },
+        "template-pack": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "template-pack"
         }
     },
     "build": {

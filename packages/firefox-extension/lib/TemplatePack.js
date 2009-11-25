@@ -1,31 +1,84 @@
 
 
-
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
 
 var URI = require("uri");
 var UTIL = require("util");
+var FILE = require("file");
 var STRUCT = require("struct");
 var MD5 = require("md5");
+
+var APP = require("app", "nr-common").getApp();
+var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
+
 var SECURITY = require("./Security");
 
 
 
-exports.TemplatePack = function(info) {
+// Tell the template loader which extra packages to load into the sandbox
+TEMPLATE_PACK_LOADER.addSandboxPackage(APP.getInfo().ID);
+// Tell the template loader where to find template packs
+TEMPLATE_PACK_LOADER.addRepositoryPath(FILE.Path(getTemplatePackBasePath().path));
+
+// Load default fc-object-graph template pack
+var fcObjectGraphTemplatePack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/domplate-reps/raw/master/fc-object-graph");
+
+
+
+var templatePacks = {};
+
+exports.factory = function(info) {
+    var id = getTemplatePackId(info);
+    if(!UTIL.has(templatePacks, id)) {
+        templatePacks[id] = exports.TemplatePack(id, info);
+    }
+    return templatePacks[id];
+}
+
+// find fc-object-graph template based on node type
+exports.seekTemplate = function(node) {
+    return fcObjectGraphTemplatePack.seekTemplate(node);
+}
+
+// get template based on template pack ID
+exports.getTemplate = function(meta) {
+    if(!UTIL.has(meta, "fc.tpl.id")) {
+        return false;
+    }
+    var parts = meta["fc.tpl.id"].split("#");
+    if(!UTIL.has(templatePacks, parts[0])) {
+        return false;
+    }
+    return templatePacks[parts[0]].getTemplate(parts[1]);
+}
+
+
+
+exports.TemplatePack = function(id, info) {
     
     var TemplatePack = function() {};
     var self = new TemplatePack();
     
     self.info = info;
     
-    self.getCollection = function() {
+    self.load = function(force) {
         if(!isInstalled()) {
             requestInstall();
             return false;
         }
+        this.pack = TEMPLATE_PACK_LOADER.requirePack(id, force);
+        return true;
+    }
+    
+    self.getTemplate = function(name, forceReload) {
         
-print("fetch collection");        
+        // TODO: Check secirity to ensure domain is authorized to use templates from this pack
+        
+        if(forceReload) {
+            self.load(true);
+        }
+        return this.pack.getTemplate(name);
     }
     
     function isInstalled() {
@@ -81,18 +134,11 @@ print("fetch collection");
     }
     
     function getTemplatePackPath() {
-        var uri = URI.parse(self.info["download.archive.url"]);
-        var path = self.info["download.archive.path"];
         file = getTemplatePackBasePath();
-        file.append(uri.domain);
-        uri.path.split("/").forEach(function(part) {
+        file.append("using");
+        getTemplatePackId(self.info).split("/").forEach(function(part) {
             if(part) file.append(part);
         });
-        if(path) {
-            path.split("/").forEach(function(part) {
-                if(part) file.append(part);
-            });
-        }
         return file;
     }
     
@@ -114,6 +160,21 @@ function getTmpPath(logger, filename) {
     });
     file.append(filename);
     return file;
+}
+
+function getTemplatePackId(info) {
+    var uri = URI.parse(info["download.archive.url"]);
+    var path = info["download.archive.path"];
+    var parts = [uri.domain];
+    uri.path.split("/").forEach(function(part) {
+        if(part) parts.push(part);
+    });
+    if(path) {
+        path.split("/").forEach(function(part) {
+        if(part) parts.push(part);
+        });
+    }
+    return parts.join("/");
 }
 
 function getTemplatePackBasePath() {

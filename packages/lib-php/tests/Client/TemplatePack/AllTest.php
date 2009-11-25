@@ -18,7 +18,7 @@ class Client_TemplatePack_AllTest extends ObjectGraphTestCase
         ));
 
         $this->dispatcher->send('Hello World', array(
-            "fc.tpl.id" => "tpl-ID"
+            "fc.tpl.id" => "github.com/cadorn/fireconsole/zipball/master/packages/test-template-pack#helloworld"
         ));
     }
 }

@@ -1,0 +1,16 @@
+
+/*######################################################################
+#   helloworld
+#####################################################################*/
+
+DIV.__KEY__helloworld {
+    color: #FF0000;
+    font-size: 20px;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    padding-left: 50px;
+    background-image: url(__RESOURCE__images/FireConsole_32.png);
+    background-repeat: no-repeat;
+    background-position: 6px 2px;
+    height: 35px;
+}

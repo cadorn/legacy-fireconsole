@@ -15,7 +15,7 @@ var FirebugMaster = exports.FirebugMaster = function() {
     var that = this;
     
     var collection = COLLECTION.Collection();
-    collection.addCss(require.loader.resolve("./FirebugMaster.css", module.id));
+//    collection.addCss(require.loader.resolve("./FirebugMaster.css", module.id));
 
     this.construct(collection);
 
@@ -49,7 +49,8 @@ var FirebugMaster = exports.FirebugMaster = function() {
                     
                     _getTag: function(object)
                     {
-                        var rep = that.getRepForNode(object.getOrigin());
+//                        var rep = that.getRepForNode(object.getOrigin());
+                        var rep = that.getTemplate().rep;
 //                        var rep = that.getRepForObject(object[1], object[0]);
                         if(UTIL.has(rep, "shortTag")) {
                             return rep.shortTag;

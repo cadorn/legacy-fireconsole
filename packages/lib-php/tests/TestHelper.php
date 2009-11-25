@@ -60,7 +60,7 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
         $messages = $this->channel->getOutgoing();
 
         if(!self::DEBUG) {
-            $this->assertEquals(sizeof($messages), sizeof($info[$this->getName()]['messages']), 'number of messages');        
+            $this->assertEquals(sizeof($info[$this->getName()]['messages']), sizeof($messages), 'number of messages');        
         }
         
         for( $i=0 ; $i<sizeof($messages) ; $i++ ) {
@@ -71,39 +71,41 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
             }
             
             $this->assertEquals(
-                $messages[$i]->getData(),
-                $info[$this->getName()]['messages'][$i]
+                $info[$this->getName()]['messages'][$i],
+                $messages[$i]->getData()
             );
         }
         
         $this->channel->flush();
         
         // Only verify headers if our test channel is being used
-        if(false && $this->channel instanceof ObjectGraphTestCase__Channel) {
+        if($this->channel instanceof ObjectGraphTestCase__Channel) {
         
             $headers = $this->channel->getHeaders();
             
-            if(self::DEBUG) {
-                foreach( $headers as $header ) {
-                    print($header . "\n");
-                }
-            }
-            
-            if(!self::DEBUG) {
-                $this->assertEquals(sizeof($headers), sizeof($info[$this->getName()]['headers']), 'number of headers');        
-            }
-            
-            for( $i=0 ; $i<sizeof($headers) ; $i++ ) {
+            if(isset($info[$this->getName()]['headers'])) {
                 if(self::DEBUG) {
-                    print('Comparison #'.$i.':'."\n");
-                    print('     Got: '. $headers[$i]."\n");
-                    print('  Expect: '. $info[$this->getName()]['headers'][$i]."\n");
+                    foreach( $headers as $header ) {
+                        print($header . "\n");
+                    }
                 }
                 
-                $this->assertEquals(
-                    $headers[$i],
-                    $info[$this->getName()]['headers'][$i]
-                );
+                if(!self::DEBUG) {
+                    $this->assertEquals(sizeof($info[$this->getName()]['headers']), sizeof($headers), 'number of headers');        
+                }
+                
+                for( $i=0 ; $i<sizeof($headers) ; $i++ ) {
+                    if(self::DEBUG) {
+                        print('Comparison #'.$i.':'."\n");
+                        print('     Got: '. $headers[$i]."\n");
+                        print('  Expect: '. $info[$this->getName()]['headers'][$i]."\n");
+                    }
+                    
+                    $this->assertEquals(
+                        $info[$this->getName()]['headers'][$i],
+                        $headers[$i]
+                    );
+                }
             }
         }
     }    

@@ -4,11 +4,18 @@ function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
 
 var UTIL = require("util", "nr-common");
+var CHROME_UTIL = require("chrome-util", "nr-common");
+var SEA = require("narwhal/tusk/sea");
 
 var COLLECTION = require("collection", "domplate");
 var DOMPLATE = require("domplate", "domplate");
 var FIREBUG_INTERFACE = require("interface", "firebug");
+var FIREBUG_CONSOLE = require("console", "firebug");
 
+var APP = require("app", "nr-common").getApp();
+
+
+var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "TemplatePacks"));
 
 
 var firebugMaster,
@@ -35,19 +42,46 @@ Master.prototype.construct = function(collection) {
     this.collection = COLLECTION.Collection();
     this.collection.addCollection(collection);
  
-    this.collection.addCollection(require("collection", "reps-fc-object-graph").getCollection());
+//    this.collection.addCollection(require("collection", "reps-fc-object-graph").getCollection());
    
 //    this.collection.addCollection(require("collection", "reps-structures").getCollection());
 //    this.collection.addCollection(require("collection", "reps-lang-php").getCollection());
     this.tags = DOMPLATE.tags;
 }
 
+
+
 Master.prototype.getCollection = function()
 {
     return this.collection;
 }
 
+Master.prototype.setTemplate = function(template, forceReload)
+{
+    this.template = template;
+    if(UTIL.has(template, "resources") && UTIL.has(template.resources, "css")) {
+        var pkg;
+        FIREBUG_CONSOLE.registerCss(template.resources.css, function(code, info) {
+            code = code.replace(/__KEY__/g, info.key);
+            if(templatePackSea.hasPackage(info["package"])) {
+                pkg = templatePackSea.getPackage(info["package"]);
+            } else {
+                pkg = APP.getSea().getPackage(info["package"]);
+            }
+            code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
+            return code;
+        }, forceReload);
+    }
+}
+
+Master.prototype.getTemplate = function()
+{
+    return this.template;
+}
+
+
 //Master.prototype.getRepForObject = function(object, meta)
+// DEPRECATED
 Master.prototype.getRepForNode = function(node)
 {
     // Try and get specific rep first

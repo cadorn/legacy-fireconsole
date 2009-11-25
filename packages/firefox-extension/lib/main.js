@@ -75,7 +75,7 @@ var ConsoleMessageListener = {
     
     onMessageReceived: function(message, context) {
         try {
-
+/*
             var srequire = require;
             if(FORCE_REP_RELOAD && this.lastStartTime!==context.FirebugNetMonitorListener.file.startTime) {    
             
@@ -107,27 +107,26 @@ var ConsoleMessageListener = {
             }
 
             this.lastStartTime = context.FirebugNetMonitorListener.file.startTime;
-
+*/
 
 //FIREBUG_CONSOLE.log(message);
 
             var og = OBJECT_GRAPH.generateFromMessage(message);
 
-//FIREBUG_CONSOLE.log(og);
+var FORCE_RELOAD = true;
 
-/*
-            var meta = message.getMeta();
-            var data = JSON.decode(message.getData());
-            
-            var rep = null;
-            if(meta && meta["fc.tpl.id"]) {
-                rep = REPS.factory(meta["fc.tpl.id"], "Firebug");
-            } else {
-                rep = REPS.factory("", "Firebug");
+            var template = TEMPLATE_PACK.getTemplate(JSON.decode(message.getMeta()), FORCE_RELOAD);
+            if(!template) {
+                template = TEMPLATE_PACK.seekTemplate(og.getOrigin());
             }
-*/
+print(template.toString());            
+            var master = REPS.getMaster("Firebug");
+            master.setTemplate(template, FORCE_RELOAD);
+            var rep = master.rep;
 
-            rep = REPS.factory("", "Firebug");
+
+//                rep = REPS.factory("", "Firebug");
+
 
 
 //print(og.getOrigin().type);

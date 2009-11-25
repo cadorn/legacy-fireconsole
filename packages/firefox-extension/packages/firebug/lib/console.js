@@ -1,11 +1,12 @@
 
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
-
+var FILE = require("file");
 var MD5 = require("md5");
 var STRUCT = require("struct");
 var UTIL = require("util", "nr-common");
 var INTERFACE = require("./interface");
+var APP = require("app", "nr-common").getApp();
 
 
 var selectedRow = null;
@@ -41,10 +42,10 @@ exports.groupEnd = function() {
 
 
 
-exports.registerCss = function(css)
+exports.registerCss = function(css, preProcessCallback, forceReload)
 {
     for (var i = 0; i < css.length; i++) {
-        CSSTracker.registerCSS(css[i]);
+        CSSTracker.registerCSS(css[i], preProcessCallback, forceReload);
     }
 }
 
@@ -95,70 +96,66 @@ exports.clearSelection = function()
     selectedRow = null;
 }
 
+
 var CSSTracker = {
     
     url: null,
     css: [],
+    fileMTimes: {},
     
-    registerCSS: function(css)
+    registerCSS: function(css, preProcessCallback, forceReload)
     {
-        this.css.push(css);
+        // only add if CSS with same path does not already exist
+        for( var i=0 ; i<this.css.length ; i++ ) {
+            if(this.css[i][0].path==css.path) {
+                this.css[i] = [css, preProcessCallback, forceReload];
+                css = null;
+                break;
+            }
+        }
+        if(css!==null) {
+            this.css.push([css, preProcessCallback, forceReload]);
+        }
     },
 
     checkCSS: function(context)
     {
-        var id = '%%PP%%_Console-CustomCSS-'+this.css.length;
-        var doc = context.getPanel('console').document;
-        
-        if(doc.getElementById(id)) {
-            // Stylesheet already added
-            return;
-        }
-
-        // Generate CSS code and hash it
-        var code = [];
-        for (var i = 0; i < this.css.length; i++) {
-            code.push(this.css[i].getCode());
-            code.push("\n");
-        }
-        
-//        var url = this._getCssURL();
-
-        var style = doc.createElementNS("http://www.w3.org/1999/xhtml", "style");
-        style.setAttribute("charset","utf-8");
-        style.setAttribute("type", "text/css");
-        style.setAttribute("id", id);
-        style.innerHTML = code.join("\n");
-
-        var heads = doc.getElementsByTagName("head");
-        if (heads.length) {
-            heads[0].appendChild(style);
-        }
-    },
-    
-    _getCssURL: function()
-    {
-        if(this.url) {
-            return this.url;
-        }
-        
-        // Generate CSS code and hash it
-        var code = [];
-        for (var i = 0; i < this.css.length; i++) {
-            code.push(this.css[i].getCode());
-            code.push("\n");
-        }
-        code = code.join("\n");
-        var hash = STRUCT.bin2hex(MD5.hash(code));
-        
-        // Write css data to file and record URL
-/*        
-        var path = Extension.getPath("/user/chrome/content/org.FirePHP.Packages.Firebug/_cache/Console/CSS/"+hash+".css");
-        
-        file.mkdirs(path);
-        file.write(path, code);
-        
-        return "chrome://%%Extension.InternalAppName%%-user/content/org.FirePHP.Packages.Firebug/_cache/Console/CSS/"+hash+".css";
-*/
+        var self = this;
+        var idPrefix = APP.getInternalName() + '-firebug-css-',
+            doc = context.getPanel('console').document,
+            heads = doc.getElementsByTagName("head"),
+            id,
+            file,
+            found,
+            code;
+        this.css.forEach(function(css) {
+            if(UTIL.has(self.fileMTimes, css[0].path)) {
+                if(""+self.fileMTimes[css[0].path]==""+FILE.Path(css[0].path).mtime()) {
+                    // css file has not changed
+                    return;
+                }
+            }
+            file = FILE.Path(css[0].path);
+            self.fileMTimes[css[0].path] = file.mtime();
+            id = idPrefix + STRUCT.bin2hex(MD5.hash(css[0].path));
+            found = doc.getElementById(id);
+            if(found && css[2]!==true) {    // css[2] checks forceReload
+                // stylesheet already added
+                return;
+            }
+            code = css[1](file.read(), css[0]);
+            if(found) {
+                found.innerHTML = code;
+            } else {
+                var style = doc.createElementNS("http://www.w3.org/1999/xhtml", "style");
+                style.setAttribute("charset","utf-8");
+                style.setAttribute("type", "text/css");
+                style.setAttribute("id", id);
+                style.innerHTML = code;
+                if (heads.length) {
+                    heads[0].appendChild(style);
+                }
+            }
+        })
     }
 }

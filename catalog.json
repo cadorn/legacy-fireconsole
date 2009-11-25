@@ -33,6 +33,10 @@
         "test-template-pack": {
             "location": "http://github.com/cadorn/fireconsole/zipball/master/",
             "path": "packages/test-template-pack"
+        },
+        "template-pack": {
+            "location": "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path": "packages/template-pack"
         }
     }
 }
