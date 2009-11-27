@@ -146,7 +146,6 @@ exports.CSSTracker = function() {
             found,
             code;
         self.css.forEach(function(css) {
-dump(css);
             if(UTIL.has(self.fileMTimes, css[0].path)) {
                 if(""+self.fileMTimes[css[0].path]==""+FILE.Path(css[0].path).mtime()) {
                     // css file has not changed
@@ -154,7 +153,6 @@ dump(css);
                 }
             }
             file = FILE.Path(css[0].path);
-print(file);
             self.fileMTimes[css[0].path] = file.mtime();
             id = idPrefix + STRUCT.bin2hex(MD5.hash(css[0].path));
             found = doc.getElementById(id);

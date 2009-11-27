@@ -27,6 +27,14 @@ exports.main = function(args) {
         CHROME_UTIL.openNewTab(APP.getAppPackage().getTemplateVariables()["Package.AccessibleContentBaseURL"] + "FirebugNotInstalled.htm");
         return;
     }
+
+    DEV.action('Dump Console HTML', function() {
+        var panel = FIREBUG_INTERFACE.getActiveContext().getPanel("console");
+
+print(panel.document.documentElement.innerHTML);
+
+    });
+
     
 /*    
     DEV.action('Reload Page', function() {
@@ -75,19 +83,21 @@ var ConsoleMessageListener = {
     
     onMessageReceived: function(message, context) {
         try {
+
             var FORCE_RELOAD = true;
 
             var og = OBJECT_GRAPH.generateFromMessage(message);
-            var meta = JSON.decode(message.getMeta());
+            var meta = JSON.decode(message.getMeta() || "{}");
 
             var template = TEMPLATE_PACK.getTemplate(meta, FORCE_RELOAD);
             if(!template) {
                 template = TEMPLATE_PACK.seekTemplate(og.getOrigin());
             }
+
             var master = REPS.getMaster("Firebug");
             master.setTemplate(template, FORCE_RELOAD);
 
-            FIREBUG_CONSOLE.logRep(master.rep, {"meta": meta, "og": og}, context.FirebugNetMonitorListener.context);
+            FIREBUG_CONSOLE.logRep(master.getRep(meta), {"meta": meta, "og": og}, context.FirebugNetMonitorListener.context);
     
         } catch(e) {
             print(e, 'ERROR');

@@ -66,13 +66,13 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
         for( $i=0 ; $i<sizeof($messages) ; $i++ ) {
             if(self::DEBUG) {
                 print('Comparison #'.$i.':'."\n");
-                print('     Got: '. $messages[$i]->getData()."\n");
+                print('     Got: '. $messages[$i]->getMeta() ."|". $messages[$i]->getData() ."\n");
                 print('  Expect: '. $info[$this->getName()]['messages'][$i]."\n");
             }
             
             $this->assertEquals(
                 $info[$this->getName()]['messages'][$i],
-                $messages[$i]->getData()
+                $messages[$i]->getMeta() ."|". $messages[$i]->getData()
             );
         }
         

@@ -12,6 +12,7 @@ var FIREBUG_CONSOLE = require("console", "firebug");
 var REPS = require("./Reps");
 var SEA = require("narwhal/tusk/sea");
 var APP = require("app", "nr-common").getApp();
+var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 
 var Firebug = FIREBUG_INTERFACE.getFirebug();
 
@@ -34,7 +35,35 @@ var FirebugMaster = exports.FirebugMaster = function() {
                 return Firebug.ConsolePanel.prototype.appendCloseGroup;
         }
         return null;
-    };   
+    };
+    
+    
+    this.getRep = function(meta) {
+        var rep = this.rep;
+        
+        // reset rep to default state
+        rep.priorityClassName = "";
+        
+        if(meta && UTIL.has(meta, "fc.msg.priority")) {
+            // Ensure only supported priorities are used
+            switch(meta["fc.msg.priority"]) {
+                case "log":
+                    // no need to change the priorityClassName for the default
+                    break;
+                case "info":
+                case "warn":
+                case "error":
+                    rep.priorityClassName = meta["fc.msg.priority"];
+                    break;
+                default:
+                    // TODO: Log warning: Unknown priority
+                    break;
+            }
+        }
+        
+        return rep;
+    };
+    
     
     this.rep = function() {
         try {
@@ -159,20 +188,26 @@ var FirebugMaster = exports.FirebugMaster = function() {
     this.setTemplate = function(template, forceReload)
     {
         this.__proto__.setTemplate(template, forceReload);
+        
+        var pack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
+        FIREBUG_CONSOLE.registerCss(pack.getResources().css, cssProcessor, forceReload);
+        
         var resources = template.pack.getResources();
         if(resources && UTIL.has(resources, "css")) {
-            var pkg;
-            FIREBUG_CONSOLE.registerCss(resources.css, function(code, info) {
-                code = code.replace(/__KEY__/g, info.key);
-                if(templatePackSea.hasPackage(info["package"])) {
-                    pkg = templatePackSea.getPackage(info["package"]);
-                } else {
-                    pkg = APP.getSea().getPackage(info["package"]);
-                }
-                code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
-                return code;
-            }, forceReload);
+            FIREBUG_CONSOLE.registerCss(resources.css, cssProcessor, forceReload);
         }
+        
+        function cssProcessor(code, info) {
+            code = code.replace(/__KEY__/g, info.key);
+            var pkg;
+            if(templatePackSea.hasPackage(info["package"])) {
+                pkg = templatePackSea.getPackage(info["package"]);
+            } else {
+                pkg = APP.getSea().getPackage(info["package"]);
+            }
+            code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
+            return code;
+        }        
     }     
 };
 

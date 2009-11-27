@@ -12,12 +12,9 @@ exports.generateFromMessage = function(message) {
         
     var og = new ObjectGraph();
     
-    var meta = JSON.decode(message.getMeta());
-//    og.setMeta(meta);
+    var meta = JSON.decode(message.getMeta() || "{}");
     
     var data = JSON.decode(message.getData());
-
-//dump(data);
 
     if(data.instances) {
         for( var i=0 ; i<data.instances.length ; i++ ) {

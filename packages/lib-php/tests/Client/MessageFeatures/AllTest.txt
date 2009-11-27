@@ -1,0 +1,9 @@
+
+testPriorities()[messages]:
+
+    {"fc.msg.priority":"log"}|{"origin":{"type":"text","text":"Hello Log"}}
+    {"fc.msg.priority":"info"}|{"origin":{"type":"text","text":"Hello Info"}}
+    {"fc.msg.priority":"warn"}|{"origin":{"type":"text","text":"Hello Warn"}}
+    {"fc.msg.priority":"error"}|{"origin":{"type":"text","text":"Hello Error"}}
+
+break;

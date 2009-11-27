@@ -12,6 +12,10 @@
         },
         "domplate": {
             "location": "http://github.com/cadorn/domplate/zipball/master/"
+        },
+        "template-pack": {
+            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
+            "name": "template-pack"
         }
     }
 }

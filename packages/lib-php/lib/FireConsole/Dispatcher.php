@@ -72,7 +72,7 @@ class FireConsole_Dispatcher
     {
         $message = $this->getNewMessage($meta);
         $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
-        $message->setMeta(json_encode($meta));
+        if($meta) $message->setMeta(json_encode($meta));
         $message->setData($this->getEncoder()->encode($data, $meta));
         $this->channel->enqueueOutgoing($message);
         return true;
