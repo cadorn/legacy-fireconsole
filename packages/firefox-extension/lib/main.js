@@ -30,9 +30,7 @@ exports.main = function(args) {
 
     DEV.action('Dump Console HTML', function() {
         var panel = FIREBUG_INTERFACE.getActiveContext().getPanel("console");
-
-print(panel.document.documentElement.innerHTML);
-
+        print(panel.document.documentElement.innerHTML);
     });
 
     
@@ -51,7 +49,6 @@ print(panel.document.documentElement.innerHTML);
 
     SECURITY.initialize();
 
-    FIREBUG_CONSOLE.registerCss(REPS.getMaster("Firebug").getCss());
 
 
     MESSAGE_BUS.initialize({
@@ -79,9 +76,20 @@ print(panel.document.documentElement.innerHTML);
 
 var ConsoleMessageListener = {
     
-    lastStartTime: null,
+    masterRep: null,
     
-    onMessageReceived: function(message, context) {
+    onMessageGroupStart: function(context) {
+        if(!this.masterRep) {
+            this.masterRep = REPS.getMaster("Firebug");
+        }
+        this.masterRep.openMessageGroup(context);
+    },
+    
+    onMessageGroupEnd: function(context) {
+        this.masterRep.closeMessageGroup(context);
+    },
+    
+    onMessageReceived: function(context, message) {
         try {
 
             var FORCE_RELOAD = true;
@@ -93,11 +101,12 @@ var ConsoleMessageListener = {
             if(!template) {
                 template = TEMPLATE_PACK.seekTemplate(og.getOrigin());
             }
+            
+            // TODO: Should be using a new instance of the master rep
 
-            var master = REPS.getMaster("Firebug");
-            master.setTemplate(template, FORCE_RELOAD);
+            this.masterRep.setTemplate(template, FORCE_RELOAD);
 
-            FIREBUG_CONSOLE.logRep(master.getRep(meta), {"meta": meta, "og": og}, context.FirebugNetMonitorListener.context);
+            FIREBUG_CONSOLE.logRep(this.masterRep.getRep(meta), {"meta": meta, "og": og}, context.FirebugNetMonitorListener.context);
     
         } catch(e) {
             print(e, 'ERROR');

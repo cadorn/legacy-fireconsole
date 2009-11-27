@@ -4,7 +4,7 @@ var template = exports.template = TEMPLATE.Template(module);
 
 template.onLoad = function(pack, tags){with(tags) {
 
-    pack.addCss("common.css");
+    pack.registerCss("common.css");
 
     return {
 

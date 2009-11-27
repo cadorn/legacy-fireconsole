@@ -1,18 +1,22 @@
 
 var UTIL = require("util", "nr-common");
 var DOMPLATE = require("domplate", "domplate");
-//var COLLECTION = require("collection", "domplate");
 var REPS = require("./Reps");
+var FIREBUG_CONSOLE = require("console", "firebug");
+var CHROME_UTIL = require("chrome-util", "nr-common");
+var SEA = require("narwhal/tusk/sea");
+var APP = require("app", "nr-common").getApp();
+var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
+
+
+var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "TemplatePacks"));
+
+var variableViewerPack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
 
 
 var VariableViewerMaster = exports.VariableViewerMaster = function() {
     var that = this;
     
-//    var collection = COLLECTION.Collection();
-//    collection.addCss(require.loader.resolve("./VariableViewerMaster.css", module.id));
-
-//    this.construct(collection);
-
     this.rep = function() {
         try {
             with (DOMPLATE.tags) {
@@ -22,7 +26,7 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
                     
                     "priorityClassName": "",
                     
-                    tag: DIV({"class": "VariableViewerRep",
+                    tag: DIV({"class": variableViewerPack.getKey() + "VariableViewerHarness",
                               "_repObject": "$object"},
                               
                              TAG("$object|_getTag", {"node": "$object|_getValue"})),
@@ -75,6 +79,33 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
             print(e, 'ERROR');
         }    
     }();      
+    
+    this.cssTracker = FIREBUG_CONSOLE.CSSTracker();
+        
+    this.setTemplate = function(template, forceReload)
+    {
+        this.__proto__.setTemplate(template, forceReload);
+
+        this.cssTracker.registerCSS(variableViewerPack.getResources().css, cssProcessor, forceReload);
+    
+        var resources = template.pack.getResources();
+        if(resources && UTIL.has(resources, "css")) {
+            this.cssTracker.registerCSS(resources.css, cssProcessor, forceReload);
+        }
+    
+        function cssProcessor(code, info) {
+            code = code.replace(/__KEY__/g, info.key);
+            var pkg;
+            if(templatePackSea.hasPackage(info["package"])) {
+                pkg = templatePackSea.getPackage(info["package"]);
+            } else {
+                pkg = APP.getSea().getPackage(info["package"]);
+            }
+            code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
+            return code;
+        }        
+        
+    }    
 };
 VariableViewerMaster.prototype = new REPS.Master();
 

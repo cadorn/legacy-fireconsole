@@ -12,8 +12,9 @@ var APP = require("app", "nr-common").getApp();
 var SANDBOX = require("sandbox").Sandbox;
 var TEMPLATE_PACK = require("./TemplatePack");
 var SEA = require("narwhal/tusk/sea");
+var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
+var DEV = require("console", "dev-sidebar");
 
-var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "TemplatePacks"));
 
 var panel,
     messageData;
@@ -31,6 +32,12 @@ exports.initialize = function(app)
     REPS.getMaster("Firebug").addListener(MasterRepListener);
     panel.addListener(PanelListener);
     FIREBUG_INTERFACE.addListener('Module', ['destroyContext','showContext'], FirebugModuleListener);
+
+
+    DEV.action('Dump VariableViewer HTML', function() {
+        print(panel.getIFrame().contentDocument.documentElement.innerHTML);
+    });
+
 }
     
 exports.shutdown = function()
@@ -98,27 +105,11 @@ function renderRep(document, div, data) {
         template = TEMPLATE_PACK.seekTemplate(data.og.getOrigin());
     }
 
-    var resources = template.pack.getResources();
-    if(resources && UTIL.has(resources, "css")) {
-        var pkg;
-        resources.css.forEach(function(css) {
-            CSSTracker.registerCSS(css, function(code, info) {
-                code = code.replace(/__KEY__/g, info.key);
-                if(templatePackSea.hasPackage(info["package"])) {
-                    pkg = templatePackSea.getPackage(info["package"]);
-                } else {
-                    pkg = APP.getSea().getPackage(info["package"]);
-                }
-                code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
-                return code;
-            }, FORCE_REP_RELOAD);
-        });
-    }
-
-    CSSTracker.checkCSS(document);
-
     var master = REPS.getMaster("VariableViewer");
     master.setTemplate(template, FORCE_REP_RELOAD);
+
+    master.cssTracker.checkCSS(document);
+
     var rep = master.rep;
 
     rep.tag.replace({

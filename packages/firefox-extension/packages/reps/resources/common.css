@@ -3,74 +3,82 @@
 #   FirebugMaster
 #####################################################################*/
 
-DIV.logRow-__PP__-FirebugRow {
+DIV.logRow-__KEY__Message {
     padding: 0px;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.MasterRep {
+DIV.logRow-__KEY__Message > DIV.MasterRep {
     padding: 2px 4px 1px 6px;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.MasterRep:hover {
+DIV.logRow-__KEY__Message > DIV.MasterRep:hover {
     background-color: #F0E68C;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.selected {
+DIV.logRow-__KEY__Message > DIV.selected {
     background-color: #FFA07A !important;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.MasterRep > SPAN.label {
+DIV.logRow-__KEY__Message > DIV.MasterRep > SPAN.label {
     margin-right: 5px;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.MasterRep > DIV.__domplate_rep__ {
+DIV.logRow-__KEY__Message > DIV.MasterRep > DIV.__domplate_rep__ {
     display: inline-block;
 }
 
 
-DIV.logRow-__PP__-FirebugRow > DIV.info,
-DIV.logRow-__PP__-FirebugRow > DIV.warn,
-DIV.logRow-__PP__-FirebugRow > DIV.error,
-DIV.logRow-__PP__-FirebugRow > DIV.assert {
+DIV.logRow-__KEY__Message > DIV.info,
+DIV.logRow-__KEY__Message > DIV.warn,
+DIV.logRow-__KEY__Message > DIV.error,
+DIV.logRow-__KEY__Message > DIV.assert {
     padding-left: 22px;
     background-repeat: no-repeat;
     background-position: 4px 2px;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.assert {
+DIV.logRow-__KEY__Message > DIV.assert {
     padding-top: 0;
     padding-bottom: 0;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.info {
+DIV.logRow-__KEY__Message > DIV.info {
     background-color: #FFFFFF;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.warn {
+DIV.logRow-__KEY__Message > DIV.warn {
     background-color: cyan;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.error,
-DIV.logRow-__PP__-FirebugRow > DIV.assert {
+DIV.logRow-__KEY__Message > DIV.error,
+DIV.logRow-__KEY__Message > DIV.assert {
     background-color: LightYellow;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.error,
-DIV.logRow-__PP__-FirebugRow > DIV.assert {
+DIV.logRow-__KEY__Message > DIV.error,
+DIV.logRow-__KEY__Message > DIV.assert {
     color: #FF0000;
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.info {
+DIV.logRow-__KEY__Message > DIV.info {
     background-image: url(chrome://firebug/skin/infoIcon.png);
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.warn {
+DIV.logRow-__KEY__Message > DIV.warn {
     background-image: url(chrome://firebug/skin/warningIcon.png);
 }
 
-DIV.logRow-__PP__-FirebugRow > DIV.error,
-DIV.logRow-__PP__-FirebugRow > DIV.assert {
+DIV.logRow-__KEY__Message > DIV.error,
+DIV.logRow-__KEY__Message > DIV.assert {
     background-image: url(chrome://firebug/skin/errorIcon.png);
+}
+
+DIV.logRow-__KEY__MessageGroup {
+  background: url(__RESOURCE__images/MessageGroupBackground.png) repeat-x #FFFFFF;
+}
+
+DIV.logRow-__KEY__MessageGroup > DIV > SPAN.objectBox {
+  color: #445777;
 }
 
 
@@ -79,26 +87,9 @@ DIV.logRow-__PP__-FirebugRow > DIV.assert {
 #####################################################################*/
 
 
-DIV.VariableViewerRep {
+DIV.__KEY__VariableViewerHarness {
     padding: 2px 4px 1px 6px;
     font-family: Monaco, monospace;
     font-size: 11px;    
 }
 
-
-
-/*######################################################################
-#   helloworld
-#####################################################################*/
-
-DIV.__KEY__helloworld {
-    color: #FF0000;
-    font-size: 20px;
-    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-    font-size: 25px;
-    padding-left: 50px;
-    background-image: url(__RESOURCE__images/FireConsole_32.png);
-    background-repeat: no-repeat;
-    background-position: 6px 2px;
-    height: 35px;
-}

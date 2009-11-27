@@ -38,23 +38,6 @@ exports.getMaster = function(name) {
 
 var Master = exports.Master = function() {}
 
-Master.prototype.construct = function(collection) {
-    this.collection = COLLECTION.Collection();
-    this.collection.addCollection(collection);
- 
-//    this.collection.addCollection(require("collection", "reps-fc-object-graph").getCollection());
-   
-//    this.collection.addCollection(require("collection", "reps-structures").getCollection());
-//    this.collection.addCollection(require("collection", "reps-lang-php").getCollection());
-    this.tags = DOMPLATE.tags;
-}
-
-
-
-Master.prototype.getCollection = function()
-{
-    return this.collection;
-}
 
 Master.prototype.setTemplate = function(template, forceReload)
 {
@@ -82,24 +65,9 @@ Master.prototype.getRepForNode = function(node)
     return rep;
 };
 
-Master.prototype.getCss = function()
-{
-    return this.collection.getCss();
-};
-
-Master.prototype.injectCss = function(document, callback)
-{
-    this.collection.injectCss(document, callback);
-};
-
-Master.prototype.extend = function(rep)
-{
-    return DOMPLATE.domplate(this.rep, rep);
-}
 
 
-
-
+/*
 exports.factory = function(uri, master) {
 
     if(typeof master == "string") {
@@ -167,3 +135,4 @@ exports.factory = function(uri, master) {
     }
 }
 
+*/

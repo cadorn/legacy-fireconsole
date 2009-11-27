@@ -182,6 +182,14 @@ exports.init = function(chrome)
                 ModuleListener._dispatch('showContext', [browser, context]);
             }
             
+            /**
+             * Firebug has been detached/attached from/to the original Firefox window.
+             */
+            this.reattachContext = function(browser, context)
+            {
+                ModuleListener._dispatch('reattachContext', [browser, context]);
+            }
+            
         }).apply(FirebugModule);
 
         

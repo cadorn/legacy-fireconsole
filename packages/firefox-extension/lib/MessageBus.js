@@ -35,7 +35,6 @@ exports.initialize = function(options)
     httpheaderChannel.addReceiver(fireConsoleReceiver);
     
     FIREBUG_INTERFACE.addListener('NetMonitor', ['onResponseBody'], httpheaderChannel.getFirebugNetMonitorListener());
-//    FIREBUG_INTERFACE.addListener('Module', ['initContext', 'destroyContext'], FirebugModuleListener);
     FIREBUG_INTERFACE.addListener('Console', ['onConsoleInjected'], FirebugConsoleListener);
 }
 
@@ -49,7 +48,7 @@ exports.shutdown = function()
 
 
 var TemplatePackReceiverListener = {
-    onMessageReceived: function(message, context) {
+    onMessageReceived: function(context, message) {
         try {
             var data = JSON.decode(message.getData());
             if(data.action=="require") {

@@ -6,8 +6,8 @@ exports.Factory = function() {
     var Factory = function() {};
     Factory.prototype = FACTORY.Factory(module);
     var self = new Factory();
-
-    self.registerTemplate("helloworld");
+    
+    self.registerCss("common.css");
     
     return self;
 }

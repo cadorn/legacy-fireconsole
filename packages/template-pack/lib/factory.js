@@ -15,7 +15,7 @@ exports.Factory = function(factoryModule) {
     var key = "_"+STRUCT.bin2hex(MD5.hash(factoryModule.path))+"_";
     
     var resources = {"css": []};
-    self.addCss = function(path) {
+    self.registerCss = function(path) {
         path = resourcePath.join(path);
         if(!path.exists()) {
             throw "resource not found at: " + path;

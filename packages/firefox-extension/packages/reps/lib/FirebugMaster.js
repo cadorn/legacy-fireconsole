@@ -6,7 +6,6 @@ var UTIL = require("util", "nr-common");
 var CHROME_UTIL = require("chrome-util", "nr-common");
 
 var DOMPLATE = require("domplate", "domplate");
-var COLLECTION = require("collection", "domplate");
 var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
 var REPS = require("./Reps");
@@ -19,15 +18,18 @@ var Firebug = FIREBUG_INTERFACE.getFirebug();
 var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "TemplatePacks"));
 
 
+var masterPack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
+
+
 var FirebugMaster = exports.FirebugMaster = function() {
     var that = this;
     
-    var collection = COLLECTION.Collection();
-//    collection.addCss(require.loader.resolve("./FirebugMaster.css", module.id));
-
-    this.construct(collection);
+    
+//    this.construct(collection);
 
     this.getAppender = function(name) {
+        
+print("-- get appender --");        
         switch(name) {
             case 'OpenGroup':
                 return Firebug.ConsolePanel.prototype.appendOpenGroup;
@@ -64,6 +66,14 @@ var FirebugMaster = exports.FirebugMaster = function() {
         return rep;
     };
     
+    this.openMessageGroup = function(context) {
+        FIREBUG_INTERFACE.getConsole().openGroup([context.FirebugNetMonitorListener.file.href],
+            context.FirebugNetMonitorListener.context, masterPack.getKey() + "MessageGroup", null, false, null);
+    }
+    
+    this.closeMessageGroup = function(context) {
+        FIREBUG_INTERFACE.getConsole().closeGroup();
+    }
     
     this.rep = function() {
         try {
@@ -71,9 +81,8 @@ var FirebugMaster = exports.FirebugMaster = function() {
             
                 // Extend the default firebug rep
                 return DOMPLATE.domplate(Firebug.Rep, {
-                    
-                    "className": "__PP__-FirebugRow",
-                    "priorityClassName": "",
+
+                    "className": masterPack.getKey() + "Message",
                     
                     tag: DIV({"class": "MasterRep $priorityClassName",
                               "_repObject": "$object",
@@ -189,8 +198,7 @@ var FirebugMaster = exports.FirebugMaster = function() {
     {
         this.__proto__.setTemplate(template, forceReload);
         
-        var pack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
-        FIREBUG_CONSOLE.registerCss(pack.getResources().css, cssProcessor, forceReload);
+        FIREBUG_CONSOLE.registerCss(masterPack.getResources().css, cssProcessor, forceReload);
         
         var resources = template.pack.getResources();
         if(resources && UTIL.has(resources, "css")) {
