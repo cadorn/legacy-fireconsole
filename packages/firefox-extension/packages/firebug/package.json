@@ -1,5 +1,6 @@
 {
     "name": "firebug",
+    "type": "using",
     "using": {
         "nr-common": {
             "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",

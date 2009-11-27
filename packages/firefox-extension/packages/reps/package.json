@@ -1,5 +1,6 @@
 {
     "name": "reps",
+    "type": "using",
     "using": {
         "nr-common": {
             "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
@@ -11,18 +12,6 @@
         },
         "domplate": {
             "location": "http://github.com/cadorn/domplate/zipball/master/"
-        },
-        "reps-fc-object-graph": {
-            "catalog": "http://github.com/cadorn/domplate-reps/raw/master/catalog.json",
-            "name": "fc-object-graph"
-        },
-        "reps-lang-php": {
-            "catalog": "http://github.com/cadorn/domplate-reps/raw/master/catalog.json",
-            "name": "lang-php"
-        },
-        "reps-structures": {
-            "catalog": "http://github.com/cadorn/domplate-reps/raw/master/catalog.json",
-            "name": "structures"
         }
     }
 }

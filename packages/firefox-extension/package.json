@@ -39,6 +39,10 @@
         "template-pack": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
             "name": "template-pack"
+        },
+        "fireconsole-template-packs-fc-object-graph": {
+            "catalog": "http://github.com/cadorn/fireconsole-template-packs/raw/master/catalog.json",
+            "name": "fc-object-graph"
         }
     },
     "build": {

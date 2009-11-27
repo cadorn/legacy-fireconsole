@@ -1,5 +1,6 @@
 {
     "name": "template-pack",
+    "type": "using",
     "using": {
         "domplate": {
             "location": "http://github.com/cadorn/domplate/zipball/master/"

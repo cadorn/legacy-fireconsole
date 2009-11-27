@@ -256,6 +256,6 @@ TEMPLATE_PACK_LOADER.addSandboxPackage(APP.getInfo().ID);
 TEMPLATE_PACK_LOADER.addRepositoryPath(FILE.Path(getTemplatePackBasePath().path));
 
 // Load default fc-object-graph template pack
-fcObjectGraphTemplatePack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/domplate-reps/raw/master/fc-object-graph");
+fcObjectGraphTemplatePack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole-template-packs/raw/master/fc-object-graph");
 
 
