@@ -205,15 +205,15 @@ print("-- get appender --");
         }
     }
         
-    this.setTemplate = function(template, forceReload)
+    this.setTemplate = function(template)
     {
-        this.__proto__.setTemplate(template, forceReload);
+        this.__proto__.setTemplate(template);
         
-        FIREBUG_CONSOLE.registerCss(masterPack.getResources().css, cssProcessor, forceReload);
+        FIREBUG_CONSOLE.registerCss(masterPack.getResources().css, cssProcessor, false);
         
         var resources = template.pack.getResources();
         if(resources && UTIL.has(resources, "css")) {
-            FIREBUG_CONSOLE.registerCss(resources.css, cssProcessor, forceReload);
+            FIREBUG_CONSOLE.registerCss(resources.css, cssProcessor, template.reloaded);
         }
         
         function cssProcessor(code, info) {

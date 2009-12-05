@@ -92,8 +92,6 @@ var ConsoleMessageListener = {
     onMessageReceived: function(context, message) {
         try {
 
-            var FORCE_RELOAD = true;
-
             var og = OBJECT_GRAPH.generateFromMessage(message);
             var meta = JSON.decode(message.getMeta() || "{}");
 
@@ -104,7 +102,7 @@ var ConsoleMessageListener = {
             
             // TODO: Should be using a new instance of the master rep
 
-            this.masterRep.setTemplate(template, FORCE_RELOAD);
+            this.masterRep.setTemplate(template);
 
             FIREBUG_CONSOLE.logRep(this.masterRep.getRep(meta), {"meta": meta, "og": og}, context.FirebugNetMonitorListener.context);
     

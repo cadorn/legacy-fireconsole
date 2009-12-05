@@ -6,7 +6,6 @@ testCustomPack()[messages]:
 
 break;
 
-
 testCustomPack()[headers]:
 
     ["x-wf-1-protocol","http:\/\/pinf.org\/cadorn.org\/wildfire\/meta\/Protocol\/Component\/0.1"]
@@ -16,5 +15,12 @@ testCustomPack()[headers]:
     ["x-wf-1-1-1-1","341||{\"action\":\"require\",\"info\":{\"project.url\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/tree\\\/master\",\"source.url\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/tree\\\/master\\\/packages\\\/test-template-pack\",\"download.archive.url\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/zipball\\\/master\\\/\",\"download.archive.path\":\"packages\\\/test-template-pack\"}}|"]
     ["x-wf-1-1-2-receiver","http:\/\/pinf.org\/cadorn.org\/fireconsole\/meta\/Receiver\/Console\/0.1"]
     ["x-wf-1-1-2-2","153|{\"fc.tpl.id\":\"github.com\\\/cadorn\\\/fireconsole\\\/zipball\\\/master\\\/packages\\\/test-template-pack#helloworld\"}|{\"origin\":{\"type\":\"text\",\"text\":\"Hello World\"}}|"]
+
+break;
+
+testReload()[messages]:
+
+    |{"action":"require","info":{"project.url":"http:\/\/github.com\/cadorn\/fireconsole\/tree\/master","source.url":"http:\/\/github.com\/cadorn\/fireconsole\/tree\/master\/packages\/test-template-pack","download.archive.url":"http:\/\/github.com\/cadorn\/fireconsole\/zipball\/master\/","download.archive.path":"packages\/test-template-pack"}}
+    {"fc.tpl.id":"github.com\/cadorn\/fireconsole\/zipball\/master\/packages\/test-template-pack#helloworld","fc.tpl.reload":true}|{"origin":{"type":"text","text":"Hello World"}}
 
 break;

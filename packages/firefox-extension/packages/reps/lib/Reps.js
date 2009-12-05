@@ -38,7 +38,7 @@ exports.getMaster = function(name) {
 var Master = exports.Master = function() {}
 
 
-Master.prototype.setTemplate = function(template, forceReload)
+Master.prototype.setTemplate = function(template)
 {
     this.template = template;
 }

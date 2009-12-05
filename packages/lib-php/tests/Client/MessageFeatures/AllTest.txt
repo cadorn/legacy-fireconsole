@@ -8,7 +8,6 @@ testPriorities()[messages]:
 
 break;
 
-
 testDebug()[messages]:
 
     {"fc.tpl.debug":true}|{"origin":{"type":"map","map":[[{"type":"text","text":"key1"},{"type":"text","text":"10"}]]}}

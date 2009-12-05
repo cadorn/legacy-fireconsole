@@ -19,8 +19,6 @@ var DEV = require("console", "dev-sidebar");
 var panel,
     messageData;
 
-var FORCE_REP_RELOAD = true;
-
 exports.initialize = function(app)
 {
     panel = new IFRAME_PANEL.IFramePanel().init({
@@ -78,17 +76,10 @@ var MasterRepListener = exports.MasterRepListener = {
     onClick: function(event, object)
     {
         var row = FIREBUG_CONSOLE.selectRow(event.target);
-/*        
-        if(FORCE_REP_RELOAD) {
-            panel.reload(function() {
-                var doc = panel.getIFrame().contentDocument;
-                renderRep(doc, doc.getElementById("content"), row.repObject);
-            });
-        } else {
-*/
-            var doc = panel.getIFrame().contentDocument;
-            renderRep(doc, doc.getElementById("content"), row.repObject);
-//        }
+
+        var doc = panel.getIFrame().contentDocument;
+        renderRep(doc, doc.getElementById("content"), row.repObject);
+
         panel.show();
     }
 }
@@ -106,7 +97,7 @@ function renderRep(document, div, data) {
     }
 
     var master = REPS.getMaster("VariableViewer");
-    master.setTemplate(template, FORCE_REP_RELOAD);
+    master.setTemplate(template);
 
     master.cssTracker.checkCSS(document);
 
@@ -115,45 +106,4 @@ function renderRep(document, div, data) {
     rep.tag.replace({
         "object": data
     }, div);
-
-/*
-return;
-    
-    var srequire = require;    
-    if(FORCE_REP_RELOAD) {    
-        var modules = {}
-        modules[FIREBUG_INTERFACE.getModuleId()] = FIREBUG_INTERFACE;
-        modules["packages"] = require("packages");
-    
-        var sandbox = SANDBOX({
-            "system": system,
-            "loader": require.loader,
-            "debug": require.loader.debug,
-            "modules": modules
-        });
-        srequire = function(id, pkg) {
-            return sandbox(id, null, pkg, module["package"]);
-        }
-    }
-
-    var REPS = srequire("Reps", "reps");
-    var PACKAGE = srequire("package", "nr-common");
-    
-    REPS.getMaster("VariableViewer").injectCss(document, function(css) {
-        var code = css.getCode();
-        var pkgId = css.getPackageId();
-        if(pkgId) {
-            var pkg = PACKAGE.Package(pkgId).setAppInfo(APP.getInfo());
-            code = pkg.replaceTemplateVariables(code);
-        }
-        return code;        
-    });
-
-    var rep = REPS.factory("", "VariableViewer");
-//    var rep = REPS.factory(data[0].Type, "VariableViewer");
-
-    rep.tag.replace({
-        "object": data
-    }, div);
-*/
 }

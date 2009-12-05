@@ -103,15 +103,15 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
     
     this.cssTracker = FIREBUG_CONSOLE.CSSTracker();
         
-    this.setTemplate = function(template, forceReload)
+    this.setTemplate = function(template)
     {
-        this.__proto__.setTemplate(template, forceReload);
+        this.__proto__.setTemplate(template);
 
-        this.cssTracker.registerCSS(variableViewerPack.getResources().css, cssProcessor, forceReload);
+        this.cssTracker.registerCSS(variableViewerPack.getResources().css, cssProcessor, false);
     
         var resources = template.pack.getResources();
         if(resources && UTIL.has(resources, "css")) {
-            this.cssTracker.registerCSS(resources.css, cssProcessor, forceReload);
+            this.cssTracker.registerCSS(resources.css, cssProcessor, template.reloaded);
         }
     
         function cssProcessor(code, info) {

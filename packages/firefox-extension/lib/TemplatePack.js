@@ -40,7 +40,7 @@ exports.getTemplate = function(meta) {
     if(!UTIL.has(templatePacks, parts[0])) {
         return false;
     }
-    return templatePacks[parts[0]].getTemplate(parts[1]);
+    return templatePacks[parts[0]].getTemplate(parts[1], (UTIL.has(meta, "fc.tpl.reload") && meta["fc.tpl.reload"]));
 }
 
 
@@ -68,9 +68,11 @@ exports.TemplatePack = function(id, info) {
         if(forceReload) {
             self.load(true);
         }
-        return this.pack.getTemplate(name);
+        var template = this.pack.getTemplate(name);
+        template.reloaded = forceReload || false;
+        return template;
     }
-    
+
     function isInstalled() {
         return getTemplatePackPath().exists();
     }

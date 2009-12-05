@@ -34,5 +34,5 @@ class Client_MessageFeatures_AllTest extends ObjectGraphTestCase
         $this->dispatcher->send(array('key1' => 10), array(
             'fc.tpl.debug' => true
         ));
-    }    
+    }
 }

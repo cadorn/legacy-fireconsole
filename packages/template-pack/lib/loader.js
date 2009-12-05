@@ -42,7 +42,7 @@ function loadTemplatePack(id, force) {
         // TODO: Properly destroy old sandbox for better memory usage?
         var ssystem = UTIL.copy(require("system"));
         // Load minimal system
-        var paths = UTIL.copy(require.paths.splice(0,3));
+        var paths = UTIL.copy(require.paths).splice(0,3);
         var loader = LOADER({"paths": paths});
         var sandbox = SANDBOX({
             "system": ssystem,
