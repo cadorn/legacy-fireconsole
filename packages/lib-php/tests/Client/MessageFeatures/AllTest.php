@@ -35,4 +35,13 @@ class Client_MessageFeatures_AllTest extends ObjectGraphTestCase
             'fc.tpl.debug' => true
         ));
     }
+
+    public function testLabel()
+    {
+        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
+
+        $this->dispatcher->send('Hello World', array(
+            'fc.msg.label' => 'Label'
+        ));
+    }
 }

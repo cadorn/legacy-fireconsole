@@ -13,3 +13,9 @@ testDebug()[messages]:
     {"fc.tpl.debug":true}|{"origin":{"type":"map","map":[[{"type":"text","text":"key1"},{"type":"text","text":"10"}]]}}
 
 break;
+
+testLabel()[messages]:
+
+    {"fc.msg.label":"Label"}|{"origin":{"type":"text","text":"Hello World"}}
+
+break;
