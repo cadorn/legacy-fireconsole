@@ -3,7 +3,7 @@ var UTIL = require("util");
 var SANDBOX = require("sandbox").Sandbox;
 var LOADER = require("loader").Loader;
 var PACKAGES = require("packages");
-
+var DOMPLATE = require("domplate", "domplate");
 
 var sandboxDirty = true;
 var sandboxPackages = [];
@@ -62,6 +62,10 @@ function loadTemplatePack(id, force) {
         });
         sandboxRequire("packages").load(paths);
         sandboxDirty = false;
+
+        var sdomplate = sandboxRequire("domplate", "github.com/cadorn/domplate/zipball/master");
+        // TODO: Potential security hole?
+        sdomplate.DomplateDebug.replaceInstance(DOMPLATE.DomplateDebug);
     }
     return sandboxRequire("_factory_", id).Factory();
 }

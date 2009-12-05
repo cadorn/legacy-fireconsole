@@ -11,8 +11,7 @@ var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
 
 
-
-DOMPLATE.DomplateDebug.enabled = false;
+//DOMPLATE.DomplateDebug.enabled = true;
 DOMPLATE.DomplateDebug.console = FIREBUG_CONSOLE;
 
 

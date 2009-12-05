@@ -45,8 +45,14 @@ print("-- get appender --");
         
         // reset rep to default state
         rep.priorityClassName = "";
+        rep.debug = false;
         
-        if(meta && UTIL.has(meta, "fc.msg.priority")) {
+        if(!meta) {
+            return rep;
+        }
+
+        // message priority
+        if(UTIL.has(meta, "fc.msg.priority")) {
             // Ensure only supported priorities are used
             switch(meta["fc.msg.priority"]) {
                 case "log":
@@ -63,6 +69,11 @@ print("-- get appender --");
             }
         }
         
+        // debugging
+        if(UTIL.has(meta, "fc.tpl.debug") && meta["fc.tpl.debug"]) {
+            rep.debug = true;
+        }
+
         return rep;
     };
     

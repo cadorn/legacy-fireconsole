@@ -14,17 +14,38 @@ var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "
 var variableViewerPack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
 
 
+// do not log debug info while compiling this.rep = function(){...}()
+// the debug flag gets set again when this.getRep() is called
+DOMPLATE.DomplateDebug.enabled = false;
+
+
 var VariableViewerMaster = exports.VariableViewerMaster = function() {
     var that = this;
-    
+
+    this.getRep = function(meta) {
+        var rep = this.rep;
+        
+        // reset rep to default state
+        rep.debug = false;
+        
+        if(!meta) {
+            return rep;
+        }
+        
+        // debugging
+        if(UTIL.has(meta, "fc.tpl.debug") && meta["fc.tpl.debug"]) {
+            rep.debug = true;
+        }
+
+        return rep;
+    };
+        
     this.rep = function() {
         try {
             with (DOMPLATE.tags) {
             
                 // Extend the default firebug rep
                 return DOMPLATE.domplate({
-                    
-                    "priorityClassName": "",
                     
                     tag: DIV({"class": variableViewerPack.getKey() + "VariableViewerHarness",
                               "_repObject": "$object"},

@@ -97,7 +97,7 @@ var ConsoleMessageListener = {
             var og = OBJECT_GRAPH.generateFromMessage(message);
             var meta = JSON.decode(message.getMeta() || "{}");
 
-            var template = TEMPLATE_PACK.getTemplate(meta, FORCE_RELOAD);
+            var template = TEMPLATE_PACK.getTemplate(meta);
             if(!template) {
                 template = TEMPLATE_PACK.seekTemplate(og.getOrigin());
             }

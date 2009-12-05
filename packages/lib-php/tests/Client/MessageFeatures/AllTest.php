@@ -26,4 +26,13 @@ class Client_MessageFeatures_AllTest extends ObjectGraphTestCase
             'fc.msg.priority' => 'error'
         ));
     }
+    
+    public function testDebug()
+    {
+        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
+
+        $this->dispatcher->send(array('key1' => 10), array(
+            'fc.tpl.debug' => true
+        ));
+    }    
 }

@@ -100,7 +100,7 @@ var CSSTracker = FIREBUG_CONSOLE.CSSTracker();
 
 function renderRep(document, div, data) {
 
-    var template = TEMPLATE_PACK.getTemplate(data.meta, FORCE_REP_RELOAD);
+    var template = TEMPLATE_PACK.getTemplate(data.meta);
     if(!template) {
         template = TEMPLATE_PACK.seekTemplate(data.og.getOrigin());
     }
@@ -110,7 +110,7 @@ function renderRep(document, div, data) {
 
     master.cssTracker.checkCSS(document);
 
-    var rep = master.rep;
+    var rep = master.getRep(data.meta);
 
     rep.tag.replace({
         "object": data

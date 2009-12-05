@@ -7,3 +7,10 @@ testPriorities()[messages]:
     {"fc.msg.priority":"error"}|{"origin":{"type":"text","text":"Hello Error"}}
 
 break;
+
+
+testDebug()[messages]:
+
+    {"fc.tpl.debug":true}|{"origin":{"type":"map","map":[[{"type":"text","text":"key1"},{"type":"text","text":"10"}]]}}
+
+break;

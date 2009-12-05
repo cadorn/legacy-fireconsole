@@ -21,7 +21,8 @@ class Client_TemplatePack_AllTest extends ObjectGraphTestCase
                 }
             }
         ');
-*/        
+*/
+
         $this->dispatcher->registerTemplatePack(array(
             "project.url" => "http://github.com/cadorn/fireconsole/tree/master",
             "source.url" => "http://github.com/cadorn/fireconsole/tree/master/packages/test-template-pack",
