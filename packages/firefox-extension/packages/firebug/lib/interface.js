@@ -10,6 +10,7 @@ var CHROME = require("chrome", "nr-common");
 
 var Firebug,
     FBL,
+    Domplate,
     FirebugModule,
     FirebugInterface,
     Listener,
@@ -120,6 +121,8 @@ exports.init = function(chrome)
     FBL = chrome.FBL;
     
     FBL.ns(function() { with (FBL) {
+
+        Domplate = chrome.domplate;
 
         // firebug is now initialized
         Firebug = chrome.Firebug;
@@ -292,12 +295,28 @@ exports.isAvailable = function() {
     return !(!Firebug);
 }
 
+exports.getDomplate = function()
+{
+    if(!Domplate) {
+        throw "Domplate not initialized";
+    }
+    return Domplate;
+}
+
 exports.getFirebug = function()
 {
     if(!Firebug) {
         throw "Firebug not initialized";
     }
     return Firebug;
+}
+
+exports.getFBL = function()
+{
+    if(!FBL) {
+        throw "FBL not initialized";
+    }
+    return FBL;
 }
 
 exports.getActiveContext = function()

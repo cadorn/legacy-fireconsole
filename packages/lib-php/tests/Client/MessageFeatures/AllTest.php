@@ -44,4 +44,22 @@ class Client_MessageFeatures_AllTest extends ObjectGraphTestCase
             'fc.msg.label' => 'Label'
         ));
     }
+
+    public function testFileLineInfo()
+    {
+        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
+
+        $this->dispatcher->send('File only', array(
+            'fc.msg.file' => '/path/to/file'
+        ));
+
+        $this->dispatcher->send('Line only', array(
+            'fc.msg.line' => '10'
+        ));
+
+        $this->dispatcher->send('File and line', array(
+            'fc.msg.file' => '/path/to/file',
+            'fc.msg.line' => '10'
+        ));
+    }
 }

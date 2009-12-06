@@ -19,3 +19,11 @@ testLabel()[messages]:
     {"fc.msg.label":"Label"}|{"origin":{"type":"text","text":"Hello World"}}
 
 break;
+
+testFileLineInfo()[messages]:
+
+    {"fc.msg.file":"\/path\/to\/file"}|{"origin":{"type":"text","text":"File only"}}
+    {"fc.msg.line":"10"}|{"origin":{"type":"text","text":"Line only"}}
+    {"fc.msg.file":"\/path\/to\/file","fc.msg.line":"10"}|{"origin":{"type":"text","text":"File and line"}}
+
+break;

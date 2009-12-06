@@ -21,6 +21,10 @@ var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "
 var masterPack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
 
 
+var infoTipTags,
+    activeInfoTip,
+    infoTipModule = FIREBUG_INTERFACE.getFirebug().InfoTip;
+
 var FirebugMaster = exports.FirebugMaster = function() {
     var that = this;
     
@@ -97,7 +101,7 @@ print("-- get appender --");
                     
                     tag: DIV({"class": "MasterRep $priorityClassName",
                               "_repObject": "$object",
-                              "onmouseover":"$onMouseOver", "onmouseout":"$onMouseOut", "onclick":"$onClick"},
+                              "onmouseover":"$onMouseOver", "onmousemove":"$onMouseMove", "onmouseout":"$onMouseOut", "onclick":"$onClick"},
                               
                              IF("$object|_getLabel", SPAN({"class": "label"}, "$object|_getLabel")),
                               
@@ -141,14 +145,54 @@ print("-- get appender --");
                     {
                         return object;
                     },
+
+                    onMouseMove: function(event)
+                    {
+                        if(activeInfoTip) {
+                            var x = event.clientX, y = event.clientY;
+                            infoTipModule.showInfoTip(activeInfoTip, {
+                                showInfoTip: function() {
+                                    return true;
+                                }
+                            }, event.target, x, y, event.rangeParent, event.rangeOffset);
+                        }
+                    },
         
                     onMouseOver: function(event)
                     {
+                        if(!infoTipTags) {
+                            // use Firebug's domplate
+                            with (FIREBUG_INTERFACE.getFBL()) {
+                                infoTipTags = FIREBUG_INTERFACE.getDomplate()({
+                                    container: DIV({"id": "fc-console-tip"}),
+                                    tag: DIV({"class": "infoTip"}, "$file @ $line")
+                                });
+                            };
+                        }
+                        // fetch container from document
+                        activeInfoTip = event.target.ownerDocument.getElementById("fc-console-tip");
+                        if(!activeInfoTip) {
+                            activeInfoTip = infoTipTags.container.append({}, event.target.ownerDocument.documentElement);
+                        }
+                        
+                        var meta = this._getMasterRow(event.target).repObject.meta;
+                        if(meta && (UTIL.has(meta, "fc.msg.file") || UTIL.has(meta, "fc.msg.line"))) {
+                            activeInfoTip = infoTipTags.tag.replace({
+                                "file": meta["fc.msg.file"] || "?",
+                                "line": meta["fc.msg.line"] || "?"
+                            }, activeInfoTip);
+                        } else {
+                            activeInfoTip = null;
+                        }
+
                         that.dispatch('onMouseOver', [event, this._getMasterRow(event.target)]);
                     },
         
                     onMouseOut: function(event)
                     {
+                        if(activeInfoTip) {
+                            infoTipModule.hideInfoTip(activeInfoTip);
+                        }
                         that.dispatch('onMouseOut', [event, this._getMasterRow(event.target)]);
                     },
                     

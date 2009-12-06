@@ -3,6 +3,12 @@
 #   FirebugMaster
 #####################################################################*/
 
+#fc-console-tip > DIV.infoTip {
+    opacity: 0.9 !important;
+    font-family: Monaco, monospace;
+    font-size: 11px;
+}
+
 DIV.logRow-__KEY__Message {
     padding: 0px;
 }
