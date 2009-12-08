@@ -9,12 +9,14 @@ var FILE = require("file");
 var STRUCT = require("struct");
 var MD5 = require("md5");
 
+var SEA = require("narwhal/tusk/sea");
 var APP = require("app", "nr-common").getApp();
 var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 
 var SECURITY = require("./Security");
 
 
+var templatePackSea;
 var fcObjectGraphTemplatePack;
 var templatePacks = {};
 
@@ -43,6 +45,13 @@ exports.getTemplate = function(meta) {
     return templatePacks[parts[0]].getTemplate(parts[1], (UTIL.has(meta, "fc.tpl.reload") && meta["fc.tpl.reload"]));
 }
 
+exports.getPackSea = function() {
+    if(!templatePackSea) {
+        templatePackSea = SEA.Sea(getTemplatePackBasePath().path);
+    }
+    return templatePackSea;
+}
+
 
 
 exports.TemplatePack = function(id, info) {
@@ -68,6 +77,10 @@ exports.TemplatePack = function(id, info) {
         if(forceReload) {
             self.load(true);
         }
+        if(!this.pack) {
+            // pack is being installed
+            return null;
+        }
         var template = this.pack.getTemplate(name);
         template.reloaded = forceReload || false;
         return template;
@@ -78,10 +91,9 @@ exports.TemplatePack = function(id, info) {
     }
     
     function requestInstall() {
-        
+
         var info = UTIL.copy(self.info);
         info["profile.fireconsole.path"] = getTemplatePackBasePath().path;
-
         SECURITY.installTemplatePack(info, function(feedback, hide) {
             
             var logger = {
@@ -95,7 +107,7 @@ exports.TemplatePack = function(id, info) {
                 }
             }
 
-            var uri = URI.parse(self.info["download.archive.url"]);
+            var uri = URI.parse(info["package.descriptor"].location);
 
             if(uri.authority!="github.com") {
                 logger.log("ERROR: Only GitHub download URLs are supported at this time.", "red");
@@ -107,12 +119,12 @@ exports.TemplatePack = function(id, info) {
 
                 logger.log("Downloading " + uri.url + " ...");
                 
-                var archiveFile = getTmpPath(logger, STRUCT.bin2hex(MD5.hash(self.info["download.archive.path"])) + ".zip");
+                var archiveFile = getTmpPath(logger, STRUCT.bin2hex(MD5.hash(uri.url)) + ".zip");
                 download(uri.url, archiveFile, logger, function() {
     
                     logger.log("Extracting ...");
 
-                    unzip(archiveFile, targetDir, logger);
+                    unzip(archiveFile, targetDir, info["package.descriptor"].path || false, logger);
 
                     archiveFile.remove(false);
 
@@ -121,12 +133,22 @@ exports.TemplatePack = function(id, info) {
                     }
                 });
 //            }
+
+            // reset some cached resources
+            templatePackSea = null;
+            TEMPLATE_PACK_LOADER.markSandboxDirty();
+
             return true;
         });
     }
     
     function getTemplatePackPath() {
         file = getTemplatePackBasePath();
+        var datumFile = FILE.Path(file.path).join("package.json");
+        if(!datumFile.exists()) {
+            datumFile.dirname().mkdirs();
+            datumFile.write("{\"name\":\"TemplatePacks\"}");
+        }
         file.append("using");
         getTemplatePackId(self.info).split("/").forEach(function(part) {
             if(part) file.append(part);
@@ -154,14 +176,14 @@ function getTmpPath(logger, filename) {
     return file;
 }
 
-function getTemplatePackId(info) {
-    var uri = URI.parse(info["download.archive.url"]);
-    var path = info["download.archive.path"];
+function getTemplatePackId(info, includePath) {
+    var uri = URI.parse(info["package.descriptor"].location);
+    var path = info["package.descriptor"].path;
     var parts = [uri.domain];
     uri.path.split("/").forEach(function(part) {
         if(part) parts.push(part);
     });
-    if(path) {
+    if(path && includePath!==false) {
         path.split("/").forEach(function(part) {
         if(part) parts.push(part);
         });
@@ -197,7 +219,9 @@ function download(url, archiveFile, logger, successCallback) {
 }
 
 
-function unzip(archiveFile, targetFile, logger) {
+function unzip(archiveFile, targetFile, onlyFromPath, logger) {
+    
+    onlyFromPath = (onlyFromPath || "").split("/");
 
     var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].createInstance(Ci.nsIZipReader);
     zipReader.open(archiveFile);
@@ -208,6 +232,7 @@ function unzip(archiveFile, targetFile, logger) {
     while (entries.hasMore()) {
         var entryName = entries.getNext();
         var target = getItemFile(entryName);
+        if(target===null) continue;
         if (!target.exists()) {
             try {
                 target.create(Ci.nsILocalFile.DIRECTORY_TYPE, 0777);
@@ -223,6 +248,7 @@ function unzip(archiveFile, targetFile, logger) {
     while (entries.hasMore()) {
         var entryName = entries.getNext();
         target = getItemFile(entryName);
+        if(target===null) continue;
         if (target.exists()) continue;
 
         try {
@@ -241,8 +267,16 @@ function unzip(archiveFile, targetFile, logger) {
         var itemLocation = targetFile.clone();
         var parts = filePath.split("/");
         // NOTE: We drop the first directory in the ZIP!
-        for (var i = 1; i < parts.length; ++i) {
-            itemLocation.append(parts[i]);
+        parts.shift();
+        for (var i = 0; i < parts.length; ++i) {
+            // Check if we should only extract one directory
+            if(onlyFromPath.length>0 && i<onlyFromPath.length) {
+                if(parts[i]!=onlyFromPath[i]) {
+                    return null;
+                }
+            } else {
+                itemLocation.append(parts[i]);
+            }
         }
         return itemLocation;
     }

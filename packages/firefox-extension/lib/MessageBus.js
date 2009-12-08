@@ -5,6 +5,7 @@ function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
 const OBSERVER_SERVICE = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
 
+var UTIL = require("util");
 var JSON = require("json");
 var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
@@ -52,10 +53,13 @@ var TemplatePackReceiverListener = {
         try {
             var data = JSON.decode(message.getData());
             if(data.action=="require") {
-                data = data.info;
-                data.domain = context.FirebugNetMonitorListener.context.window.location.hostname;
+                var info = {};
+                UTIL.every(data.info, function(item) {
+                    info["package." + item[0]] = item[1];
+                });
+                info.domain = context.FirebugNetMonitorListener.context.window.location.hostname;
                 // Load the template pack to make it available to the renderer
-                TEMPLATE_PACK.factory(data).load();
+                TEMPLATE_PACK.factory(info).load();
             }
         } catch(e) {
             print("ERROR: "+e);

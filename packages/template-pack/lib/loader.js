@@ -10,6 +10,10 @@ var sandboxPackages = [];
 var repositoryPaths = [];
 var loadedPacks = {};
 
+exports.markSandboxDirty = function() {
+    sandboxDirty = true;
+}
+
 exports.addSandboxPackage = function(name) {
     sandboxPackages.push(name);
     // Mark the sandbox as dirty to re-create it when the next template pack is loaded

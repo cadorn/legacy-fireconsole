@@ -4,12 +4,10 @@ var DOMPLATE = require("domplate", "domplate");
 var REPS = require("./Reps");
 var FIREBUG_CONSOLE = require("console", "firebug");
 var CHROME_UTIL = require("chrome-util", "nr-common");
-var SEA = require("narwhal/tusk/sea");
 var APP = require("app", "nr-common").getApp();
+var TEMPLATE_PACK = require("TemplatePack", "firefox-extension");
 var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 
-
-var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "TemplatePacks"));
 
 var variableViewerPack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
 
@@ -117,8 +115,8 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
         function cssProcessor(code, info) {
             code = code.replace(/__KEY__/g, info.key);
             var pkg;
-            if(templatePackSea.hasPackage(info["package"])) {
-                pkg = templatePackSea.getPackage(info["package"]);
+            if(TEMPLATE_PACK.getPackSea().hasPackage(info["package"])) {
+                pkg = TEMPLATE_PACK.getPackSea().getPackage(info["package"]);
             } else {
                 pkg = APP.getSea().getPackage(info["package"]);
             }

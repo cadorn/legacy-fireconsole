@@ -9,13 +9,12 @@ var DOMPLATE = require("domplate", "domplate");
 var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
 var REPS = require("./Reps");
-var SEA = require("narwhal/tusk/sea");
 var APP = require("app", "nr-common").getApp();
+var TEMPLATE_PACK = require("TemplatePack", "firefox-extension");
 var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 
 var Firebug = FIREBUG_INTERFACE.getFirebug();
 
-var templatePackSea = SEA.Sea(CHROME_UTIL.getProfilePath().join("FireConsole", "TemplatePacks"));
 
 
 var masterPack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
@@ -263,8 +262,8 @@ print("-- get appender --");
         function cssProcessor(code, info) {
             code = code.replace(/__KEY__/g, info.key);
             var pkg;
-            if(templatePackSea.hasPackage(info["package"])) {
-                pkg = templatePackSea.getPackage(info["package"]);
+            if(TEMPLATE_PACK.getPackSea().hasPackage(info["package"])) {
+                pkg = TEMPLATE_PACK.getPackSea().getPackage(info["package"]);
             } else {
                 pkg = APP.getSea().getPackage(info["package"]);
             }

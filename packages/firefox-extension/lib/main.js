@@ -77,12 +77,14 @@ exports.main = function(args) {
 var ConsoleMessageListener = {
     
     masterRep: null,
+    installingTemplatePack: false,
     
     onMessageGroupStart: function(context) {
         if(!this.masterRep) {
             this.masterRep = REPS.getMaster("Firebug");
         }
         this.masterRep.openMessageGroup(context);
+        this.installingTemplatePack = false;
     },
     
     onMessageGroupEnd: function(context) {
@@ -91,11 +93,22 @@ var ConsoleMessageListener = {
     
     onMessageReceived: function(context, message) {
         try {
+            
+            if(this.installingTemplatePack) {
+                return;
+            }
 
             var og = OBJECT_GRAPH.generateFromMessage(message);
             var meta = JSON.decode(message.getMeta() || "{}");
 
             var template = TEMPLATE_PACK.getTemplate(meta);
+            if(template===null) {
+                // TODO: Use a more accurate status than just checking for null
+                // TODO: Queue messages until pack is loaded to avoid need for refresh
+                FIREBUG_CONSOLE.info("Installing template pack ... (refresh request once pack is loaded)");
+                this.installingTemplatePack = true;
+                return;
+            } else
             if(!template) {
                 template = TEMPLATE_PACK.seekTemplate(og.getOrigin());
             }

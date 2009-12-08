@@ -23,8 +23,11 @@ class FireConsole_Dispatcher
         if(!isset($info['source.url'])) {
             throw new Exception("'source.url' not provided!");
         }
-        if(!isset($info['download.archive.url'])) {
-            throw new Exception("'download.archive.url' not provided!");
+        if(!isset($info['descriptor'])) {
+            throw new Exception("'descriptor' not provided!");
+        }
+        if(!isset($info['descriptor']['location'])) {
+            throw new Exception("'descriptor' > 'location' not provided!");
         }
         $message = $this->getNewMessage(null);
         $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/TemplatePack/0.1");
