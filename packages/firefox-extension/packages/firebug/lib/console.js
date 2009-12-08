@@ -37,6 +37,10 @@ exports.warn = function() {
     logFormatted(arguments, "warn");
 }
 
+exports.error = function() {
+    logFormatted(arguments, "error");
+}
+
 exports.group = function() {
     var context = INTERFACE.getActiveContext();
     if(!context) return;

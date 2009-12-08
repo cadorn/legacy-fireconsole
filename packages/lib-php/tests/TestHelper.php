@@ -57,6 +57,11 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
     {
         $info = $this->getTestResultInfo();
 
+        if(!isset($info[$this->getName()])) {
+            $this->channel->flush();
+            return;
+        }
+
         $messages = $this->channel->getOutgoing();
 
         if(!self::DEBUG) {
@@ -80,10 +85,11 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
         
         // Only verify headers if our test channel is being used
         if($this->channel instanceof ObjectGraphTestCase__Channel) {
-        
-            $headers = $this->channel->getHeaders();
             
             if(isset($info[$this->getName()]['headers'])) {
+
+                $headers = $this->channel->getHeaders();
+
                 if(self::DEBUG) {
                     foreach( $headers as $header ) {
                         print($header . "\n");

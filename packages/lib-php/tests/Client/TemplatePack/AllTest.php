@@ -43,4 +43,30 @@ class Client_TemplatePack_AllTest extends ObjectGraphTestCase
             "fc.tpl.reload" => true
         ));
     }
+
+
+    public function testLocalPack()
+    {
+        // Only run this test if accessed via local browser on local server
+        if(!isset($_SERVER["SERVER_ADDR"]) || !isset($_SERVER["REMOTE_ADDR"]) ||
+           $_SERVER["SERVER_ADDR"] != $_SERVER["REMOTE_ADDR"]) {
+            return;
+        }
+        
+        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
+        
+        $id = realpath(dirname(dirname(dirname(dirname(dirname(__FILE__))))).DIRECTORY_SEPARATOR.'test-template-pack'.DIRECTORY_SEPARATOR);
+        
+        $this->dispatcher->registerTemplatePack(array(
+            "project.url" => "http://github.com/cadorn/fireconsole/tree/master",
+            "source.url" => "http://github.com/cadorn/fireconsole/tree/master/packages/test-template-pack",
+            "descriptor" => array(
+                "location" => "file://" . $id
+            )
+        ));
+
+        $this->dispatcher->send('Hello World', array(
+            "fc.tpl.id" => substr($id, strpos($id, DIRECTORY_SEPARATOR)+1) . "#helloworld"
+        ));
+    }
 }

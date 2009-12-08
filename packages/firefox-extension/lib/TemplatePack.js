@@ -9,6 +9,7 @@ var FILE = require("file");
 var STRUCT = require("struct");
 var MD5 = require("md5");
 
+var FIREBUG_CONSOLE = require("console", "firebug");
 var SEA = require("narwhal/tusk/sea");
 var APP = require("app", "nr-common").getApp();
 var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
@@ -94,6 +95,34 @@ exports.TemplatePack = function(id, info) {
 
         var info = UTIL.copy(self.info);
         info["profile.fireconsole.path"] = getTemplatePackBasePath().path;
+
+        var uri = URI.parse(info["package.descriptor"].location);
+        
+        if(uri.protocol=="file") {
+            // allow local packs without dialog
+            var sourcePath = FILE.Path(uri.path);
+            var targetPath = FILE.Path(getTemplatePackPath().path);
+            if(!targetPath.dirname().exists()) {
+                targetPath.dirname().mkdirs();
+            }
+
+            // on windows we copy, on unix we link
+            if(/\bwindows\b/i.test(system.os) || /\bwinnt\b/i.test(system.os)) {
+                // TODO: Test
+//                FILE.copyTree(sourcePath, targetPath);
+                FIREBUG_CONSOLE.error("[fireconsole] Local Template Packs are not supported on windows at this time! Requested Path: "+uri.path);
+            } else {
+                sourcePath.symlink(targetPath);
+            }
+
+            resetCache();
+            return;
+        } else
+        if(uri.authority!="github.com") {
+            FIREBUG_CONSOLE.error("[fireconsole] Only GitHub-based Template Packs are supported at this time! Requested URL: "+uri.url);
+            return;
+        }
+
         SECURITY.installTemplatePack(info, function(feedback, hide) {
             
             var logger = {
@@ -107,39 +136,34 @@ exports.TemplatePack = function(id, info) {
                 }
             }
 
-            var uri = URI.parse(info["package.descriptor"].location);
-
-            if(uri.authority!="github.com") {
-                logger.log("ERROR: Only GitHub download URLs are supported at this time.", "red");
-                return false;
-            }
-
             var targetDir = getTemplatePackPath();
-//            if(!targetDir.exists()) {
 
-                logger.log("Downloading " + uri.url + " ...");
-                
-                var archiveFile = getTmpPath(logger, STRUCT.bin2hex(MD5.hash(uri.url)) + ".zip");
-                download(uri.url, archiveFile, logger, function() {
-    
-                    logger.log("Extracting ...");
+            logger.log("Downloading " + uri.url + " ...");
+            
+            var archiveFile = getTmpPath(logger, STRUCT.bin2hex(MD5.hash(uri.url)) + ".zip");
+            download(uri.url, archiveFile, logger, function() {
 
-                    unzip(archiveFile, targetDir, info["package.descriptor"].path || false, logger);
+                logger.log("Extracting ...");
 
-                    archiveFile.remove(false);
+                unzip(archiveFile, targetDir, info["package.descriptor"].path || false, logger);
 
-                    if(logger.errors==0) {
-                       hide();
-                    }
-                });
-//            }
+                archiveFile.remove(false);
 
-            // reset some cached resources
-            templatePackSea = null;
-            TEMPLATE_PACK_LOADER.markSandboxDirty();
+                if(logger.errors==0) {
+                   hide();
+                }
+            });
+
+            resetCache();
 
             return true;
         });
+    }
+    
+    function resetCache() {
+        // reset some cached resources
+        templatePackSea = null;
+        TEMPLATE_PACK_LOADER.markSandboxDirty();
     }
     
     function getTemplatePackPath() {
@@ -179,7 +203,8 @@ function getTmpPath(logger, filename) {
 function getTemplatePackId(info, includePath) {
     var uri = URI.parse(info["package.descriptor"].location);
     var path = info["package.descriptor"].path;
-    var parts = [uri.domain];
+    var parts = [];
+    if(uri.domain) parts.push(uri.domain);
     uri.path.split("/").forEach(function(part) {
         if(part) parts.push(part);
     });
