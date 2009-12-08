@@ -13,3 +13,32 @@ DIV.__KEY__helloworld {
     background-position: 6px 2px;
     height: 35px;
 }
+
+
+
+/*######################################################################
+#   hello
+#####################################################################*/
+
+DIV.__KEY__hello {
+    color: cyan;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    padding-left: 50px;
+    background-image: url(__RESOURCE__images/FireConsole_32.png);
+    background-repeat: no-repeat;
+    background-position: 6px 2px;
+    height: 35px;
+}
+
+
+/*######################################################################
+#   world
+#####################################################################*/
+
+SPAN.__KEY__world {
+    color: magenta;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    height: 35px;
+}

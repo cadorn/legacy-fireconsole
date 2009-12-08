@@ -73,10 +73,18 @@ class FireConsole_Dispatcher
 
     public function send($data, $meta='')
     {
+        return $this->sendRaw(
+            $this->getEncoder()->encode($data, $meta),
+            ($meta)?json_encode($meta):''
+        );
+    }
+
+    public function sendRaw($data, $meta='')
+    {
         $message = $this->getNewMessage($meta);
         $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
-        if($meta) $message->setMeta(json_encode($meta));
-        $message->setData($this->getEncoder()->encode($data, $meta));
+        if($meta) $message->setMeta($meta);
+        $message->setData($data);
         $this->channel->enqueueOutgoing($message);
         return true;
     }

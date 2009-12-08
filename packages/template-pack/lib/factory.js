@@ -8,6 +8,8 @@ exports.Factory = function(factoryModule) {
     var Factory = function() {};
     var self = new Factory();
 
+    var externalLoader = null;
+    
     var templates = [];
     var templatesDict = {};
     
@@ -48,22 +50,34 @@ exports.Factory = function(factoryModule) {
             throw e;
         }
     }
-    
-    self.getTemplate = function(id) {
+
+    self.getTemplate = function(id, checkExternal) {
+        checkExternal = checkExternal || false;
         if(!UTIL.has(templatesDict, id)) {
+            if(checkExternal && externalLoader) {
+                return externalLoader.getTemplate({"fc.tpl.id": id});
+            }
             return false;
         }
         return templatesDict[id];
     }
-    
-    self.seekTemplate = function(node) {
+
+    self.seekTemplate = function(node, checkExternal) {
+        checkExternal = checkExternal || false;
         for( var i=0 ; i<templates.length ; i++ ) {
             if(UTIL.has(templates[i], "supportsNode") && templates[i].supportsNode(node)) {
                 return templates[i];
             }
         }
+        if(checkExternal && externalLoader) {
+            return externalLoader.seekTemplate(node);
+        }
         return false;
     }
-    
+
+    self.setExternalLoader = function(loader) {
+        externalLoader = loader;
+    }
+
     return self;    
 }

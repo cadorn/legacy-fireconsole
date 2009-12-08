@@ -103,7 +103,7 @@ var ConsoleMessageListener = {
 
             var template = TEMPLATE_PACK.getTemplate(meta);
             if(template===null) {
-                // TODO: Use a more accurate status than just checking for null
+                // TODO: We should get a promise here that triggers when the template pack is installed
                 // TODO: Queue messages until pack is loaded to avoid need for refresh
                 FIREBUG_CONSOLE.info("Installing template pack ... (refresh request once pack is loaded)");
                 this.installingTemplatePack = true;

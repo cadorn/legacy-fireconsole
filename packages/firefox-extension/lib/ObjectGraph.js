@@ -4,7 +4,7 @@ function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
 
 
-//var UTIL = require("util");
+var UTIL = require("util");
 var JSON = require("json");
 
 
@@ -32,7 +32,7 @@ exports.generateFromMessage = function(message) {
 
 function generateNodesFromData(objectGraph, data) {
     
-    var node = new Node(objectGraph, data.type, data[data.type]);
+    var node = new Node(objectGraph, data);
     
     // some types need nested nodes decoded
     if(node.type=="array") {
@@ -57,23 +57,33 @@ function generateNodesFromData(objectGraph, data) {
 
 
 
-var Node = function(objectGraph, type, value) {
-    this.type = type;
-    this.value = value;
-    
-    if(type=="reference") {
-        this.getInstance = function() {
-            return objectGraph.getInstance(value);
+var Node = function(objectGraph, data) {
+    var self = this;
+    self.type = data.type;
+    self.value = data[data.type];
+    self.meta = {};
+    UTIL.every(data, function(item) {
+        if(item[0].substr(0,3)=="fc.") {
+            self.meta[item[0]] = item[1];
+        }
+    });
+    if(self.type=="reference") {
+        self.getInstance = function() {
+            return objectGraph.getInstance(self.value);
         }
     }
 }
 
 Node.prototype.getTemplateId = function() {
-    
+    if(UTIL.has(this.meta, "fc.tpl.id")) {
+        return this.meta["fc.tpl.id"];
+    }
+    return false;
 }
 
+
 var ObjectGraph = function() {}
-ObjectGraph.prototype = Object.create(new Node());
+//ObjectGraph.prototype = Object.create(new Node());
 
 ObjectGraph.prototype.setOrigin = function(node) {
     this.origin = node;

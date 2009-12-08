@@ -1,4 +1,8 @@
 
+
+function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
+
+
 var UTIL = require("util", "nr-common");
 var DOMPLATE = require("domplate", "domplate");
 var REPS = require("./Reps");
@@ -54,9 +58,6 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
                     {
                         var rep = that.getTemplate().rep;
                         return rep.tag;
-                        
-//                        var rep = that.getRepForNode(object.getOrigin());
-//                        return rep.tag;
                     },
                     
                     _getValue: function(object)

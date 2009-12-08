@@ -9,6 +9,7 @@ var sandboxDirty = true;
 var sandboxPackages = [];
 var repositoryPaths = [];
 var loadedPacks = {};
+var externalLoader;
 
 exports.markSandboxDirty = function() {
     sandboxDirty = true;
@@ -24,6 +25,10 @@ exports.addRepositoryPath = function(file) {
     repositoryPaths.push(file);
     // Mark the sandbox as dirty to re-create it when the next template pack is loaded
     sandboxDirty = true;
+}
+
+exports.setExternalLoader = function(loader) {
+    externalLoader = loader;    
 }
 
 exports.requirePack = function(id, force) {
@@ -71,5 +76,7 @@ function loadTemplatePack(id, force) {
         // TODO: Potential security hole?
         sdomplate.DomplateDebug.replaceInstance(DOMPLATE.DomplateDebug);
     }
-    return sandboxRequire("_factory_", id).Factory();
+    var pack = sandboxRequire("_factory_", id).Factory();
+    pack.setExternalLoader(externalLoader);
+    return pack;
 }

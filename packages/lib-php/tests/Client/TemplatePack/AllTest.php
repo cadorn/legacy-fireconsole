@@ -69,4 +69,39 @@ class Client_TemplatePack_AllTest extends ObjectGraphTestCase
             "fc.tpl.id" => substr($id, strpos($id, DIRECTORY_SEPARATOR)+1) . "#helloworld"
         ));
     }
+
+
+    public function testNodeTemplate()
+    {
+        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
+
+        $this->_registerRemotePack();
+
+        $this->dispatcher->sendRaw(json_encode(json_decode('{
+                "origin": {
+                    "type": "text",
+                    "text": "World",
+                    "fc.tpl.id": "github.com/cadorn/fireconsole/zipball/master/packages/test-template-pack#world"
+                }
+            }',true)), json_encode(array(
+            "fc.tpl.id" => "github.com/cadorn/fireconsole/zipball/master/packages/test-template-pack#hello"
+        )));
+
+        $this->dispatcher->sendRaw(json_encode(json_decode('{
+                "origin": {
+                    "type": "array",
+                    "array": [
+                        {
+                            "type": "text",
+                            "text": "Key"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Hello",
+                            "fc.tpl.id": "github.com/cadorn/fireconsole/zipball/master/packages/test-template-pack#world"
+                        }
+                    ]
+                }
+            }',true)));
+    }
 }

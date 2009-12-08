@@ -46,6 +46,13 @@ exports.getTemplate = function(meta) {
     return templatePacks[parts[0]].getTemplate(parts[1], (UTIL.has(meta, "fc.tpl.reload") && meta["fc.tpl.reload"]));
 }
 
+
+TEMPLATE_PACK_LOADER.setExternalLoader({
+    "seekTemplate": exports.seekTemplate,
+    "getTemplate": exports.getTemplate
+});
+
+
 exports.getPackSea = function() {
     if(!templatePackSea) {
         templatePackSea = SEA.Sea(getTemplatePackBasePath().path);

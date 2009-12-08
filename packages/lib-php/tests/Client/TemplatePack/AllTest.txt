@@ -24,3 +24,4 @@ testReload()[messages]:
     {"fc.tpl.id":"github.com\/cadorn\/fireconsole\/zipball\/master\/packages\/test-template-pack#helloworld","fc.tpl.reload":true}|{"origin":{"type":"text","text":"Hello World"}}
 
 break;
+

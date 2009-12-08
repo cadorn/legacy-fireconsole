@@ -7,7 +7,7 @@ class Client_FcObjectGraph_AllTest extends ObjectGraphTestCase
     var $testFile = __FILE__;
 
     /**
-     * @see http://github.com/cadorn/domplate-reps/blob/master/packages/fc-object-graph/lib/text.js
+     * @see http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/fc-object-graph/lib/text.js
      */
     public function testText()
     {
@@ -21,7 +21,7 @@ class Client_FcObjectGraph_AllTest extends ObjectGraphTestCase
     }
 
     /**
-     * @see http://github.com/cadorn/domplate-reps/blob/master/packages/fc-object-graph/lib/constant.js
+     * @see http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/fc-object-graph/lib/constant.js
      */
     public function testConstant()
     {
@@ -33,7 +33,7 @@ class Client_FcObjectGraph_AllTest extends ObjectGraphTestCase
     }
 
     /**
-     * @see http://github.com/cadorn/domplate-reps/blob/master/packages/fc-object-graph/lib/array.js
+     * @see http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/fc-object-graph/lib/array.js
      */
     public function testArray()
     {
@@ -47,7 +47,7 @@ class Client_FcObjectGraph_AllTest extends ObjectGraphTestCase
     }
 
     /**
-     * @see http://github.com/cadorn/domplate-reps/blob/master/packages/fc-object-graph/lib/array.js
+     * @see http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/fc-object-graph/lib/array.js
      */
     public function testNestedArray()
     {
@@ -58,7 +58,7 @@ class Client_FcObjectGraph_AllTest extends ObjectGraphTestCase
     }
 
     /**
-     * @see http://github.com/cadorn/domplate-reps/blob/master/packages/fc-object-graph/lib/map.js
+     * @see http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/fc-object-graph/lib/map.js
      */
     public function testMap()
     {
@@ -78,7 +78,7 @@ class Client_FcObjectGraph_AllTest extends ObjectGraphTestCase
     }
     
     /**
-     * @see http://github.com/cadorn/domplate-reps/blob/master/packages/fc-object-graph/lib/map.js
+     * @see http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/fc-object-graph/lib/map.js
      */
     public function testNestedMap()
     {
@@ -96,14 +96,10 @@ class Client_FcObjectGraph_AllTest extends ObjectGraphTestCase
                                 '4' => $obj,
                                 '5'));
     }
-    
-//    public function testDictionary() {
-            
-//    }
 
     /**
-     * @see http://github.com/cadorn/domplate-reps/blob/master/packages/fc-object-graph/lib/dictionary.js
-     * @see http://github.com/cadorn/domplate-reps/blob/master/packages/fc-object-graph/lib/reference.js
+     * @see http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/fc-object-graph/lib/dictionary.js
+     * @see http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/fc-object-graph/lib/reference.js
      */
     public function testInstance()
     {

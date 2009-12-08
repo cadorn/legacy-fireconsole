@@ -8,6 +8,8 @@ exports.Factory = function() {
     var self = new Factory();
 
     self.registerTemplate("helloworld");
+    self.registerTemplate("hello");
+    self.registerTemplate("world");
     
     return self;
 }
