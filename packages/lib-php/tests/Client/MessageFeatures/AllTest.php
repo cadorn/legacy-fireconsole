@@ -27,15 +27,6 @@ class Client_MessageFeatures_AllTest extends ObjectGraphTestCase
         ));
     }
     
-    public function testDebug()
-    {
-        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
-
-        $this->dispatcher->send(array('key1' => 10), array(
-            'fc.tpl.debug' => true
-        ));
-    }
-
     public function testLabel()
     {
         $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
@@ -91,4 +82,14 @@ class Client_MessageFeatures_AllTest extends ObjectGraphTestCase
 
         $this->dispatcher->send('Hello World');
     }
+    
+    public function testDebug()
+    {
+        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
+
+        $this->dispatcher->send('Hello World', array(
+            'fc.tpl.debug' => true
+        ));
+    }
+    
 }

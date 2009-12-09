@@ -8,12 +8,6 @@ testPriorities()[messages]:
 
 break;
 
-testDebug()[messages]:
-
-    {"fc.tpl.debug":true}|{"origin":{"type":"map","map":[[{"type":"text","text":"key1"},{"type":"text","text":"10"}]]}}
-
-break;
-
 testLabel()[messages]:
 
     {"fc.msg.label":"Label"}|{"origin":{"type":"text","text":"Hello World"}}
@@ -37,5 +31,11 @@ testGrouping()[messages]:
     {"fc.group.end":true}|{"origin":{"type":"text","text":""}}
     {"fc.group.end":true}|{"origin":{"type":"text","text":""}}
     |{"origin":{"type":"text","text":"Hello World"}}
+
+break;
+
+testDebug()[messages]:
+
+    {"fc.tpl.debug":true}|{"origin":{"type":"text","text":"Hello World"}}
 
 break;

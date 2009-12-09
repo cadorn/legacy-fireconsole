@@ -28,20 +28,6 @@ var FirebugMaster = exports.FirebugMaster = function() {
     var that = this;
     
     
-//    this.construct(collection);
-/*
-    this.getAppender = function(name) {
-        
-print("-- get appender --: "+name);        
-        switch(name) {
-            case 'OpenGroup':
-                return Firebug.ConsolePanel.prototype.appendOpenGroup;
-            case 'CloseGroup':
-                return Firebug.ConsolePanel.prototype.appendCloseGroup;
-        }
-        return null;
-    };
-*/    
     
     this.getRep = function(meta) {
 
