@@ -14,6 +14,7 @@ var MESSAGE_BUS = require("./MessageBus");
 var OBJECT_GRAPH = require("./ObjectGraph");
 var SECURITY = require("./Security");
 var TEMPLATE_PACK = require("./TemplatePack");
+var RENDERER = require("./Renderer");
 var DEV = require("console", "dev-sidebar");
 var JSON = require("json");
 
@@ -143,27 +144,22 @@ var ConsoleMessageListener = {
             if(this.installingTemplatePack) {
                 return;
             }
-
-            var og = OBJECT_GRAPH.generateFromMessage(message);
+            
             var meta = JSON.decode(message.getMeta() || "{}");
-
-            var template = TEMPLATE_PACK.getTemplate(meta);
-            if(template===null) {
+            var og = OBJECT_GRAPH.generateFromMessage(message);
+            
+            var renderer = RENDERER.getForMessage("Console", meta, og);
+            if(renderer===null) {
                 // TODO: We should get a promise here that triggers when the template pack is installed
                 // TODO: Queue messages until pack is loaded to avoid need for refresh
                 FIREBUG_CONSOLE.info("Installing template pack ... (refresh request once pack is loaded)");
                 this.installingTemplatePack = true;
                 return;
-            } else
-            if(!template) {
-                template = TEMPLATE_PACK.seekTemplate(og.getOrigin());
             }
+
+            renderer.registerCss(FIREBUG_CONSOLE.getCSSTracker());
             
-            // TODO: Should be using a new instance of the master rep
-
-            this.masterRep.setTemplate(template);
-
-            FIREBUG_CONSOLE.logRep(this.masterRep.getRep(meta), {"meta": meta, "og": og}, context.FirebugNetMonitorListener.context);
+            FIREBUG_CONSOLE.logRep(renderer.rep, {"meta": meta, "og": og }, context.FirebugNetMonitorListener.context);
 
         } catch(e) {
             print(e, 'ERROR');

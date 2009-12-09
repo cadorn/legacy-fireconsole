@@ -22,6 +22,12 @@ exports.Factory = function(factoryModule) {
         if(!path.exists()) {
             throw "resource not found at: " + path;
         }
+        for( var i=0 ; i<resources.css.length ; i++ ) {
+            if(resources.css[i].path==path.valueOf()) {
+                // already added
+                return;
+            }
+        }
         resources.css.push({
             "package": factoryModule["package"],
             "path": path.valueOf(),

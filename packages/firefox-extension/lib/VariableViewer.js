@@ -14,6 +14,7 @@ var TEMPLATE_PACK = require("./TemplatePack");
 var SEA = require("narwhal/tusk/sea");
 var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 var DEV = require("console", "dev-sidebar");
+var RENDERER = require("./Renderer");
 
 
 var panel,
@@ -91,30 +92,18 @@ var CSSTracker = FIREBUG_CONSOLE.CSSTracker();
 
 function renderRep(document, div, data) {
 
-    var template;
+    var renderer;
 
     if(data["__fc_tpl_id"]) {
-        template = TEMPLATE_PACK.getTemplate({
-            "fc.tpl.id": data["__fc_tpl_id"]
-        });
+        renderer = RENDERER.getForId("VariableViewer", data["__fc_tpl_id"]);
     } else {
-        template = TEMPLATE_PACK.getTemplate(data.meta);
-    }
-    if(!template) {
-        if(!data.og) {
-            throw "Cannot fetch template without proper object graph";
-        }
-        template = TEMPLATE_PACK.seekTemplate(data.og.getOrigin());
+        renderer = RENDERER.getForMessage("VariableViewer", data.meta, data.og);
     }
 
-    var master = REPS.getMaster("VariableViewer");
-    master.setTemplate(template);
+    renderer.registerCss(CSSTracker);
+    CSSTracker.checkCSS(document);
 
-    master.cssTracker.checkCSS(document);
-
-    var rep = master.getRep(data.meta);
-
-    rep.tag.replace({
+    renderer.rep.tag.replace({
         "object": data
     }, div);
 }

@@ -110,32 +110,10 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
             print(e, 'ERROR');
         }    
     }();      
-    
-    this.cssTracker = FIREBUG_CONSOLE.CSSTracker();
-        
+            
     this.setTemplate = function(template)
     {
-        this.__proto__.setTemplate(template);
-
-        this.cssTracker.registerCSS(variableViewerPack.getResources().css, cssProcessor, false);
-    
-        var resources = template.pack.getResources();
-        if(resources && UTIL.has(resources, "css")) {
-            this.cssTracker.registerCSS(resources.css, cssProcessor, template.reloaded);
-        }
-    
-        function cssProcessor(code, info) {
-            code = code.replace(/__KEY__/g, info.key);
-            var pkg;
-            if(TEMPLATE_PACK.getPackSea().hasPackage(info["package"])) {
-                pkg = TEMPLATE_PACK.getPackSea().getPackage(info["package"]);
-            } else {
-                pkg = APP.getSea().getPackage(info["package"]);
-            }
-            code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
-            return code;
-        }        
-        
+        this.__proto__.setTemplate(template);        
     }    
 };
 VariableViewerMaster.prototype = new REPS.Master();

@@ -334,25 +334,6 @@ var FirebugMaster = exports.FirebugMaster = function() {
     this.setTemplate = function(template)
     {
         this.__proto__.setTemplate(template);
-        
-        FIREBUG_CONSOLE.registerCss(masterPack.getResources().css, cssProcessor, false);
-        
-        var resources = template.pack.getResources();
-        if(resources && UTIL.has(resources, "css")) {
-            FIREBUG_CONSOLE.registerCss(resources.css, cssProcessor, template.reloaded);
-        }
-        
-        function cssProcessor(code, info) {
-            code = code.replace(/__KEY__/g, info.key);
-            var pkg;
-            if(TEMPLATE_PACK.getPackSea().hasPackage(info["package"])) {
-                pkg = TEMPLATE_PACK.getPackSea().getPackage(info["package"]);
-            } else {
-                pkg = APP.getSea().getPackage(info["package"]);
-            }
-            code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
-            return code;
-        }        
     }     
 };
 
