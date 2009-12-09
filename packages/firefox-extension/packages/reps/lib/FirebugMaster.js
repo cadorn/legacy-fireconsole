@@ -95,31 +95,49 @@ print("-- get appender --");
             
                 // Extend the default firebug rep
                 return DOMPLATE.domplate(Firebug.Rep, {
+            
+                    "debug": false,
+                    "priorityClassName": "",
 
                     "className": masterPack.getKey() + "Message",
-                    
+
                     tag: DIV({"class": "MasterRep $priorityClassName",
                               "_repObject": "$object",
                               "onmouseover":"$onMouseOver", "onmousemove":"$onMouseMove", "onmouseout":"$onMouseOut", "onclick":"$onClick"},
                               
                              IF("$object|_getLabel", SPAN({"class": "label"}, "$object|_getLabel")),
                               
-                             TAG("$object|_getTag", {"node": "$object|_getValue"})),
-                    
+                             TAG("$object|_getTag", {"node": "$object|_getValue", "object": "$object"})),
+
                     _getTag: function(object)
                     {
+                        var rep;
+                        if(object["__fc_tpl_id"]) {
+                            var template = TEMPLATE_PACK.getTemplate({
+                                "fc.tpl.id": object["__fc_tpl_id"]
+                            });
+                            if(template) {
+                                rep = template.rep;
+                            } else {
+                                object["__fc_bypass"] = true;
+                                rep = FIREBUG_INTERFACE.getFirebug().getRep(object);
+                            }
+                        } else {
 //                        var rep = that.getRepForNode(object.getOrigin());
-                        var rep = that.getTemplate().rep;
+                            rep = that.getTemplate().rep;
 //                        var rep = that.getRepForObject(object[1], object[0]);
+                        }
+                        
                         if(UTIL.has(rep, "shortTag")) {
                             return rep.shortTag;
                         }
+
                         return rep.tag;
                     },
                     
                     _getLabel: function(object)
                     {
-                        if(UTIL.has(object.meta, "fc.msg.label")) {
+                        if(object.meta && UTIL.has(object.meta, "fc.msg.label")) {
                             return object.meta["fc.msg.label"]+":";
                         } else {
                             return "";
@@ -128,6 +146,9 @@ print("-- get appender --");
         
                     _getValue: function(object)
                     {
+                        if(!object.og) {
+                            return object;
+                        }
                         return object.og.getOrigin();
                     },
         
@@ -213,7 +234,18 @@ print("-- get appender --");
                             row = row.parentNode;
                         }
                         return row;
-                    }
+                    },
+
+                    supportsObject: function(object, type)
+                    {
+                        if(type=="object" && object["__fc_tpl_id"] && !object["__fc_bypass"]) {
+                            return true;
+                        } else
+                        if(object["__fc_bypass"]) {
+                            delete object["__fc_bypass"];
+                        }
+                        return false;
+                    }                    
                 });
             }
         } catch(e) {

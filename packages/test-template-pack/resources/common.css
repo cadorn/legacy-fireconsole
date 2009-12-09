@@ -15,7 +15,6 @@ DIV.__KEY__helloworld {
 }
 
 
-
 /*######################################################################
 #   hello
 #####################################################################*/
@@ -38,6 +37,18 @@ DIV.__KEY__hello {
 
 SPAN.__KEY__world {
     color: magenta;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    height: 35px;
+}
+
+
+/*######################################################################
+#   say
+#####################################################################*/
+
+SPAN.__KEY__say {
+    color: blue;
     font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
     font-size: 25px;
     height: 35px;

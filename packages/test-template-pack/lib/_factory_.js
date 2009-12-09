@@ -10,6 +10,7 @@ exports.Factory = function() {
     self.registerTemplate("helloworld");
     self.registerTemplate("hello");
     self.registerTemplate("world");
+    self.registerTemplate("say");
     
     return self;
 }

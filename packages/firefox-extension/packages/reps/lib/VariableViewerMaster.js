@@ -52,16 +52,27 @@ var VariableViewerMaster = exports.VariableViewerMaster = function() {
                     tag: DIV({"class": variableViewerPack.getKey() + "VariableViewerHarness",
                               "_repObject": "$object"},
                               
-                             TAG("$object|_getTag", {"node": "$object|_getValue"})),
+                             TAG("$object|_getTag", {"node": "$object|_getValue", "object": "$object"})),
                     
                     _getTag: function(object)
                     {
-                        var rep = that.getTemplate().rep;
+                        var rep;
+                        if(object["__fc_tpl_id"]) {
+                            var template = TEMPLATE_PACK.getTemplate({
+                                "fc.tpl.id": object["__fc_tpl_id"]
+                            });
+                            rep = template.rep;
+                        } else {
+                            rep = that.getTemplate().rep;
+                        }
                         return rep.tag;
                     },
                     
                     _getValue: function(object)
                     {
+                        if(!object.og) {
+                            return object;
+                        }
                         return object.og.getOrigin();
                     },
         

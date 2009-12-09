@@ -91,8 +91,19 @@ var CSSTracker = FIREBUG_CONSOLE.CSSTracker();
 
 function renderRep(document, div, data) {
 
-    var template = TEMPLATE_PACK.getTemplate(data.meta);
+    var template;
+
+    if(data["__fc_tpl_id"]) {
+        template = TEMPLATE_PACK.getTemplate({
+            "fc.tpl.id": data["__fc_tpl_id"]
+        });
+    } else {
+        template = TEMPLATE_PACK.getTemplate(data.meta);
+    }
     if(!template) {
+        if(!data.og) {
+            throw "Cannot fetch template without proper object graph";
+        }
         template = TEMPLATE_PACK.seekTemplate(data.og.getOrigin());
     }
 

@@ -14,6 +14,8 @@ var PAGE_INJECTOR = require("./PageInjector");
 var SECURITY = require("./Security");
 var TEMPLATE_PACK = require("./TemplatePack");
 
+var REPS = require("Reps", "reps");
+
 
 var httpheaderChannel,
     templatePackReceiver,
@@ -37,6 +39,10 @@ exports.initialize = function(options)
     
     FIREBUG_INTERFACE.addListener('NetMonitor', ['onResponseBody'], httpheaderChannel.getFirebugNetMonitorListener());
     FIREBUG_INTERFACE.addListener('Console', ['onConsoleInjected'], FirebugConsoleListener);
+    
+
+    // Mark-up JS objects logged with __fc_tpl_id
+    FIREBUG_INTERFACE.getFirebug().registerRep(REPS.getMaster("Firebug").rep);
 }
 
 
@@ -64,12 +70,12 @@ var TemplatePackReceiverListener = {
         } catch(e) {
             print("ERROR: "+e);
         }
-    }    
+    }
 }
 
 
 
-var FirebugConsoleListener = {
+var FirebugConsoleListener = {   
     onConsoleInjected: function(context, win)
     {
         context.window.addEventListener("FireConsoleContentEvent", OnFireConsoleContentEvent, true);
@@ -80,13 +86,27 @@ var FirebugConsoleListener = {
 var OnFireConsoleContentEvent = function(Event) {
     try {
         var eventName = Event.target.getAttribute("___eventName");
-        var params = Event.target.getAttribute("params");
+        var messageIndex = Event.target.getAttribute("___messageIndex");
+//        var params = Event.target.getAttribute("params");
+        var params = Event.target.ownerDocument.defaultView.FireConsoleAPI._pullMessage(messageIndex);
         Event.target.parentNode.removeChild(Event.target);
         
+        // WARNING: Do NOT execute anything from "params" as it is a JS object passed from the
+        //          content page. Only pull data from it.
+
         switch(eventName) {
-          case "test":
-            require("./TestRunner").run(FIREBUG_CONSOLE);
-            break;
+            case "test":
+                require("./TestRunner").run(FIREBUG_CONSOLE);
+                break;
+            case "registerTemplatePack":
+                var info = {};
+                UTIL.every(params.info, function(item) {
+                    info["package." + item[0]] = item[1];
+                });
+                info.domain = Event.target.ownerDocument.defaultView.location.hostname;
+                // Load the template pack to make it available to the renderer
+                TEMPLATE_PACK.factory(info).load();
+                break;
         }
     } catch(e) {
         print("ERROR: " + e);

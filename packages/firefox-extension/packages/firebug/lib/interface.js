@@ -277,6 +277,16 @@ exports.init = function(chrome)
             
             _target: Firebug.Console,
             
+            log: function(context, object, className, sourceLink)
+            {
+                this._dispatch('log', [context, object, className, sourceLink]);
+            },
+
+            logFormatted: function(context, objects, className, sourceLink)
+            {
+                this._dispatch('logFormatted', [context, objects, className, sourceLink]);
+            },
+            
             /**
              * Firebug's console object has been inserted into a page.
              */

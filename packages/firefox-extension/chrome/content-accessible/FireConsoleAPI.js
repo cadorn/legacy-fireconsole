@@ -2,8 +2,19 @@
 (function(){
 
 var listeners = [];
+var messages = {}
+var messageIndex = 0;
 
 var FireConsoleAPI = function() {};
+
+FireConsoleAPI.prototype._pullMessage = function(id) {
+    if(typeof messages[id] == undefined) {
+        return null;
+    }
+    var msg = messages[id];
+    delete messages[id];
+    return msg;
+}
 
 FireConsoleAPI.prototype.getVersion = function() {
     return top.FireConsole.version;
@@ -15,16 +26,12 @@ FireConsoleAPI.prototype.test = function(suite) {
     });
 }
 
-FireConsoleAPI.prototype.getPath = function(name) {
-    return "/path/to/reps";
+FireConsoleAPI.prototype.registerTemplatePack = function(info) {
+    dispatchChromeEvent("registerTemplatePack", {
+        "info": info
+    });
 }
 
-FireConsoleAPI.prototype.setPath = function(name, value) {
-    // TODO
-    console.log("set path for "+name+" to "+value);        
-    
-    dispatchPageEvent("path-updated", {"name": name});
-}
 
 FireConsoleAPI.prototype.bind = function(eventName, callback) {
     // TODO: check for duplicates
@@ -37,12 +44,14 @@ top.FireConsoleAPI = new FireConsoleAPI();
 // fire ready event
 var event = top.document.createEvent("Events");
 event.initEvent("fireconsole-api-ready", true, false);
-top.document.dispatchEvent(event);   
+top.document.dispatchEvent(event);
+
 
 function dispatchChromeEvent(name, params) {
     var element = top.document.createElement("FireConsoleContentEvenData");
     element.setAttribute("___eventName", name);
-    element.setAttribute("params", (params || ""));
+    messages[++messageIndex] = params;
+    element.setAttribute("___messageIndex", messageIndex);
     top.document.documentElement.appendChild(element);
     
     var evt = top.document.createEvent("Events");

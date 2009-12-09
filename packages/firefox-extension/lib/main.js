@@ -118,7 +118,7 @@ var ConsoleMessageListener = {
             this.masterRep.setTemplate(template);
 
             FIREBUG_CONSOLE.logRep(this.masterRep.getRep(meta), {"meta": meta, "og": og}, context.FirebugNetMonitorListener.context);
-    
+
         } catch(e) {
             print(e, 'ERROR');
         }
