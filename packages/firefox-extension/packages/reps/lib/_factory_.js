@@ -9,6 +9,9 @@ exports.Factory = function() {
     
     self.registerCss("common.css");
     
+    self.registerTemplate("ConsoleOpenGroup");
+    self.registerTemplate("ConsoleCloseGroup");
+
     return self;
 }
 

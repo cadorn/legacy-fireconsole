@@ -78,9 +78,21 @@ exports.registerCss = function(css, preProcessCallback, forceReload)
 exports.logRep = function(rep, data, context)
 {
     exports.getCSSTracker().checkCSS(context.getPanel('console').document);
+    
+    var appender = rep._appender;
+    if(typeof appender == "string") {
+        if(appender=="appendOpenGroup") {
+            appender = INTERFACE.getFirebug().ConsolePanel.prototype.appendOpenGroup;
+        } else
+        if(appender=="appendCloseGroup") {
+            appender = INTERFACE.getFirebug().ConsolePanel.prototype.appendCloseGroup;
+        } else {
+            throw "Unknown appender: " + appender;
+        }
+    }
 
     var row = INTERFACE.getConsole().logRow(
-        rep._appender,             // appender
+        appender,                  // appender
         data,                      // objects
         context,                   // context
         rep.className,             // className
