@@ -81,7 +81,7 @@ exports.logRep = function(rep, data, context)
 
     INTERFACE.getConsole().logRow(
         rep._appender,             // appender
-        rep._normalizeData(data),  // objects
+        data,                      // objects
         context,                   // context
         rep.className,             // className
         (rep.tag)?rep:null,        // rep

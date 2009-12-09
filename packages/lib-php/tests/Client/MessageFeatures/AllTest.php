@@ -62,4 +62,32 @@ class Client_MessageFeatures_AllTest extends ObjectGraphTestCase
             'fc.msg.line' => '10'
         ));
     }
+
+    public function testGrouping()
+    {
+        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', false);
+
+        $this->dispatcher->send('Group 1 Label', array(
+            'fc.group.start' => true
+        ));
+
+            $this->dispatcher->send('Hello World');
+    
+            $this->dispatcher->send('Group 2 Label', array(
+                'fc.group.start' => true,
+                'fc.group.color' => 'magenta'
+            ));
+
+                $this->dispatcher->send('Hello World');
+    
+            $this->dispatcher->send('', array(
+                'fc.group.end' => true
+            ));
+
+        $this->dispatcher->send('', array(
+            'fc.group.end' => true
+        ));
+
+        $this->dispatcher->send('Hello World');
+    }
 }

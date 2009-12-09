@@ -29,10 +29,10 @@ var FirebugMaster = exports.FirebugMaster = function() {
     
     
 //    this.construct(collection);
-
+/*
     this.getAppender = function(name) {
         
-print("-- get appender --");        
+print("-- get appender --: "+name);        
         switch(name) {
             case 'OpenGroup':
                 return Firebug.ConsolePanel.prototype.appendOpenGroup;
@@ -41,9 +41,10 @@ print("-- get appender --");
         }
         return null;
     };
-    
+*/    
     
     this.getRep = function(meta) {
+
         var rep = this.rep;
         
         // reset rep to default state
@@ -52,6 +53,14 @@ print("-- get appender --");
         
         if(!meta) {
             return rep;
+        }
+
+        // grouping
+        if(UTIL.has(meta, "fc.group.start") && meta["fc.group.start"]) {
+            return this.openGroupRep;
+        } else
+        if(UTIL.has(meta, "fc.group.end") && meta["fc.group.end"]) {
+            return this.closeGroupRep;
         }
 
         // message priority
@@ -76,7 +85,7 @@ print("-- get appender --");
         if(UTIL.has(meta, "fc.tpl.debug") && meta["fc.tpl.debug"]) {
             rep.debug = true;
         }
-
+        
         return rep;
     };
     
@@ -88,6 +97,61 @@ print("-- get appender --");
     this.closeMessageGroup = function(context) {
         FIREBUG_INTERFACE.getConsole().closeGroup();
     }
+    
+    
+    this.openGroupRep = function() {
+        with (DOMPLATE.tags) {
+        
+            // Extend the default firebug rep
+            return DOMPLATE.domplate(Firebug.Rep, {
+
+                _appender: Firebug.ConsolePanel.prototype.appendOpenGroup,
+            
+                tag: TAG("$objects|getTag", {
+                    "meta": "$objects.meta",
+                    "node": "$objects|getNode"
+                }),
+                
+                plainTag: SPAN({"style":"$meta|getStyle"}, "$node.value"),
+            
+                getTag: function(object)
+                {
+                    return this.plainTag;
+                    
+//                        return master.reps.Text.tag;
+                },
+                
+                getStyle: function(meta) {
+                    var style = [];
+                    if(meta && UTIL.has(meta, "fc.group.color")) {
+                        style.push("color: " + meta["fc.group.color"]);
+                    }
+                    return style.join("; ");
+                },
+                
+                getNode: function(objects)
+                {
+                    return objects.og.getOrigin();
+                }            
+            });
+        }
+    }();
+
+
+    this.closeGroupRep = function() {
+        with (DOMPLATE.tags) {
+        
+            // Extend the default firebug rep
+            return DOMPLATE.domplate(Firebug.Rep, {
+
+                _appender: Firebug.ConsolePanel.prototype.appendCloseGroup,
+            
+                tag: null
+            });
+        }
+    }();
+
+    
     
     this.rep = function() {
         try {
@@ -108,7 +172,7 @@ print("-- get appender --");
                              IF("$object|_getLabel", SPAN({"class": "label"}, "$object|_getLabel")),
                               
                              TAG("$object|_getTag", {"node": "$object|_getValue", "object": "$object"})),
-
+                    
                     _getTag: function(object)
                     {
                         var rep;
@@ -160,12 +224,12 @@ print("-- get appender --");
         
                         return ret;                
                     },
-                    
+/*                    
                     _normalizeData: function(object)
                     {
                         return object;
                     },
-
+*/
                     onMouseMove: function(event)
                     {
                         if(activeInfoTip) {

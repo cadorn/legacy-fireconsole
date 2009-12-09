@@ -27,3 +27,15 @@ testFileLineInfo()[messages]:
     {"fc.msg.file":"\/path\/to\/file","fc.msg.line":"10"}|{"origin":{"type":"text","text":"File and line"}}
 
 break;
+
+testGrouping()[messages]:
+
+    {"fc.group.start":true}|{"origin":{"type":"text","text":"Group 1 Label"}}
+    |{"origin":{"type":"text","text":"Hello World"}}
+    {"fc.group.start":true,"fc.group.color":"magenta"}|{"origin":{"type":"text","text":"Group 2 Label"}}
+    |{"origin":{"type":"text","text":"Hello World"}}
+    {"fc.group.end":true}|{"origin":{"type":"text","text":""}}
+    {"fc.group.end":true}|{"origin":{"type":"text","text":""}}
+    |{"origin":{"type":"text","text":"Hello World"}}
+
+break;
