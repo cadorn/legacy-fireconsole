@@ -1,6 +1,7 @@
 
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
+var UTIL = require("util");
 var SANDBOX = require("sandbox").Sandbox;
 var CHROME = require("chrome", "nr-common");
 var CHROME_UTIL = require("chrome-util", "nr-common");
@@ -14,6 +15,7 @@ var OBJECT_GRAPH = require("./ObjectGraph");
 var SECURITY = require("./Security");
 var TEMPLATE_PACK = require("./TemplatePack");
 var DEV = require("console", "dev-sidebar");
+var JSON = require("json");
 
 
 var FORCE_REP_RELOAD = false;
@@ -52,9 +54,15 @@ exports.main = function(args) {
 
 
     MESSAGE_BUS.initialize({
-        "ConsoleMessageListener": ConsoleMessageListener
+        "ConsoleMessageListener": ConsoleMessageListener,
+        "TemplatePackReceiverListener": TemplatePackReceiverListener,
+        "ContentEventListener": ContentEventListener
     });
     VARIABLE_VIEWER.initialize();
+
+
+    // Mark-up JS objects logged with __fc_tpl_id
+    FIREBUG_INTERFACE.getFirebug().registerRep(REPS.getMaster("Firebug").rep);
 
 
     // handle clean shutdown
@@ -72,6 +80,44 @@ exports.main = function(args) {
     APP.started(exports);
 }
 
+
+var ContentEventListener = {
+    onEvent: function(window, eventName, params) {
+        switch(eventName) {
+            case "test":
+                require("./TestRunner").run(FIREBUG_CONSOLE);
+                break;
+            case "registerTemplatePack":
+                var info = {};
+                UTIL.every(params.info, function(item) {
+                    info["package." + item[0]] = item[1];
+                });
+                info.domain = window.location.hostname;
+                // Load the template pack to make it available to the renderer
+                TEMPLATE_PACK.factory(info).load();
+                break;
+        }
+    }
+}
+
+var TemplatePackReceiverListener = {
+    onMessageReceived: function(context, message) {
+        try {
+            var data = JSON.decode(message.getData());
+            if(data.action=="require") {
+                var info = {};
+                UTIL.every(data.info, function(item) {
+                    info["package." + item[0]] = item[1];
+                });
+                info.domain = context.FirebugNetMonitorListener.context.window.location.hostname;
+                // Load the template pack to make it available to the renderer
+                TEMPLATE_PACK.factory(info).load();
+            }
+        } catch(e) {
+            print("ERROR: "+e);
+        }
+    }
+}
 
 
 var ConsoleMessageListener = {

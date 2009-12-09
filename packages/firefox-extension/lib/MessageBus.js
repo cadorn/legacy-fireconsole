@@ -8,16 +8,12 @@ const OBSERVER_SERVICE = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsI
 var UTIL = require("util");
 var JSON = require("json");
 var FIREBUG_INTERFACE = require("interface", "firebug");
-var FIREBUG_CONSOLE = require("console", "firebug");
 var WILDFIRE = require("wildfire", "wildfire-js");
 var PAGE_INJECTOR = require("./PageInjector");
-var SECURITY = require("./Security");
-var TEMPLATE_PACK = require("./TemplatePack");
-
-var REPS = require("Reps", "reps");
 
 
-var httpheaderChannel,
+var contentEventListener,
+    httpheaderChannel,
     templatePackReceiver,
     fireConsoleReceiver;
 
@@ -27,7 +23,7 @@ exports.initialize = function(options)
 
     templatePackReceiver = WILDFIRE.Receiver();
     templatePackReceiver.setId("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/TemplatePack/0.1");
-    templatePackReceiver.addListener(TemplatePackReceiverListener);
+    templatePackReceiver.addListener(options.TemplatePackReceiverListener);
 
     fireConsoleReceiver = WILDFIRE.Receiver();
     fireConsoleReceiver.setId("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
@@ -40,9 +36,7 @@ exports.initialize = function(options)
     FIREBUG_INTERFACE.addListener('NetMonitor', ['onResponseBody'], httpheaderChannel.getFirebugNetMonitorListener());
     FIREBUG_INTERFACE.addListener('Console', ['onConsoleInjected'], FirebugConsoleListener);
     
-
-    // Mark-up JS objects logged with __fc_tpl_id
-    FIREBUG_INTERFACE.getFirebug().registerRep(REPS.getMaster("Firebug").rep);
+    contentEventListener = options.ContentEventListener;
 }
 
 
@@ -52,27 +46,6 @@ exports.shutdown = function()
     FIREBUG_INTERFACE.removeListener('Console', ['onConsoleInjected'], FirebugConsoleListener);
     OBSERVER_SERVICE.removeObserver(OnModifyRequestObserver, "http-on-modify-request");
 }
-
-
-var TemplatePackReceiverListener = {
-    onMessageReceived: function(context, message) {
-        try {
-            var data = JSON.decode(message.getData());
-            if(data.action=="require") {
-                var info = {};
-                UTIL.every(data.info, function(item) {
-                    info["package." + item[0]] = item[1];
-                });
-                info.domain = context.FirebugNetMonitorListener.context.window.location.hostname;
-                // Load the template pack to make it available to the renderer
-                TEMPLATE_PACK.factory(info).load();
-            }
-        } catch(e) {
-            print("ERROR: "+e);
-        }
-    }
-}
-
 
 
 var FirebugConsoleListener = {   
@@ -94,20 +67,8 @@ var OnFireConsoleContentEvent = function(Event) {
         // WARNING: Do NOT execute anything from "params" as it is a JS object passed from the
         //          content page. Only pull data from it.
 
-        switch(eventName) {
-            case "test":
-                require("./TestRunner").run(FIREBUG_CONSOLE);
-                break;
-            case "registerTemplatePack":
-                var info = {};
-                UTIL.every(params.info, function(item) {
-                    info["package." + item[0]] = item[1];
-                });
-                info.domain = Event.target.ownerDocument.defaultView.location.hostname;
-                // Load the template pack to make it available to the renderer
-                TEMPLATE_PACK.factory(info).load();
-                break;
-        }
+        contentEventListener.onEvent(Event.target.ownerDocument.defaultView, eventName, params);
+
     } catch(e) {
         print("ERROR: " + e);
     }
