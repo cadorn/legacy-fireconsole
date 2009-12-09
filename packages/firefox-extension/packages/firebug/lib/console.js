@@ -79,7 +79,7 @@ exports.logRep = function(rep, data, context)
 {
     exports.getCSSTracker().checkCSS(context.getPanel('console').document);
 
-    INTERFACE.getConsole().logRow(
+    var row = INTERFACE.getConsole().logRow(
         rep._appender,             // appender
         data,                      // objects
         context,                   // context
@@ -89,6 +89,13 @@ exports.logRep = function(rep, data, context)
         true,                      // noThrottle
         (rep.tag)?false:true       // noRow
     );
+
+    // TODO: Should not be testing data.meta["fc.group.collapsed"] here - not generic enough
+    if(rep.className && rep.className=="group" && data.meta && data.meta["fc.group.collapsed"]) {
+        UTIL.dom.removeClass(row, "opened");
+    }
+    
+    return row;
 }
 
 exports.selectRow = function(row)

@@ -105,6 +105,7 @@ print("-- get appender --: "+name);
             // Extend the default firebug rep
             return DOMPLATE.domplate(Firebug.Rep, {
 
+                className: "group",
                 _appender: Firebug.ConsolePanel.prototype.appendOpenGroup,
             
                 tag: TAG("$objects|getTag", {

@@ -75,6 +75,7 @@ class Client_MessageFeatures_AllTest extends ObjectGraphTestCase
     
             $this->dispatcher->send('Group 2 Label', array(
                 'fc.group.start' => true,
+                'fc.group.collapsed' => true,
                 'fc.group.color' => 'magenta'
             ));
 

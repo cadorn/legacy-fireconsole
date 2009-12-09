@@ -32,7 +32,7 @@ testGrouping()[messages]:
 
     {"fc.group.start":true}|{"origin":{"type":"text","text":"Group 1 Label"}}
     |{"origin":{"type":"text","text":"Hello World"}}
-    {"fc.group.start":true,"fc.group.color":"magenta"}|{"origin":{"type":"text","text":"Group 2 Label"}}
+    {"fc.group.start":true,"fc.group.collapsed":true,"fc.group.color":"magenta"}|{"origin":{"type":"text","text":"Group 2 Label"}}
     |{"origin":{"type":"text","text":"Hello World"}}
     {"fc.group.end":true}|{"origin":{"type":"text","text":""}}
     {"fc.group.end":true}|{"origin":{"type":"text","text":""}}
