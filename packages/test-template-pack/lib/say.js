@@ -9,10 +9,7 @@ template.onLoad = function(pack, tags){with(tags) {
     return {
 
         tag:
-            SPAN({"class": pack.getKey()+"say"}, "$object.say"),
-    
-        shortTag:
-            SPAN({"class": pack.getKey()+"say"}, "$object.say")
+            SPAN({"class": pack.__KEY__+"say"}, "$object.say")
 
     }
 }};

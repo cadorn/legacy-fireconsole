@@ -1,6 +1,6 @@
 
 /*######################################################################
-#   FirebugMaster
+#   Console
 #####################################################################*/
 
 #fc-console-tip > DIV.infoTip {
@@ -79,21 +79,25 @@ DIV.logRow-__KEY__Message > DIV.assert {
     background-image: url(chrome://firebug/skin/errorIcon.png);
 }
 
-DIV.logRow-__KEY__MessageGroup {
+/*######################################################################
+#   ConsoleOpenMessageGroup
+#####################################################################*/
+
+DIV.logRow-__KEY__ConsoleOpenMessageGroup {
   background: url(__RESOURCE__images/MessageGroupBackground.png) repeat-x #FFFFFF;
 }
 
-DIV.logRow-__KEY__MessageGroup > DIV > SPAN.objectBox {
+SPAN.__KEY__ConsoleOpenMessageGroup {
   color: #445777;
 }
 
 
+
 /*######################################################################
-#   VariableViewerMaster
+#   VariableViewer
 #####################################################################*/
 
-
-DIV.__KEY__VariableViewerHarness {
+DIV.__KEY__VariableViewer {
     padding: 2px 4px 1px 6px;
     font-family: Monaco, monospace;
     font-size: 11px;    

@@ -77,17 +77,21 @@ exports.registerCss = function(css, preProcessCallback, forceReload)
 
 exports.logRep = function(rep, data, context)
 {
-    exports.getCSSTracker().checkCSS(context.getPanel('console').document);
-    
-    var appender = rep._appender;
-    if(typeof appender == "string") {
-        if(appender=="appendOpenGroup") {
+    var appender;
+    if(!rep._appender) {
+        appender = function(object, row, rep)
+        {
+            return rep.tag.append({object: object}, row);
+        };
+    } else    
+    if(typeof rep._appender == "string") {
+        if(rep._appender=="appendOpenGroup") {
             appender = INTERFACE.getFirebug().ConsolePanel.prototype.appendOpenGroup;
         } else
-        if(appender=="appendCloseGroup") {
+        if(rep._appender=="appendCloseGroup") {
             appender = INTERFACE.getFirebug().ConsolePanel.prototype.appendCloseGroup;
         } else {
-            throw "Unknown appender: " + appender;
+            throw "Unknown appender: " + rep._appender;
         }
     }
 
@@ -106,6 +110,8 @@ exports.logRep = function(rep, data, context)
     if(rep.className && rep.className=="group" && data.meta && data.meta["fc.group.collapsed"]) {
         UTIL.dom.removeClass(row, "opened");
     }
+
+    exports.getCSSTracker().checkCSS(context.getPanel('console').document);
     
     return row;
 }
@@ -159,7 +165,12 @@ exports.CSSTracker = function() {
         }
         css.forEach(function(entry) {
             if(!UTIL.has(entry, "path")) {
-                throw "css.path not set!";
+                var error = new Error("css path not set!");
+                error.notes = {
+                    "css": css,
+                    "entry": entry
+                }
+                throw error;
             }
             // only add if CSS with same path does not already exist
             for( var i=0 ; i<self.css.length ; i++ ) {
@@ -177,50 +188,47 @@ exports.CSSTracker = function() {
 
     self.checkCSS = function(doc, force)
     {
-        try {
-            var idPrefix = APP.getInternalName() + '-firebug-css-',
-                heads = doc.getElementsByTagName("head"),
-                id,
-                file,
-                found,
-                code;
-            self.css.forEach(function(css) {
-                if(!force && UTIL.has(self.fileMTimes, css[0].path)) {
-                    if(""+self.fileMTimes[css[0].path]==""+FILE.Path(css[0].path).mtime()) {
-                        // css file has not changed
-                        return;
-                    }
-                }
-                file = FILE.Path(css[0].path);
-                self.fileMTimes[css[0].path] = file.mtime();
-                id = idPrefix + STRUCT.bin2hex(MD5.hash(css[0].path));
-                found = doc.getElementById(id);
-                if(found && css[2]!==true) {    // css[2] checks forceReload
-                    // stylesheet already added
+        var idPrefix = APP.getInternalName() + '-firebug-css-',
+            heads = doc.getElementsByTagName("head"),
+            id,
+            file,
+            found,
+            code;
+        self.css.forEach(function(css) {
+            // css[2] checks forceReload
+            if(!(force || css[2]===true) && UTIL.has(self.fileMTimes, css[0].path)) {
+                if(""+self.fileMTimes[css[0].path]==""+FILE.Path(css[0].path).mtime()) {
+                    // css file has not changed
                     return;
                 }
-                try {
-                    code = css[1](file.read(), css[0]);
-                } catch(e) {
-                    print("Error in cssProcessor callback: " + css[1]);
-                    throw e;
+            }
+            file = FILE.Path(css[0].path);
+            self.fileMTimes[css[0].path] = file.mtime();
+            id = idPrefix + STRUCT.bin2hex(MD5.hash(css[0].path));
+            found = doc.getElementById(id);
+            if(found && css[2]!==true) {
+                // stylesheet already added
+                return;
+            }
+            try {
+                code = css[1](file.read(), css[0]);
+            } catch(e) {
+                print("Error in cssProcessor callback: " + css[1]);
+                throw e;
+            }
+            if(found) {
+                found.innerHTML = code;
+            } else {
+                var style = doc.createElementNS("http://www.w3.org/1999/xhtml", "style");
+                style.setAttribute("charset","utf-8");
+                style.setAttribute("type", "text/css");
+                style.setAttribute("id", id);
+                style.innerHTML = code;
+                if (heads.length) {
+                    heads[0].appendChild(style);
                 }
-                if(found) {
-                    found.innerHTML = code;
-                } else {
-                    var style = doc.createElementNS("http://www.w3.org/1999/xhtml", "style");
-                    style.setAttribute("charset","utf-8");
-                    style.setAttribute("type", "text/css");
-                    style.setAttribute("id", id);
-                    style.innerHTML = code;
-                    if (heads.length) {
-                        heads[0].appendChild(style);
-                    }
-                }
-            });
-        } catch(e) {
-            print("ERROR["+module.path+":CSSTracker.checkCSS]: " + e);
-        }
+            }
+        });
     };
     return self;
 }

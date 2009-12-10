@@ -6,7 +6,7 @@ var UTIL = require("util");
 var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
 var CHROME_UTIL = require("chrome-util", "nr-common");
-var REPS = require("Reps", "reps");
+//var REPS = require("Reps", "reps");
 var IFRAME_PANEL = require("IFramePanel", "xul-ui");
 var APP = require("app", "nr-common").getApp();
 var SANDBOX = require("sandbox").Sandbox;
@@ -28,7 +28,7 @@ exports.initialize = function(app)
         url: APP.getPackage(module["package"]).getContentBaseUrl() + 'VariableViewerPanel.htm'
     });
     
-    REPS.getMaster("Firebug").addListener(MasterRepListener);
+//    REPS.getMaster("Firebug").addListener(MasterRepListener);
     panel.addListener(PanelListener);
     FIREBUG_INTERFACE.addListener('Module', ['destroyContext','showContext'], FirebugModuleListener);
 
@@ -41,7 +41,7 @@ exports.initialize = function(app)
     
 exports.shutdown = function()
 {
-    REPS.getMaster("Firebug").removeListener(MasterRepListener);
+//    REPS.getMaster("Firebug").removeListener(MasterRepListener);
     panel.removeListener(PanelListener);
     FIREBUG_INTERFACE.removeListener('Module', FirebugModuleListener);
 }
@@ -72,17 +72,15 @@ var PanelListener = {
     }
 }
 
-var MasterRepListener = exports.MasterRepListener = {
 
-    onClick: function(event, object)
-    {
-        var row = FIREBUG_CONSOLE.selectRow(event.target);
+exports.showFromConsoleEvent = function(event) {
 
-        var doc = panel.getIFrame().contentDocument;
-        renderRep(doc, doc.getElementById("content"), row.repObject);
+    var row = FIREBUG_CONSOLE.selectRow(event.target);
 
-        panel.show();
-    }
+    var doc = panel.getIFrame().contentDocument;
+    renderRep(doc, doc.getElementById("content"), row.repObject);
+
+    panel.show();
 }
 
 
@@ -91,19 +89,10 @@ var CSSTracker = FIREBUG_CONSOLE.CSSTracker();
 
 
 function renderRep(document, div, data) {
-
-    var renderer;
-
-    if(data["__fc_tpl_id"]) {
-        renderer = RENDERER.getForId("VariableViewer", data["__fc_tpl_id"]);
-    } else {
-        renderer = RENDERER.getForMessage("VariableViewer", data.meta, data.og);
-    }
-
-    renderer.registerCss(CSSTracker);
-    CSSTracker.checkCSS(document);
-
-    renderer.rep.tag.replace({
-        "object": data
-    }, div);
+    var renderer = RENDERER.factory({
+        "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#VariableViewer",
+        "cssTracker": CSSTracker,
+        "document": document
+    });
+    renderer.replace(div, data);
 }

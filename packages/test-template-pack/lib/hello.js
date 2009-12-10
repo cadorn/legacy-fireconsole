@@ -9,15 +9,11 @@ template.onLoad = function(pack, tags){with(tags) {
     return {
 
         tag:
-            DIV({"class": pack.getKey()+"hello"}, "Hello: ",
-                TAG("$node|getTag", {"node": "$node"})),
-    
-        shortTag:
-            DIV({"class": pack.getKey()+"hello"}, "Hello: ",
+            DIV({"class": pack.__KEY__+"hello"}, "Hello: ",
                 TAG("$node|getTag", {"node": "$node"})),
                 
         getTag: function(node) {
-            return this.getRepTagForNode(node);
+            return this.getRepForNode(node).tag;
         }
     }
 }};

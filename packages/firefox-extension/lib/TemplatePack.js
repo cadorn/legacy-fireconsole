@@ -30,26 +30,28 @@ exports.factory = function(info) {
 }
 
 // find fc-object-graph template based on node type
-exports.seekTemplate = function(node) {
+exports.seekTemplate = function(node, forceReload) {
+    if(!fcObjectGraphTemplatePack || forceReload) {
+        fcObjectGraphTemplatePack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole-template-packs/raw/master/fc-object-graph", forceReload);
+    }
     return fcObjectGraphTemplatePack.seekTemplate(node);
 }
 
-// get template based on template pack ID
-exports.getTemplate = function(meta) {
-    if(!UTIL.has(meta, "fc.tpl.id")) {
-        return false;
-    }
-    var parts = meta["fc.tpl.id"].split("#");
+
+exports.getTemplateForId = function(id, forceReload) {
+    var parts = id.split("#");
     if(!UTIL.has(templatePacks, parts[0])) {
         return false;
     }
-    return templatePacks[parts[0]].getTemplate(parts[1], (UTIL.has(meta, "fc.tpl.reload") && meta["fc.tpl.reload"]));
+    return templatePacks[parts[0]].getTemplate(parts[1], forceReload);
 }
 
 
+TEMPLATE_PACK_LOADER.setLogger(FIREBUG_CONSOLE);
+
 TEMPLATE_PACK_LOADER.setExternalLoader({
     "seekTemplate": exports.seekTemplate,
-    "getTemplate": exports.getTemplate
+    "getTemplateForId": exports.getTemplateForId
 });
 
 
@@ -323,7 +325,5 @@ TEMPLATE_PACK_LOADER.addSandboxPackage(APP.getInfo().ID);
 // Tell the template loader where to find template packs
 TEMPLATE_PACK_LOADER.addRepositoryPath(FILE.Path(getTemplatePackBasePath().path));
 
-// Load default fc-object-graph template pack
-fcObjectGraphTemplatePack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole-template-packs/raw/master/fc-object-graph");
 
 

@@ -9,10 +9,7 @@ template.onLoad = function(pack, tags){with(tags) {
     return {
 
         tag:
-            DIV({"class": pack.getKey()+"helloworld"}, "$node.value"),
-    
-        shortTag:
-            DIV({"class": pack.getKey()+"helloworld"}, "$node.value")
+            DIV({"class": pack.__KEY__+"helloworld"}, "$node.value")
 
     }    
 }};

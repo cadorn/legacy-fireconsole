@@ -5,11 +5,26 @@ var LOADER = require("loader").Loader;
 var PACKAGES = require("packages");
 var DOMPLATE = require("domplate", "domplate");
 
+
 var sandboxDirty = true;
 var sandboxPackages = [];
 var repositoryPaths = [];
 var loadedPacks = {};
 var externalLoader;
+
+
+
+var externalLogger;
+exports.setLogger = function(logger) {
+    externalLogger = logger;
+}
+var logger = {
+    log: function() {
+        if(externalLogger) externalLogger.log.apply(null, arguments);
+    }
+}
+
+
 
 exports.markSandboxDirty = function() {
     sandboxDirty = true;
@@ -31,20 +46,39 @@ exports.setExternalLoader = function(loader) {
     externalLoader = loader;    
 }
 
-exports.requirePack = function(id, force) {
+
+
+function getLogger() {
+    if(!logger) {
+        logger = {
+            log: function() {}
+        }
+    }
+    return logger;
+}
+
+
+exports.requirePack = function(id, force, notSandboxed) {
     try {
         if(force || !UTIL.has(loadedPacks, id)) {
-            loadedPacks[id] = loadTemplatePack(id, force);
+            loadedPacks[id] = loadTemplatePack(id, force, notSandboxed);
         }
         return loadedPacks[id];
     } catch(e) {
-        print("Error requiring template pack: " + id);
-        print(e);
+        print("Error loading template pack: " + id);
+        print("ERROR: " + e);
     }
 }
 
 var sandboxRequire;
-function loadTemplatePack(id, force) {
+function loadTemplatePack(id, force, notSandboxed) {
+
+    if(notSandboxed) {
+        var pack = require("_pack_", id).Pack();
+        pack.setExternalLoader(externalLoader);
+        return pack;
+    }
+
     // Establish a sandbox for all template packs
     // If the sandbox is marked dirty we re-create it
     if(force || sandboxDirty) {
@@ -71,12 +105,15 @@ function loadTemplatePack(id, force) {
         });
         sandboxRequire("packages").load(paths);
         sandboxDirty = false;
+        
+        var sPACK = sandboxRequire("pack", module["package"]);       
+        sPACK.setLogger(logger);
 
-        var sdomplate = sandboxRequire("domplate", "github.com/cadorn/domplate/zipball/master");
+        var sDOMPLATE = sandboxRequire("domplate", "github.com/cadorn/domplate/zipball/master");
         // TODO: Potential security hole?
-        sdomplate.DomplateDebug.replaceInstance(DOMPLATE.DomplateDebug);
+        sDOMPLATE.DomplateDebug.replaceInstance(DOMPLATE.DomplateDebug);
     }
-    var pack = sandboxRequire("_factory_", id).Factory();
+    var pack = sandboxRequire("_pack_", id).Pack();
     pack.setExternalLoader(externalLoader);
     return pack;
 }

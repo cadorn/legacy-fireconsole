@@ -8,7 +8,6 @@ var CHROME_UTIL = require("chrome-util", "nr-common");
 var APP = require("app", "nr-common").getApp();
 var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
-var REPS = require("Reps", "reps");
 var VARIABLE_VIEWER = require("./VariableViewer");
 var MESSAGE_BUS = require("./MessageBus");
 var OBJECT_GRAPH = require("./ObjectGraph");
@@ -17,6 +16,7 @@ var TEMPLATE_PACK = require("./TemplatePack");
 var RENDERER = require("./Renderer");
 var DEV = require("console", "dev-sidebar");
 var JSON = require("json");
+var RENDERER = require("./Renderer");
 
 
 var FORCE_REP_RELOAD = false;
@@ -63,8 +63,17 @@ exports.main = function(args) {
 
 
     // Mark-up JS objects logged with __fc_tpl_id
-    FIREBUG_INTERFACE.getFirebug().registerRep(REPS.getMaster("Firebug").rep);
-
+    var renderer = RENDERER.factory({
+        "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#Console",
+        "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
+        "document": function() {
+            var context = FIREBUG_INTERFACE.getActiveContext();
+            if(!context) return null;
+            return context.getPanel('console').document;
+        }
+    });
+    FIREBUG_INTERFACE.getFirebug().registerRep(renderer.getRep());
+            
 
     // handle clean shutdown
     var onUnload  = function() {
@@ -123,47 +132,55 @@ var TemplatePackReceiverListener = {
 
 var ConsoleMessageListener = {
     
-    masterRep: null,
-    installingTemplatePack: false,
-    
     onMessageGroupStart: function(context) {
-        if(!this.masterRep) {
-            this.masterRep = REPS.getMaster("Firebug");
-        }
-        this.masterRep.openMessageGroup(context);
-        this.installingTemplatePack = false;
+        var renderer = RENDERER.factory({
+            "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleOpenMessageGroup",
+            "cssTracker": FIREBUG_CONSOLE.getCSSTracker()
+        });
+        FIREBUG_CONSOLE.logRep(renderer.getRep(), {
+            "url": context.FirebugNetMonitorListener.file.href
+        }, context.FirebugNetMonitorListener.context);
     },
     
     onMessageGroupEnd: function(context) {
-        this.masterRep.closeMessageGroup(context);
+        var renderer = RENDERER.factory({
+            "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleCloseGroup",
+            "cssTracker": FIREBUG_CONSOLE.getCSSTracker()
+        });
+        FIREBUG_CONSOLE.logRep(renderer.getRep(), null, context.FirebugNetMonitorListener.context);
     },
-    
+
     onMessageReceived: function(context, message) {
+
         try {
             
-            if(this.installingTemplatePack) {
-                return;
+            var data = {
+                "meta": JSON.decode(message.getMeta() || "{}"),
+                "og": OBJECT_GRAPH.generateFromMessage(message)
             }
+    
+            var renderer = RENDERER.factory({
+                "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#Console",
+                "meta": data.meta,
+                "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
+                "eventListener": consoleTemplateEventListener
+            });
+    
+            FIREBUG_CONSOLE.logRep(renderer.getRep(), data, context.FirebugNetMonitorListener.context);
             
-            var meta = JSON.decode(message.getMeta() || "{}");
-            var og = OBJECT_GRAPH.generateFromMessage(message);
-            
-            var renderer = RENDERER.getForMessage("Console", meta, og);
-            if(renderer===null) {
-                // TODO: We should get a promise here that triggers when the template pack is installed
-                // TODO: Queue messages until pack is loaded to avoid need for refresh
-                FIREBUG_CONSOLE.info("Installing template pack ... (refresh request once pack is loaded)");
-                this.installingTemplatePack = true;
-                return;
-            }
-
-            renderer.registerCss(FIREBUG_CONSOLE.getCSSTracker());
-            
-            FIREBUG_CONSOLE.logRep(renderer.rep, {"meta": meta, "og": og }, context.FirebugNetMonitorListener.context);
-
         } catch(e) {
-            print(e, 'ERROR');
+            
+            FIREBUG_CONSOLE.error("[FireConsole] Error while logging template: " + e);
+            
+            // TODO: Listen for template pack installs and re-log messages once pack is installed
         }
     }
 }
 
+var consoleTemplateEventListener =  {
+    onEvent: function(name, args) {
+        if(name=="click") {
+            VARIABLE_VIEWER.showFromConsoleEvent(args[0]);           
+        }
+    }
+}

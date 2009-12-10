@@ -4,9 +4,16 @@ var UTIL = require("util");
 var MD5 = require("md5");
 var STRUCT = require("struct");
 
-exports.Factory = function(factoryModule) {
-    var Factory = function() {};
-    var self = new Factory();
+
+var logger;
+exports.setLogger = function(obj) {
+    logger = obj;    
+}
+
+exports.Pack = function(factoryModule) {
+    var Pack = function() {};
+    var self = new Pack();
+    self.logger = logger;
 
     var externalLoader = null;
     
@@ -14,34 +21,25 @@ exports.Factory = function(factoryModule) {
     var templatesDict = {};
     
     var resourcePath = FILE.Path(factoryModule.path).dirname().dirname().join("resources");
-    var key = "_"+STRUCT.bin2hex(MD5.hash(factoryModule.path))+"_";
+    self.__KEY__ = "_"+STRUCT.bin2hex(MD5.hash(factoryModule.path))+"_";
     
-    var resources = {"css": []};
+    var resources = {};
     self.registerCss = function(path) {
         path = resourcePath.join(path);
         if(!path.exists()) {
             throw "resource not found at: " + path;
         }
-        for( var i=0 ; i<resources.css.length ; i++ ) {
-            if(resources.css[i].path==path.valueOf()) {
-                // already added
-                return;
-            }
-        }
-        resources.css.push({
+        resources[path] = {
+            "type": "css",
             "package": factoryModule["package"],
             "path": path.valueOf(),
-            "key": key,
+            "key": self.__KEY__,
             "resourcePath": resourcePath.valueOf()
-        });
+        };
     }
     
     self.getResources = function() {
         return resources;
-    }
-    
-    self.getKey = function() {
-        return key;
     }
 
     self.registerTemplate = function(id) {
@@ -57,18 +55,18 @@ exports.Factory = function(factoryModule) {
         }
     }
 
-    self.getTemplate = function(id, checkExternal) {
+    self.getTemplate = function(id, checkExternal, forceReload) {
         checkExternal = checkExternal || false;
         if(!UTIL.has(templatesDict, id)) {
             if(checkExternal && externalLoader) {
-                return externalLoader.getTemplate({"fc.tpl.id": id});
+                return externalLoader.getTemplateForId(id, forceReload);
             }
             return false;
         }
         return templatesDict[id];
     }
 
-    self.seekTemplate = function(node, checkExternal) {
+    self.seekTemplate = function(node, checkExternal, forceReload) {
         checkExternal = checkExternal || false;
         for( var i=0 ; i<templates.length ; i++ ) {
             if(UTIL.has(templates[i], "supportsNode") && templates[i].supportsNode(node)) {
@@ -76,7 +74,7 @@ exports.Factory = function(factoryModule) {
             }
         }
         if(checkExternal && externalLoader) {
-            return externalLoader.seekTemplate(node);
+            return externalLoader.seekTemplate(node, forceReload);
         }
         return false;
     }

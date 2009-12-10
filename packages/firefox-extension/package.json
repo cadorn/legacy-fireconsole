@@ -43,6 +43,9 @@
         "fireconsole-template-packs-fc-object-graph": {
             "catalog": "http://github.com/cadorn/fireconsole-template-packs/raw/master/catalog.json",
             "name": "fc-object-graph"
+        },
+        "domplate": {
+            "location": "http://github.com/cadorn/domplate/zipball/master/"
         }
     },
     "build": {
