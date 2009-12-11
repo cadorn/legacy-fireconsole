@@ -9,7 +9,7 @@ exports.Pack = function() {
     
     self.registerCss("common.css");
     
-    self.registerTemplate("Console");
+    self.registerTemplate("ConsoleMessage");
     self.registerTemplate("ConsoleOpenMessageGroup");
     self.registerTemplate("ConsoleOpenGroup");
     self.registerTemplate("ConsoleCloseGroup");

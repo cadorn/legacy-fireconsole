@@ -69,7 +69,7 @@ exports.main = function(args) {
 
     // Mark-up JS objects logged with __fc_tpl_id
     var renderer = RENDERER.factory({
-        "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#Console",
+        "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleMessage",
         "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
         "document": function() {
             var context = FIREBUG_INTERFACE.getActiveContext();
@@ -166,7 +166,7 @@ var ConsoleMessageListener = {
             }
     
             var renderer = RENDERER.factory({
-                "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#Console",
+                "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleMessage",
                 "meta": data.meta,
                 "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
                 "eventListener": ConsoleTemplateEventListener
