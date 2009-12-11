@@ -5,27 +5,20 @@ var FIREBUG_CONSOLE = require("console", "firebug");
 var TEMPLATE = require("template", "template-pack");
 var template = exports.template = TEMPLATE.Template(module);
 
-template.onLoad = function(pack, tags){with(tags) {
+var activeInfoTip,
+    infoTipModule = FIREBUG_INTERFACE.getFirebug().InfoTip;
 
-    var infoTipTags,
-        activeInfoTip,
-        infoTipModule = FIREBUG_INTERFACE.getFirebug().InfoTip;
+template.onLoad = function(pack, tags){with(tags) {
 
     return {
     
-        "priorityClassName": "",
-    
-        "className": pack.__KEY__ + "Message",
-    
-        tag: DIV({"class": "MasterRep $priorityClassName",
+        tag: DIV({"class": pack.__KEY__ + "ConsoleMessage",
                   "_repObject": "$object",
                   "onmouseover":"$onMouseOver", "onmousemove":"$onMouseMove", "onmouseout":"$onMouseOut", "onclick":"$onClick"},
-                  
                  IF("$object|_getLabel", SPAN({"class": "label"}, "$object|_getLabel")),
-                  
                  TAG("$object|_getTag", {"node": "$object|_getValue", "object": "$object"})),
         
-        metaTemplateTag: TAG("$object|_getTag", {"node": "$object|_getValue", "object": "$object"}),
+        fileLineInfoTipTag: DIV({"class": pack.__KEY__ + "Tip"}, "$file @ $line"),
         
         _getTag: function(object)
         {
@@ -84,32 +77,21 @@ template.onLoad = function(pack, tags){with(tags) {
     
         onMouseOver: function(event)
         {
-            if(!infoTipTags) {
-                // use Firebug's domplate - probably not needed
-                with (FIREBUG_INTERFACE.getFBL()) {
-                    infoTipTags = FIREBUG_INTERFACE.getDomplate()({
-                        container: DIV({"id": "fc-console-tip"}),
-                        tag: DIV({"class": "infoTip"}, "$file @ $line")
-                    });
-                };
-            }
-            // fetch container from document
-            activeInfoTip = event.target.ownerDocument.getElementById("fc-console-tip");
-            if(!activeInfoTip) {
-                activeInfoTip = infoTipTags.container.append({}, event.target.ownerDocument.documentElement);
-            }
+            // set a class on our logRow parent identifying this log row as fireconsole controlled
+            // this is used for hover and selected styling
+            this.util.setClass(this._getMasterRow(event.target).parentNode, "logRow-" + pack.__KEY__ + "ConsoleMessage");
             
+            // populate file/line info tip
             var meta = this._getMasterRow(event.target).repObject.meta;
             if(meta && (meta["fc.msg.file"] || meta["fc.msg.line"])) {
-                activeInfoTip = infoTipTags.tag.replace({
+                activeInfoTip = event.target.ownerDocument.getElementsByClassName('infoTip')[0];
+                this.fileLineInfoTipTag.replace({
                     "file": meta["fc.msg.file"] || "?",
                     "line": meta["fc.msg.line"] || "?"
                 }, activeInfoTip);
             } else {
                 activeInfoTip = null;
             }
-    
-            this.dispatchEvent('mouseOver', [event, this._getMasterRow(event.target)]);
         },
     
         onMouseOut: function(event)
@@ -117,7 +99,6 @@ template.onLoad = function(pack, tags){with(tags) {
             if(activeInfoTip) {
                 infoTipModule.hideInfoTip(activeInfoTip);
             }
-            this.dispatchEvent('mouseOut', [event, this._getMasterRow(event.target)]);
         },
         
         onClick: function(event)
@@ -127,12 +108,11 @@ template.onLoad = function(pack, tags){with(tags) {
         
         _getMasterRow: function(row)
         {
-            // Seek our MasterRep node
             while(true) {
                 if(!row.parentNode) {
                     return null;
                 }
-                if(this.util.hasClass(row, "MasterRep")) {
+                if(this.util.hasClass(row, pack.__KEY__ + "ConsoleMessage")) {
                     break;
                 }
                 row = row.parentNode;

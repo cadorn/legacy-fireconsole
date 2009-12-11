@@ -125,7 +125,7 @@ exports.selectRow = function(row)
         if(!row.parentNode) {
             return false;
         }
-        if(UTIL.dom.hasClass(row, "MasterRep")) {
+        if(UTIL.dom.hasClass(row, "logRow")) {
             break;
         }
         row = row.parentNode;

@@ -14,17 +14,22 @@ exports.Template = function(templateModule) {
 
     self.setPack = function(pack) {
         self.pack = pack;
-        loadRep();
+
+        self.rep = getRep();
+        self.getRep = function(freshCompile) {
+            if(freshCompile) {
+                return getRep();
+            }
+            return self.rep;
+        }
     }
 
     self.toString = function() {
         return "Template["+templateModule.path+"]";
     }
-
-    function loadRep() {
-
-        // fetch the rep from the template
-        var rep = self.onLoad(self.pack, DOMPLATE.tags);
+    
+    function getRep() {
+        var rep = {};
 
         // inject resources
         rep._resources = function() {
@@ -66,7 +71,8 @@ exports.Template = function(templateModule) {
         rep.dispatchEvent = function(name, args) {
         }
         
-        self.rep = DOMPLATE.domplate(rep);
+        // fetch the rep from the template and merge our additions
+        return DOMPLATE.domplate(self.onLoad(self.pack, DOMPLATE.tags), rep);
     }
 
     function determineId() {

@@ -35,7 +35,7 @@ exports.initialize = function(options)
     
     FIREBUG_INTERFACE.addListener('NetMonitor', ['onResponseBody'], httpheaderChannel.getFirebugNetMonitorListener());
     FIREBUG_INTERFACE.addListener('Console', ['onConsoleInjected'], FirebugConsoleListener);
-    
+
     contentEventListener = options.ContentEventListener;
 }
 

@@ -73,9 +73,9 @@ var PanelListener = {
 }
 
 
-exports.showFromConsoleEvent = function(event) {
+exports.showFromConsoleRow = function(row) {
 
-    var row = FIREBUG_CONSOLE.selectRow(event.target);
+    FIREBUG_CONSOLE.selectRow(row);
 
     var doc = panel.getIFrame().contentDocument;
     renderRep(doc, doc.getElementById("content"), row.repObject);

@@ -1,83 +1,25 @@
 
 /*######################################################################
-#   Console
+#   ConsoleMessage
 #####################################################################*/
 
-#fc-console-tip > DIV.infoTip {
+#__KEY__Tip > DIV.__KEY__Tip {
     opacity: 0.9 !important;
     font-family: Monaco, monospace;
     font-size: 11px;
 }
 
-DIV.logRow-__KEY__Message {
-    padding: 0px;
-}
-
-DIV.logRow-__KEY__Message > DIV.MasterRep {
-    padding: 2px 4px 1px 6px;
-}
-
-DIV.logRow-__KEY__Message > DIV.MasterRep:hover {
+DIV.logRow-__KEY__ConsoleMessage:hover {
     background-color: #F0E68C;
 }
-
-DIV.logRow-__KEY__Message > DIV.selected {
+DIV.logRow-__KEY__ConsoleMessage.selected {
     background-color: #FFA07A !important;
 }
 
-DIV.logRow-__KEY__Message > DIV.MasterRep > SPAN.label {
+DIV.__KEY__ConsoleMessage > SPAN.label {
     margin-right: 5px;
 }
 
-DIV.logRow-__KEY__Message > DIV.MasterRep > DIV.__domplate_rep__ {
-    display: inline-block;
-}
-
-
-DIV.logRow-__KEY__Message > DIV.info,
-DIV.logRow-__KEY__Message > DIV.warn,
-DIV.logRow-__KEY__Message > DIV.error,
-DIV.logRow-__KEY__Message > DIV.assert {
-    padding-left: 22px;
-    background-repeat: no-repeat;
-    background-position: 4px 2px;
-}
-
-DIV.logRow-__KEY__Message > DIV.assert {
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-DIV.logRow-__KEY__Message > DIV.info {
-    background-color: #FFFFFF;
-}
-
-DIV.logRow-__KEY__Message > DIV.warn {
-    background-color: cyan;
-}
-
-DIV.logRow-__KEY__Message > DIV.error,
-DIV.logRow-__KEY__Message > DIV.assert {
-    background-color: LightYellow;
-}
-
-DIV.logRow-__KEY__Message > DIV.error,
-DIV.logRow-__KEY__Message > DIV.assert {
-    color: #FF0000;
-}
-
-DIV.logRow-__KEY__Message > DIV.info {
-    background-image: url(chrome://firebug/skin/infoIcon.png);
-}
-
-DIV.logRow-__KEY__Message > DIV.warn {
-    background-image: url(chrome://firebug/skin/warningIcon.png);
-}
-
-DIV.logRow-__KEY__Message > DIV.error,
-DIV.logRow-__KEY__Message > DIV.assert {
-    background-image: url(chrome://firebug/skin/errorIcon.png);
-}
 
 /*######################################################################
 #   ConsoleOpenMessageGroup
@@ -90,7 +32,6 @@ DIV.logRow-__KEY__ConsoleOpenMessageGroup {
 SPAN.__KEY__ConsoleOpenMessageGroup {
   color: #445777;
 }
-
 
 
 /*######################################################################

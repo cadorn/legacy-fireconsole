@@ -1,3 +1,8 @@
+// ========================================================================
+// FireConsole -- Firebug Extension for Comprehensive Logging
+// Copyright ©2007-2009 Christoph Dorn licensed under MIT
+// ========================================================================
+
 
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
@@ -70,10 +75,11 @@ exports.main = function(args) {
             var context = FIREBUG_INTERFACE.getActiveContext();
             if(!context) return null;
             return context.getPanel('console').document;
-        }
+        },
+        "eventListener": ConsoleTemplateEventListener
     });
-    FIREBUG_INTERFACE.getFirebug().registerRep(renderer.getRep());
-            
+    FIREBUG_INTERFACE.getFirebug().registerRep(renderer.getRep(true));
+
 
     // handle clean shutdown
     var onUnload  = function() {
@@ -163,24 +169,24 @@ var ConsoleMessageListener = {
                 "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#Console",
                 "meta": data.meta,
                 "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
-                "eventListener": consoleTemplateEventListener
+                "eventListener": ConsoleTemplateEventListener
             });
     
             FIREBUG_CONSOLE.logRep(renderer.getRep(), data, context.FirebugNetMonitorListener.context);
             
         } catch(e) {
             
-            FIREBUG_CONSOLE.error("[FireConsole] Error while logging template: " + e);
+            FIREBUG_CONSOLE.error("[FireConsole] Error while logging template", e);
             
             // TODO: Listen for template pack installs and re-log messages once pack is installed
         }
     }
 }
 
-var consoleTemplateEventListener =  {
+var ConsoleTemplateEventListener =  {
     onEvent: function(name, args) {
         if(name=="click") {
-            VARIABLE_VIEWER.showFromConsoleEvent(args[0]);           
+            VARIABLE_VIEWER.showFromConsoleRow(args[1]);           
         }
     }
 }
