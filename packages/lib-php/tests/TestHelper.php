@@ -28,6 +28,8 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
     
     private $resultInfo = null;
     
+    private $messages = array();
+
     
     public function setChannelName($name)
     {
@@ -56,6 +58,9 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
     public function tearDown()
     {
         $info = $this->getTestResultInfo();
+        if(!$info) {
+            return;
+        }
 
         if(!isset($info[$this->getName()])) {
             $this->channel->flush();
@@ -123,6 +128,10 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
             return $this->resultInfo;
         }
         
+        if(!$this->testFile) {
+            return null;
+        }
+        
         $file = substr($this->testFile, 0, -3) . 'txt';
         if(!file_exists($file)) {
             throw new Exception('Test comparion file not found at: ' . $file);
@@ -145,6 +154,13 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
             $this->resultInfo[$m[1][$i]][$m[2][$i]] = $parts;
         }
         return $this->resultInfo;
+    }
+    
+    public function addMessage($message) {
+        $this->messages[] = $message;
+    }
+    public function getMessages() {
+        return $this->messages;
     }
     
 }

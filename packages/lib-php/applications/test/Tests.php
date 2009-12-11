@@ -33,7 +33,8 @@ class app_test_Tests extends PHPGI_App
                                 if(substr($method->getName(),0,4)=='test') {
                                     $tests[] = array(
                                         'name' => $method->getName(),
-                                        'suite' => $groupDir->getBasename() . '/' . substr(basename($file), 0, -8)
+                                        'suite' => $groupDir->getBasename() . '/' . substr(basename($file), 0, -8),
+                                        'mode' => ($reflectionClass->hasProperty('mode'))?$reflectionClass->getStaticPropertyValue('mode'):'header'
                                     );
                                 }
                             }
