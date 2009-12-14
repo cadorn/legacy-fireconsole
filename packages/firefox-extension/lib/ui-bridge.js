@@ -1,6 +1,5 @@
 
 var UTIL = require("util");
-var CHROME_UTIL = require("chrome-util", "nr-common");
 var APP = require("app", "nr-common").getApp();
 
 var EXTENSION_MANAGER = Cc["@mozilla.org/extensions/manager;1"].getService(Ci.nsIExtensionManager);
@@ -24,11 +23,11 @@ Bridge.prototype.visitWebsite = function(which) {
     }
     var url = URLS[which];
     if(which=='hq') url += "?Trigger=User";
-    CHROME_UTIL.openNewTab(url);
+    APP.getChrome().openNewTab(url);
 }
 
 Bridge.prototype.openAboutDialog = function() {
-    CHROME_UTIL.getWindow().openDialog("chrome://mozapps/content/extensions/about.xul", "",
+    APP.getChrome().getWindow().openDialog("chrome://mozapps/content/extensions/about.xul", "",
         "chrome,centerscreen,modal",
         "urn:mozilla:item:" + APP.getInfo().ID,
         EXTENSION_MANAGER.datasource);

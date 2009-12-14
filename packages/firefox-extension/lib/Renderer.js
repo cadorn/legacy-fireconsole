@@ -99,7 +99,7 @@ var Renderer = function(options) {
                         }
                     }
                 } catch(e) {
-                    require("logger", "nr-common").error(e);
+                    system.log.error(e);
                 }
             }
         }
@@ -114,7 +114,7 @@ Renderer.prototype.replace = function(htmlNode, data) {
             "object": data
         }, htmlNode);
     } catch(e) {
-        require("logger", "nr-common").error(e);
+        system.log.error(e);
     }
 };
 

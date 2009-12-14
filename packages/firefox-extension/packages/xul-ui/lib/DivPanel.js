@@ -15,7 +15,7 @@ var DivPanel = exports.DivPanel = function () {}
 DivPanel.prototype = new IFRAME_PANEL.IFramePanel();
 
 DivPanel.prototype._createPanel = function(id) {
-    return APP.getBinding(module["package"], "PanelList").getObject().createDivPanel(id);
+    return APP.getChrome().getBinding(module["package"], "PanelList").getObject().createDivPanel(id);
 }
 
 DivPanel.prototype.load = function(url) {

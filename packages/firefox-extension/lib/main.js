@@ -3,13 +3,10 @@
 // Copyright ©2007-2009 Christoph Dorn licensed under MIT
 // ========================================================================
 
-
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
 var UTIL = require("util");
 var SANDBOX = require("sandbox").Sandbox;
-var CHROME = require("chrome", "nr-common");
-var CHROME_UTIL = require("chrome-util", "nr-common");
 var APP = require("app", "nr-common").getApp();
 var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
@@ -29,18 +26,10 @@ var FORCE_REP_RELOAD = false;
 
 exports.main = function(args) {
     
-    
-    // ensure firebug is available
-    if(!FIREBUG_INTERFACE.isAvailable()) {
-        CHROME_UTIL.openNewTab(APP.getAppPackage().getTemplateVariables()["Package.AccessibleContentBaseURL"] + "FirebugNotInstalled.htm");
-        return;
-    }
-
     DEV.action('Dump Console HTML', function() {
         var panel = FIREBUG_INTERFACE.getActiveContext().getPanel("console");
         print(panel.document.documentElement.innerHTML);
     });
-
     
 /*    
     DEV.action('Reload Page', function() {
@@ -57,16 +46,41 @@ exports.main = function(args) {
 
     SECURITY.initialize();
 
-
-
     MESSAGE_BUS.initialize({
         "ConsoleMessageListener": ConsoleMessageListener,
         "TemplatePackReceiverListener": TemplatePackReceiverListener,
         "ContentEventListener": ContentEventListener
     });
-    VARIABLE_VIEWER.initialize();
 
 
+
+    // handle clean shutdown
+/*    
+    // TODO: We need an event that triggers on app exit, not browser window close/unload
+    var onUnload  = function() {
+        VARIABLE_VIEWER.shutdown();
+        MESSAGE_BUS.shutdown();
+        SECURITY.shutdown();
+    }
+    var window = APP.getChrome().getWindow();
+    window.addEventListener("unload", onUnload, false);
+*/
+
+        
+    // notify NarwhalRunner that application is loaded    
+    APP.started(exports);
+}
+
+exports.chrome = function(chrome) {
+
+    // ensure firebug is available
+    if(!FIREBUG_INTERFACE.isAvailable()) {
+        APP.getChrome().openNewTab(APP.getAppPackage().getTemplateVariables()["Package.AccessibleContentBaseURL"] + "FirebugNotInstalled.htm");
+        return;
+    }
+
+    chrome.registerInstance("VariableViewer", new VARIABLE_VIEWER.VariableViewer());
+    
     // Mark-up JS objects logged with __fc_tpl_id
     var renderer = RENDERER.factory({
         "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleMessage",
@@ -79,23 +93,8 @@ exports.main = function(args) {
         "eventListener": ConsoleTemplateEventListener
     });
     FIREBUG_INTERFACE.getFirebug().registerRep(renderer.getRep(true));
-
-
-    // handle clean shutdown
-    var onUnload  = function() {
-        VARIABLE_VIEWER.shutdown();
-        MESSAGE_BUS.shutdown();
-        SECURITY.shutdown();
-    }
-    var window = CHROME.get().window;
-    window.addEventListener("unload", onUnload, false);
-
-
-        
-    // notify NarwhalRunner that application is loaded    
-    APP.started(exports);
+    
 }
-
 
 var ContentEventListener = {
     onEvent: function(window, eventName, params) {
@@ -130,7 +129,7 @@ var TemplatePackReceiverListener = {
                 TEMPLATE_PACK.factory(info).load();
             }
         } catch(e) {
-            print("ERROR: "+e);
+            system.log.warn(e);
         }
     }
 }
@@ -157,7 +156,6 @@ var ConsoleMessageListener = {
     },
 
     onMessageReceived: function(context, message) {
-
         try {
             
             var data = {
@@ -175,6 +173,8 @@ var ConsoleMessageListener = {
             FIREBUG_CONSOLE.logRep(renderer.getRep(), data, context.FirebugNetMonitorListener.context);
             
         } catch(e) {
+
+            system.log.warn(e);
             
             FIREBUG_CONSOLE.error("[FireConsole] Error while logging template", e);
             
@@ -186,7 +186,7 @@ var ConsoleMessageListener = {
 var ConsoleTemplateEventListener =  {
     onEvent: function(name, args) {
         if(name=="click") {
-            VARIABLE_VIEWER.showFromConsoleRow(args[1]);           
+            APP.getChrome().getInstance("VariableViewer").showFromConsoleRow(args[1]);           
         }
     }
 }

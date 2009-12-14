@@ -200,6 +200,7 @@ function getTmpPath(logger, filename) {
             try {
                 file.create(Ci.nsILocalFile.DIRECTORY_TYPE, 0777);
             } catch (e) {
+                system.log.warn(e);
                 logger.error("failed to create target directory for extraction " +
                     " file = " + file.path + ", exception = " + e, "red");
             }
@@ -271,6 +272,7 @@ function unzip(archiveFile, targetFile, onlyFromPath, logger) {
             try {
                 target.create(Ci.nsILocalFile.DIRECTORY_TYPE, 0777);
             } catch (e) {
+                system.log.warn(e);
                 logger.error("failed to create target directory for extraction " +
                     " file = " + target.path + ", exception = " + e, "red");
             }
@@ -288,6 +290,7 @@ function unzip(archiveFile, targetFile, onlyFromPath, logger) {
         try {
             target.create(Ci.nsILocalFile.DIRECTORY_TYPE, 0777);
         } catch (e) {
+            system.log.warn(e);
             logger.error("failed to create target file for extraction " +
                 " file = " + target.path + ", exception = " + e, "red");
         }

@@ -27,6 +27,7 @@ template.onLoad = function(pack, tags){with(tags) {
                 try {
                     rep = this.getRepForId(object["__fc_tpl_id"]);
                 } catch(e) {
+                    system.log.warn(e);
                     FIREBUG_CONSOLE.error("Found __fc_tpl_id in object but cannot locate template: " + object["__fc_tpl_id"]);
                 }
                 if(!rep) {

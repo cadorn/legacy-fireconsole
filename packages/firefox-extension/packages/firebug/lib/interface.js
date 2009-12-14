@@ -1,70 +1,26 @@
 
-// @see http://groups.google.com/group/firebug-working-group/web/firebug-events-listeners
+/*
+ * Wrap firebug in multiple windows using one listener interface.
+ * 
+ * @see http://groups.google.com/group/firebug-working-group/web/firebug-events-listeners
+ */
+
 
 exports.getModuleId = function() {
     return module.id;
 }
 
 var UTIL = require("util", "nr-common");
-var CHROME = require("chrome", "nr-common");
-
-var Firebug,
-    FBL,
-    Domplate,
-    FirebugModule,
-    FirebugInterface,
-    Listener,
-    ModuleListener,
-    NetMonitorListener,
-    ConsoleListener;
-
-var activeContext;
-
-FirebugInterface = {
-    
-    listeners: [],
-
-    addListener: function(type, events, listener)
-    {
-        switch (type) {
-            case 'NetMonitor':
-                NetMonitorListener._addListener(events, listener);
-                break;
-            case 'Module':
-                ModuleListener._addListener(events, listener);
-                break;
-            case 'Console':
-                ConsoleListener._addListener(events, listener);
-                break;
-        }
-    },
-
-    removeListener: function(type, listener)
-    {
-        switch (type) {
-            case 'NetMonitor':
-                NetMonitorListener._removeListener(listener);
-                break;
-            case 'Module':
-                ModuleListener._removeListener(listener);
-                break;
-            case 'Console':
-                ConsoleListener._removeListener(listener);
-                break;
-        }
-    }
-}
+var APP = require("app", "nr-common").getApp();
 
 
-Listener = {
+var Listener = {
   
-    _target: null,
     listeners: [],
   
     _addListener: function(events, listener)
     {
         this.listeners.push([events, listener]);
-        this._attach();
     },
     
     _removeListener: function(listener)
@@ -74,32 +30,11 @@ Listener = {
                 this.listeners.splice(i,1);
             }
         }
-        if(this.listeners.length==0) {
-            this._unattach();
-        }
     },
     
-    _attach: function()
+    _attach: function(target)
     {
-        for( var i in FirebugInterface.listeners ) {
-            if(FirebugInterface.listeners[i]===this) {
-                // Already registered
-                return;
-            }
-        }
-        FirebugInterface.listeners.push(this);
-        
-        if (this._target) {
-            this._target.addListener(this);
-        }
-    },
-    
-    _unattach: function()
-    {
-        if (this._target) {
-            this._target.removeListener(this);
-        }
-        UTIL.array.removeItem(FirebugInterface.listeners, this);
+        target.addListener(this);
     },
     
     _dispatch: function(event, arguments)
@@ -112,23 +47,132 @@ Listener = {
     },
 }
 
+
+/**********************************************************************
+ * Firebug.Module
+ **********************************************************************/
+var ModuleListener = UTIL.object.extend(Listener, {});
+// see Interface for implementation
+
+
+/**********************************************************************
+ * Firebug.NetMonitor
+ **********************************************************************/
+var NetMonitorListener = UTIL.object.extend(Listener, {
     
+    /**********************************************************************
+     * Network Activity
+     **********************************************************************/
+    
+    /**
+     * A network request has been sent.
+     */
+    onRequest: function(context, file)
+    {
+        this._dispatch('onRequest', [context, file]);
+    },
+    
+    /**
+     * A network response has been receivied, but not yet processed by Firebug.
+     */
+    onExamineResponse: function(context, request)
+    {
+        this._dispatch('onExamineResponse', [context, request]);
+    },
+    
+    /**
+     * A network response has been received.
+     */
+    onResponse: function(context, file)
+    {
+        this._dispatch('onResponse', [context, file]);
+    },
+    
+    /**
+     * Entire response body has been downloaded.
+     */
+    onResponseBody: function(context, file)
+    {
+        this._dispatch('onResponseBody', [context, file]);
+    },
+    
+    /**********************************************************************
+     * Request Info
+     **********************************************************************/
+    
+    /**
+     * A network reqeust has been expanded and all info-tabs should be created now.
+     */
+    initTabBody: function(infoBox, file)
+    {
+        this._dispatch('initTabBody', [infoBox, file]);
+    },
+    
+    /**
+     * A network request has been collapsed.
+     */
+    destroyTabBody: function(infoBox, file)
+    {
+        this._dispatch('destroyTabBody', [infoBox, file]);
+    },
+    
+    /**
+     * A tab has been selected and it's body should be updated now.
+     */
+    updateTabBody: function(infoBox, file, context)
+    {
+        this._dispatch('updateTabBody', [infoBox, file, context]);
+    }
+});
+
+/**********************************************************************
+ * Firebug.Console
+ **********************************************************************/
+
+var ConsoleListener = UTIL.object.extend(Listener, {
+        
+    log: function(context, object, className, sourceLink)
+    {
+        this._dispatch('log', [context, object, className, sourceLink]);
+    },
+
+    logFormatted: function(context, objects, className, sourceLink)
+    {
+        this._dispatch('logFormatted', [context, objects, className, sourceLink]);
+    },
+    
+    /**
+     * Firebug's console object has been inserted into a page.
+     */
+    onConsoleInjected: function(context, win)
+    {
+        this._dispatch('onConsoleInjected', [context, win]);
+    }
+});
 
 
-exports.init = function(chrome)
-{
+var interfaces = {
+    "list": [],
+    "map": {}
+};
+
+var Interface = exports.Interface = function(global) {
+    var self = this;
+    
+    self.global = global;
+    
     // only FBL is available at this time - firebug is still starting up
-    FBL = chrome.FBL;
+    self.FBL = global.FBL;
     
-    FBL.ns(function() { with (FBL) {
+    self.FBL.ns(function() { with (self.FBL) {
 
-        Domplate = chrome.domplate;
+        self.Domplate = global.domplate;
 
         // firebug is now initialized
-        Firebug = chrome.Firebug;
+        var Firebug = self.Firebug = global.Firebug;
 
         // create a module to interact with firebug
-        FirebugModule = Firebug.__PP__Module = extend(Firebug.Module,
+        self.FirebugModule = Firebug.__PP__Module = extend(Firebug.Module,
         {
             initialize: function(owner)
             {
@@ -141,18 +185,16 @@ exports.init = function(chrome)
                 
                 // Remove listeners from firebug in reverse order.
                 // This is done in case users of this module did not remove their listeners.
-                for( var i = FirebugInterface.listeners.length-1 ; i>= 0 ; i-- ) {
-                    FirebugInterface.listeners[i]._unattach();
+                for( var i = listeners.length-1 ; i>= 0 ; i-- ) {
+                    listeners[i]._unattach();
                 }
             }
         });
-                
 
+        
         /**********************************************************************
          * Firebug.Module
          **********************************************************************/
-        ModuleListener = UTIL.object.extend(Listener, {});
-
         (function() {
         
             /**********************************************************************
@@ -173,7 +215,7 @@ exports.init = function(chrome)
             this.destroyContext = function(context, state)
             {
                 ModuleListener._dispatch('destroyContext', [context, state]);
-                activeContext = null;
+                self.activeContext = null;
             }
         
             /**
@@ -181,7 +223,7 @@ exports.init = function(chrome)
              */
             this.showContext = function(browser, context)
             {
-                activeContext = context;
+                self.activeContext = context;
                 ModuleListener._dispatch('showContext', [browser, context]);
             }
             
@@ -193,153 +235,117 @@ exports.init = function(chrome)
                 ModuleListener._dispatch('reattachContext', [browser, context]);
             }
             
-        }).apply(FirebugModule);
+        }).apply(self.FirebugModule);
 
-        
-        
-        /**********************************************************************
-         * Firebug.NetMonitor
-         **********************************************************************/
-        NetMonitorListener = UTIL.object.extend(Listener, {
-            
-            _target: Firebug.NetMonitor,
-            
-            /**********************************************************************
-             * Network Activity
-             **********************************************************************/
-            
-            /**
-             * A network request has been sent.
-             */
-            onRequest: function(context, file)
-            {
-                this._dispatch('onRequest', [context, file]);
-            },
-            
-            /**
-             * A network response has been receivied, but not yet processed by Firebug.
-             */
-            onExamineResponse: function(context, request)
-            {
-                this._dispatch('onExamineResponse', [context, request]);
-            },
-            
-            /**
-             * A network response has been received.
-             */
-            onResponse: function(context, file)
-            {
-                this._dispatch('onResponse', [context, file]);
-            },
-            
-            /**
-             * Entire response body has been downloaded.
-             */
-            onResponseBody: function(context, file)
-            {
-                this._dispatch('onResponseBody', [context, file]);
-            },
-            
-            /**********************************************************************
-             * Request Info
-             **********************************************************************/
-            
-            /**
-             * A network reqeust has been expanded and all info-tabs should be created now.
-             */
-            initTabBody: function(infoBox, file)
-            {
-                this._dispatch('initTabBody', [infoBox, file]);
-            },
-            
-            /**
-             * A network request has been collapsed.
-             */
-            destroyTabBody: function(infoBox, file)
-            {
-                this._dispatch('destroyTabBody', [infoBox, file]);
-            },
-            
-            /**
-             * A tab has been selected and it's body should be updated now.
-             */
-            updateTabBody: function(infoBox, file, context)
-            {
-                this._dispatch('updateTabBody', [infoBox, file, context]);
-            }
-        });
-
-        /**********************************************************************
-         * Firebug.Console
-         **********************************************************************/
-        
-        ConsoleListener = UTIL.object.extend(Listener, {
-            
-            _target: Firebug.Console,
-            
-            log: function(context, object, className, sourceLink)
-            {
-                this._dispatch('log', [context, object, className, sourceLink]);
-            },
-
-            logFormatted: function(context, objects, className, sourceLink)
-            {
-                this._dispatch('logFormatted', [context, objects, className, sourceLink]);
-            },
-            
-            /**
-             * Firebug's console object has been inserted into a page.
-             */
-            onConsoleInjected: function(context, win)
-            {
-                this._dispatch('onConsoleInjected', [context, win]);
-            }
-        });
 
         // register the module with firebug
         Firebug.registerModule(Firebug.__PP__Module);
     }});
 }
 
+Interface.prototype.attachListeners = function() {
+    NetMonitorListener._attach(this.Firebug.NetMonitor);
+    ConsoleListener._attach(this.Firebug.Console);
+}
+
+exports.init = function(global)
+{
+    // create a new interface instance for every new browser window
+    interfaces.list.push(new Interface(global));
+}
+APP.subscribeTo("newChrome", function(chrome) {
+    // Now that we have a narwhalrunner chrome object we attach it to the interface
+    // already created above. This second step is required as firebug modules must be initialized
+    // while firebug starts up.
+    var global = chrome.getGlobal();
+    for( var i=0 ; i<interfaces.list.length ; i++ ) {
+        if(interfaces.list[i].global===global) {
+            interfaces.list[i].chrome = chrome;
+            interfaces.map[chrome.chromeIndex] = interfaces.list[i];
+            interfaces.list[i].attachListeners();
+            break;
+        }
+    }  
+});
+
+exports.getInterface = function() {
+    if(!interfaces.map[APP.getChrome().chromeIndex]) {
+        throw new Error("Firebug interface not available yet!");
+    }
+    return interfaces.map[APP.getChrome().chromeIndex];
+};
+
+
+
+exports.addListener = function(type, events, listener)
+{
+    switch (type) {
+        case 'NetMonitor':
+            NetMonitorListener._addListener(events, listener);
+            break;
+        case 'Module':
+            ModuleListener._addListener(events, listener);
+            break;
+        case 'Console':
+            ConsoleListener._addListener(events, listener);
+            break;
+    }
+}
+
+exports.removeListener = function(type, listener)
+{
+    switch (type) {
+        case 'NetMonitor':
+            NetMonitorListener._removeListener(listener);
+            break;
+        case 'Module':
+            ModuleListener._removeListener(listener);
+            break;
+        case 'Console':
+            ConsoleListener._removeListener(listener);
+            break;
+    }
+}
+
 exports.isAvailable = function() {
-    return !(!Firebug);
+    return (!!exports.getInterface().Firebug);
 }
 
 exports.getDomplate = function()
 {
-    if(!Domplate) {
+    if(!exports.getInterface().Domplate) {
         throw "Domplate not initialized";
     }
-    return Domplate;
+    return exports.getInterface().Domplate;
 }
 
 exports.getFirebug = function()
 {
-    if(!Firebug) {
+    if(!exports.getInterface().Firebug) {
         throw "Firebug not initialized";
     }
-    return Firebug;
+    return exports.getInterface().Firebug;
 }
 
 exports.getFBL = function()
 {
-    if(!FBL) {
+    if(!exports.getInterface().FBL) {
         throw "FBL not initialized";
     }
-    return FBL;
+    return exports.getInterface().FBL;
 }
 
 exports.getActiveContext = function()
 {
-    return activeContext;
+    return exports.getInterface().activeContext;
 }
 
 exports.getReps = function() {
-    var chrome = CHROME.get();
-    if(!UTIL.has(chrome, "FirebugReps")) {
+    var global = exports.getInterface().chrome.getGlobal();
+    if(!UTIL.has(global, "FirebugReps")) {
         throw "FirebugReps not available usually because firebug is not initialized";
     }
-    return chrome.FirebugReps;
+    return global.FirebugReps;
 }
 
 exports.getVersion = function()
@@ -350,18 +356,6 @@ exports.getVersion = function()
 exports.getConsole = function()
 {
     return exports.getFirebug().Console;
-}
-
-exports.addListener = function(type, events, listener)
-{
-    exports.getFirebug();   // ensure firebug is initialized
-    FirebugInterface.addListener(type, events, listener);
-}
-
-exports.removeListener = function(type, listener)
-{
-    exports.getFirebug();   // ensure firebug is initialized.
-    FirebugInterface.removeListener(type, listener);
 }
 
 exports.enable = function()

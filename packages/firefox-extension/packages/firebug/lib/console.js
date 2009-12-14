@@ -156,7 +156,6 @@ exports.CSSTracker = function() {
     
     self.url = null;
     self.css = [];
-    self.fileMTimes = {};
     
     self.registerCSS = function(css, preProcessCallback, forceReload)
     {
@@ -195,26 +194,17 @@ exports.CSSTracker = function() {
             found,
             code;
         self.css.forEach(function(css) {
-            // css[2] checks forceReload
-            if(!(force || css[2]===true) && UTIL.has(self.fileMTimes, css[0].path)) {
-                if(""+self.fileMTimes[css[0].path]==""+FILE.Path(css[0].path).mtime()) {
-                    // css file has not changed
-                    return;
-                }
-            }
             file = FILE.Path(css[0].path);
-            self.fileMTimes[css[0].path] = file.mtime();
             id = idPrefix + STRUCT.bin2hex(MD5.hash(css[0].path));
             found = doc.getElementById(id);
-            if(found && css[2]!==true) {
+            if(found && css[2]!==true) {    // css[2] checks forceReload
                 // stylesheet already added
                 return;
             }
             try {
                 code = css[1](file.read(), css[0]);
             } catch(e) {
-                print("Error in cssProcessor callback: " + css[1]);
-                throw e;
+                system.log.error(e);
             }
             if(found) {
                 found.innerHTML = code;

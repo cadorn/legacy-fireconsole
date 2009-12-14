@@ -4,7 +4,6 @@ function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
 
 var UTIL = require("util", "nr-common");
-var CHROME_UTIL = require("chrome-util", "nr-common");
 var APP = require("app", "nr-common").getApp();
 
 
@@ -78,7 +77,7 @@ IFramePanel.prototype.init = function (options) {
             // move or resize panel if change is more than 5 pixels in any direction
             if(xc >=5 || xc <=-5 || yc>=5 || yc<=-5) {
                 if(moveMode=="nw") {
-                    var browser = CHROME_UTIL.getBrowser().selectedBrowser;
+                    var browser = APP.getChrome().getBrowser().selectedBrowser;
                     // NOTE: We need to add the browser.contentWindow position to anchor the panel
                     //       origin which results in very odd x and y values. This is likely a bug in xulrunner.
                     self.binding.panel.moveTo(
@@ -174,7 +173,7 @@ IFramePanel.prototype.init = function (options) {
 
 
 IFramePanel.prototype._createPanel = function(id) {
-    return APP.getBinding(module["package"], "PanelList").getObject().createIFramePanel(id);
+    return APP.getChrome().getBinding(module["package"], "PanelList").getObject().createIFramePanel(id);
 };
 
 IFramePanel.prototype.getBinding = function() {
@@ -229,7 +228,7 @@ IFramePanel.prototype.show = function()
     
     if(!this.x || !this.y || !this.width || !this.height) {
         
-        var browser = CHROME_UTIL.getBrowser().selectedBrowser;
+        var browser = APP.getChrome().getBrowser().selectedBrowser;
 
         var bx = browser.boxObject.screenX;
         var by = browser.boxObject.screenY;

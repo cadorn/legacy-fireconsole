@@ -32,13 +32,12 @@ exports.initialize = function(options)
     httpheaderChannel = WILDFIRE.HttpHeaderChannel();
     httpheaderChannel.addReceiver(templatePackReceiver);
     httpheaderChannel.addReceiver(fireConsoleReceiver);
-    
+
     FIREBUG_INTERFACE.addListener('NetMonitor', ['onResponseBody'], httpheaderChannel.getFirebugNetMonitorListener());
     FIREBUG_INTERFACE.addListener('Console', ['onConsoleInjected'], FirebugConsoleListener);
 
     contentEventListener = options.ContentEventListener;
 }
-
 
 exports.shutdown = function()
 {
@@ -70,7 +69,7 @@ var OnFireConsoleContentEvent = function(Event) {
         contentEventListener.onEvent(Event.target.ownerDocument.defaultView, eventName, params);
 
     } catch(e) {
-        print("ERROR: " + e);
+        system.log.error(e);
     }
 };
 

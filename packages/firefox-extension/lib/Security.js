@@ -5,7 +5,6 @@ function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 var UTIL = require("util");
 var APP = require("app", "nr-common").getApp();
 var IFRAME_PANEL = require("IFramePanel", "xul-ui");
-var CHROME_UTIL = require("chrome-util", "nr-common");
 var DEV = require("console", "dev-sidebar");
 
 
@@ -35,7 +34,7 @@ exports.installTemplatePack = function(info, installCallback) {
     var data = UTIL.copy(info);
     UTIL.update(data, {
         "launchURLCallback": function(url) {
-            CHROME_UTIL.openNewTab(url);
+            APP.getChrome().openNewTab(url);
         },
         "confirmInstallCallback": function() {
             installCallback(iframe.contentWindow, function () {
