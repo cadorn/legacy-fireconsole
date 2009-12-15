@@ -107,7 +107,7 @@ exports.TemplatePack = function(id, info) {
 
         var uri = URI.parse(info["package.descriptor"].location);
         
-        if(uri.protocol=="file") {
+        if(uri.scheme=="file") {
             // allow local packs without dialog
             var sourcePath = FILE.Path(uri.path);
             var targetPath = FILE.Path(getTemplatePackPath().path);

@@ -35,7 +35,14 @@ var Renderer = function(options) {
 
     this.template = pack.getTemplate(parts[1]);
     
-    
+    if(!this.template) {
+        var error = new Error("Template not found in pack");
+        error.notes = {
+            "id": options.template
+        }
+        throw error;
+    }
+
     var self = this;
     this.getRep = function(freshCompile) {
 
@@ -75,7 +82,7 @@ var Renderer = function(options) {
         // reloading
         this.template._reload = false;
         if(options.meta && options.meta["fc.tpl.reload"]) {
-            template._reload = true;
+            self.template._reload = true;
         }
     
         rep._resourceListener = {
