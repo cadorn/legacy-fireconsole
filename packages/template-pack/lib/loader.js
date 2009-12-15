@@ -59,15 +59,10 @@ function getLogger() {
 
 
 exports.requirePack = function(id, force, notSandboxed) {
-    try {
-        if(force || !UTIL.has(loadedPacks, id)) {
-            loadedPacks[id] = loadTemplatePack(id, force, notSandboxed);
-        }
-        return loadedPacks[id];
-    } catch(e) {
-        print("Error loading template pack: " + id);
-        print("ERROR: " + e);
+    if(force || !UTIL.has(loadedPacks, id)) {
+        loadedPacks[id] = loadTemplatePack(id, force, notSandboxed);
     }
+    return loadedPacks[id];
 }
 
 var sandboxRequire;
@@ -85,8 +80,9 @@ function loadTemplatePack(id, force, notSandboxed) {
         // TODO: Properly destroy old sandbox for better memory usage?
         var ssystem = UTIL.copy(require("system"));
         // Load minimal system
-        var paths = UTIL.copy(require.paths).splice(0,3);
-        var loader = LOADER({"paths": paths});
+        var loader = LOADER({
+            "paths": UTIL.copy(require.paths)
+        });
         var sandbox = SANDBOX({
             "system": ssystem,
             "loader": loader,

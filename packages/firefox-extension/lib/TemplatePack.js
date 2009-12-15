@@ -114,16 +114,12 @@ exports.TemplatePack = function(id, info) {
             if(!targetPath.dirname().exists()) {
                 targetPath.dirname().mkdirs();
             }
-
             // on windows we copy, on unix we link
             if(/\bwindows\b/i.test(system.os) || /\bwinnt\b/i.test(system.os)) {
-                // TODO: Test
-//                FILE.copyTree(sourcePath, targetPath);
-                FIREBUG_CONSOLE.error("[fireconsole] Local Template Packs are not supported on windows at this time! Requested Path: "+uri.path);
+                FILE.copyTree(sourcePath, targetPath);
             } else {
                 sourcePath.symlink(targetPath);
             }
-
             resetCache();
             return;
         } else
