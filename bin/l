@@ -1,0 +1,3 @@
+#!/bin/bash
+
+nr launch --dev --app firefox --profile dev

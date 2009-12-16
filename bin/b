@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tusk package --package firefox-extension build

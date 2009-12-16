@@ -1,0 +1,3 @@
+#!/usr/bin/env narwhal
+
+require('launch-test').main(system.args);

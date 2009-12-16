@@ -4,7 +4,7 @@ var SANDBOX = require("sandbox").Sandbox;
 var LOADER = require("loader").Loader;
 var PACKAGES = require("packages");
 var DOMPLATE = require("domplate", "domplate");
-
+var JAR_LOADER = require("jar-loader");
 
 var sandboxDirty = true;
 var sandboxPackages = [];
@@ -87,7 +87,9 @@ function loadTemplatePack(id, force, notSandboxed) {
             "system": ssystem,
             "loader": loader,
             "modules": {
-                "system": ssystem
+                "system": ssystem,
+                // TODO: This needs to be moved out of this module and package to make it more generic
+                "jar-loader": JAR_LOADER        // prevents module from being re-loaded in the sandbox
             }
         });
         sandbox.force("system");
