@@ -76,22 +76,26 @@
         }
     </style>
     <script>
-        var packData;
+        var packData,
+            map;
         function setData(data) {
             packData = data;
-            var obj = document.getElementById("domain");
-            obj.innerHTML = data.domain;
-            obj = document.getElementById("project-url");
-            obj.innerHTML = data["package.project.url"];
-            obj = document.getElementById("source-url");
-            obj.innerHTML = data["package.source.url"];
-            obj = document.getElementById("download-url");
-            obj.innerHTML = data["package.descriptor"].location;
-            obj = document.getElementById("profile-fireconsole-path");
-            obj.innerHTML = data["profile.fireconsole.path"];
+            map = {
+                "domain": packData.domain,
+                "project-url": packData["package"].homepage,
+                "source-url": packData["package"].repositories[0].url,
+                "download-url": packData["package"].download.location,
+                "profile-fireconsole-path": packData.installPath
+            };
+            for( var id in map ) {
+                document.getElementById(id).innerHTML = map[id];
+            }
+            var obj = document.getElementById("install-log");
+            obj.setAttribute("class", "");
+            obj.innerHTML = "";
         }
-        function launchURL(type) {
-            packData.launchURLCallback(packData["package." + type + ".url"]);
+        function launchURL(id) {
+            packData.launchURLCallback(map[id]);
         }
         function confirmInstall() {
             packData.confirmInstallCallback();
@@ -115,9 +119,9 @@
         
         <div class="template-pack-info">
             <h1>Template Pack Information</h1>
-            <p>Project: <a id="project-url" href="javascript:launchURL('project');"></a></p>
-            <p>Source: <a id="source-url" href="javascript:launchURL('source');"></a></p>
-            <p>Download: <a id="download-url" href="javascript:launchURL('download.archive');"></a></p>
+            <p>Project: <a id="project-url" href="javascript:launchURL('project-url');"></a></p>
+            <p>Source: <a id="source-url" href="javascript:launchURL('source-url');"></a></p>
+            <p>Download: <a id="download-url" href="javascript:launchURL('download-url');"></a></p>
         </div>
         
         <p>Installing <i>Template Packs</i> poses a <span style="color: #FF0000; font-weight: bold;">security risk</span><sup>*</sup> and you are encouraged to
@@ -125,7 +129,7 @@
         
         <p style="text-align: right; font-style: italic; font-size: 10px;"><sup>*</sup> We are working on sandboxing template packs to remove any security hazards.</p>
         
-        <p><i>Template Packs</i> are installed to: <span id="profile-fireconsole-path"></span></p>
+        <p><i>Template Packs</i> are installed to: <a id="profile-fireconsole-path" href="javascript:launchURL('profile-fireconsole-path');"></a></p>
         
         <br/>
         <br/>

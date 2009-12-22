@@ -6,7 +6,19 @@ var UTIL = require("util");
 var APP = require("app", "nr-common").getApp();
 var IFRAME_PANEL = require("IFramePanel", "xul-ui");
 var DEV = require("console", "dev-sidebar");
+var JSON_STORE = require("json-store", "nr-extra");
 
+
+var domainPolicyFile = APP.getChrome().getProfilePath().join("FireConsole", "Config", "DomainPolicies.json"),
+    domainPolicyStore = new JSON_STORE.JsonStore(domainPolicyFile),
+    domainPolicies;
+
+if(!domainPolicyStore.exists()) {
+    domainPolicyStore.init();
+    domainPolicyStore.set({
+        "schema": "0.1"
+    });
+}
 
 var templatePackAuthorizationPanel;
 
@@ -24,20 +36,57 @@ exports.initialize = function()
     });
 }
 
-exports.shutdown = function()
-{
+exports.authorizeTemplatePack = function(domain, descriptor) {
+    
+    var id = descriptor.getId();
+
+    if(!domainPolicies) {
+        domainPolicies = domainPolicyStore.get();
+    }
+    
+    if(domainPolicies[domain] && domainPolicies[domain].templatePacks[id]) {
+        return true;
+    }
+
+    exports.installTemplatePack(domain, descriptor, function(feedback, hide) {
+        hide();        
+        return true;
+    });
+    
+    return false;
 }
 
-exports.installTemplatePack = function(info, installCallback) {
+exports.addDomainForTemplatePack = function(domain, descriptor) {
+    var packId = descriptor.getId();
+    if(!domainPolicies) {
+        domainPolicies = domainPolicyStore.get();
+    }
+    if(!domainPolicies[domain]) {
+        domainPolicies[domain] = {"templatePacks": {}};
+    }
+    if(domainPolicies[domain].templatePacks[packId]) {
+        return;
+    }
+    domainPolicies[domain].templatePacks[packId] = true;
+    domainPolicyStore.set(domainPolicies);
+}
+
+exports.installTemplatePack = function(domain, descriptor, installCallback) {
     templatePackAuthorizationPanel.show();
     var iframe = templatePackAuthorizationPanel.getIFrame();
-    var data = UTIL.copy(info);
+
+    var data = {
+        "package": descriptor.getInfo(),
+        "domain": domain,
+        "installPath": APP.getChrome().getProfilePath().join("FireConsole", "TemplatePacks")
+    };
     UTIL.update(data, {
         "launchURLCallback": function(url) {
             APP.getChrome().openNewTab(url);
         },
         "confirmInstallCallback": function() {
             installCallback(iframe.contentWindow, function () {
+                exports.addDomainForTemplatePack(domain, descriptor);
                 templatePackAuthorizationPanel.hide();
             });
         },

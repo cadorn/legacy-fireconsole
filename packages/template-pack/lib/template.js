@@ -8,32 +8,35 @@ exports.Template = function(templateModule) {
     var Template = function() {};
     var self = new Template();
 
-    self._reload = false;
+    var rawRep;
 
     self.id = determineId();
-
-    self.setPack = function(pack) {
-        self.pack = pack;
-
-        self.rep = getRep();
-        self.getRep = function(freshCompile) {
-            if(freshCompile) {
-                return getRep();
-            }
-            return self.rep;
-        }
-    }
 
     self.toString = function() {
         return "Template["+templateModule.path+"]";
     }
     
-    function getRep() {
+    self.newInstance = function(pack) {
+        var template = Object.create(self);
+        template.pack = pack;
+
+        template.rep = getRep(pack);
+        template.getRep = function(freshCompile) {
+            if(freshCompile) {
+                return getRep(pack);
+            }
+            return template.rep;
+        }
+
+        return template;
+    }
+    
+    function getRep(pack) {
         var rep = {};
 
         // inject resources
         rep._resources = function() {
-            return self.pack.getResources();
+            return pack.getResources();
         };
 
         // inject general util functions
@@ -46,7 +49,7 @@ exports.Template = function(templateModule) {
                 var id = node.getTemplateId();
                 if(id) return rep.getRepForId(id);
             }
-            var template = self.pack.seekTemplate(node, true, self._reload);
+            var template = pack.seekTemplate(node, true);
             if(!template) {
                 var error = new Error("No template found for node");
                 error.notes = {
@@ -58,7 +61,7 @@ exports.Template = function(templateModule) {
         };
         rep.getRepForId = function(id)
         {
-            var template = self.pack.getTemplate(id, true, self._reload);
+            var template = pack.getTemplate(id, true);
             if(!template) {
                 var error = new Error("No template found for ID");
                 error.notes = {
@@ -71,8 +74,13 @@ exports.Template = function(templateModule) {
         rep.dispatchEvent = function(name, args) {
         }
         
+        if(!rawRep) {
+            // TODO: pass a sanitized pack that does not include instance methods
+            rawRep = self.onLoad(pack, DOMPLATE.tags);
+        }
+        
         // fetch the rep from the template and merge our additions
-        return DOMPLATE.domplate(self.onLoad(self.pack, DOMPLATE.tags), rep);
+        return DOMPLATE.domplate(rawRep, rep);
     }
 
     function determineId() {

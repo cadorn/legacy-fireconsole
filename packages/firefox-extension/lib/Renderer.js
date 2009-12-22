@@ -5,7 +5,7 @@ var TEMPLATE_PACK = require("./TemplatePack");
 var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 var FIREBUG_CONSOLE = require("console", "firebug");
 var DOMPLATE = require("domplate", "domplate");
-
+var SECURITY = require("./Security");
 
 DOMPLATE.DomplateDebug.console = FIREBUG_CONSOLE;
 
@@ -15,25 +15,37 @@ exports.factory = function(options) {
 };
 
 var Renderer = function(options) {
+    
+    var domainCallback = function() { return getDomain(); };
+
+    var reload = false;
 
     if(options.meta) {
         // grouping
         if(UTIL.has(options.meta, "fc.group.start") && options.meta["fc.group.start"]) {
-            var pack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps", false, true);
-            this.getRep = function() { return pack.getTemplate("ConsoleOpenGroup").rep; };
+            var pack = TEMPLATE_PACK.requirePack(domainCallback, "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
+            this.getRep = function() { return pack.getTemplate(domainCallback, "ConsoleOpenGroup", false, true).rep; };
             return;
         } else
         if(UTIL.has(options.meta, "fc.group.end") && options.meta["fc.group.end"]) {
-            var pack = TEMPLATE_PACK_LOADER.requirePack("github.com/cadorn/fireconsole/raw/master/firefox-extension-reps", false, true);
-            this.getRep = function() { return pack.getTemplate("ConsoleCloseGroup").rep; };
+            var pack = TEMPLATE_PACK.requirePack(domainCallback, "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
+            this.getRep = function() { return pack.getTemplate(domainCallback, "ConsoleCloseGroup", false, true).rep; };
             return;
         }
+
+        if(options.meta["fc.tpl.reload"]) {
+            reload = true;
+        }
+    }
+    
+    var parts = options.template.split("#");
+    
+    var pack = TEMPLATE_PACK.requirePack(domainCallback, parts[0]);
+    if(!pack) {
+        throw new Error("Template pack for id '"+parts[0]+"' not installed nor registered");
     }
 
-    var parts = options.template.split("#");
-    var pack = TEMPLATE_PACK_LOADER.requirePack(parts[0], false, true);
-
-    this.template = pack.getTemplate(parts[1]);
+    this.template = pack.getTemplate(domainCallback, parts[1], reload, true);
     
     if(!this.template) {
         var error = new Error("Template not found in pack");
@@ -79,12 +91,6 @@ var Renderer = function(options) {
             rep._debug = true;
         }
     
-        // reloading
-        this.template._reload = false;
-        if(options.meta && options.meta["fc.tpl.reload"]) {
-            self.template._reload = true;
-        }
-    
         rep._resourceListener = {
             register: function(resources) {
                 if(!options.cssTracker) {
@@ -93,7 +99,7 @@ var Renderer = function(options) {
                 try {
                     for( var key in resources ) {
                         if(resources[key].type=="css") {
-                            options.cssTracker.registerCSS(resources[key], cssProcessor, self.template._reload);
+                            options.cssTracker.registerCSS(resources[key], cssProcessor, reload);
                         }
                     }
                     if(options.document) {
@@ -112,6 +118,14 @@ var Renderer = function(options) {
         }
         
         return DOMPLATE.domplate(self.template.getRep(freshCompile), rep);
+    }
+    
+    
+    function getDomain() {
+        if(typeof options.domain == "function") {
+            return options.domain();
+        }
+        return options.domain;
     }
 };
 

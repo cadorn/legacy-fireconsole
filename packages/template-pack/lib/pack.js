@@ -14,8 +14,6 @@ exports.Pack = function(factoryModule) {
     var Pack = function() {};
     var self = new Pack();
     self.logger = logger;
-
-    var externalLoader = null;
     
     var templates = [];
     var templatesDict = {};
@@ -45,7 +43,6 @@ exports.Pack = function(factoryModule) {
     self.registerTemplate = function(id) {
         try {
             var template = require(id, factoryModule["package"]).template;
-            template.setPack(self);
             templates.push(template);
             templatesDict[template.id] = template;
         } catch(e) {
@@ -54,34 +51,43 @@ exports.Pack = function(factoryModule) {
             throw e;
         }
     }
+    
+    self.newInstance = function() {
+        
+        var externalLoader = null;
+        
+        var pack = Object.create(self);
 
-    self.getTemplate = function(id, checkExternal, forceReload) {
-        checkExternal = checkExternal || false;
-        if(!UTIL.has(templatesDict, id)) {
+        pack.getTemplate = function(id, checkExternal) {
+            checkExternal = checkExternal || false;
+            if(!UTIL.has(templatesDict, id)) {
+                if(checkExternal && externalLoader) {
+                    return externalLoader().getTemplateForId(id);
+                }
+                return false;
+            }
+            return templatesDict[id].newInstance(this);
+        }
+    
+        pack.seekTemplate = function(node, checkExternal) {
+            checkExternal = checkExternal || false;
+            for( var i=0 ; i<templates.length ; i++ ) {
+                if(UTIL.has(templates[i], "supportsNode") && templates[i].supportsNode(node)) {
+                    return templates[i].newInstance(this);
+                }
+            }
             if(checkExternal && externalLoader) {
-                return externalLoader.getTemplateForId(id, forceReload);
+                return externalLoader().seekTemplate(node);
             }
             return false;
         }
-        return templatesDict[id];
-    }
-
-    self.seekTemplate = function(node, checkExternal, forceReload) {
-        checkExternal = checkExternal || false;
-        for( var i=0 ; i<templates.length ; i++ ) {
-            if(UTIL.has(templates[i], "supportsNode") && templates[i].supportsNode(node)) {
-                return templates[i];
-            }
+    
+        pack.setExternalLoader = function(loader) {
+            externalLoader = loader;
         }
-        if(checkExternal && externalLoader) {
-            return externalLoader.seekTemplate(node, forceReload);
-        }
-        return false;
-    }
 
-    self.setExternalLoader = function(loader) {
-        externalLoader = loader;
+        return pack;
     }
-
+    
     return self;    
 }

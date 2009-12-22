@@ -17,6 +17,7 @@ var SECURITY = require("./Security");
 var TEMPLATE_PACK = require("./TemplatePack");
 var RENDERER = require("./Renderer");
 var DEV = require("console", "dev-sidebar");
+var URI = require("uri");
 var JSON = require("json");
 var RENDERER = require("./Renderer");
 
@@ -84,6 +85,11 @@ exports.chrome = function(chrome) {
     // Mark-up JS objects logged with __fc_tpl_id
     var renderer = RENDERER.factory({
         "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleMessage",
+        "domain": function() {
+            var context = FIREBUG_INTERFACE.getActiveContext();
+            if(!context) return null;
+            return context.window.location.hostname;
+        },
         "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
         "document": function() {
             var context = FIREBUG_INTERFACE.getActiveContext();
@@ -93,7 +99,6 @@ exports.chrome = function(chrome) {
         "eventListener": ConsoleTemplateEventListener
     });
     FIREBUG_INTERFACE.getFirebug().registerRep(renderer.getRep(true));
-    
 }
 
 var ContentEventListener = {
@@ -103,13 +108,7 @@ var ContentEventListener = {
                 require("./TestRunner").run(FIREBUG_CONSOLE);
                 break;
             case "registerTemplatePack":
-                var info = {};
-                UTIL.every(params.info, function(item) {
-                    info["package." + item[0]] = item[1];
-                });
-                info.domain = window.location.hostname;
-                // Load the template pack to make it available to the renderer
-                TEMPLATE_PACK.factory(info).load();
+                TEMPLATE_PACK.requirePack(window.location.hostname, TEMPLATE_PACK.newDescriptorForClientInfo(params.info));
                 break;
         }
     }
@@ -120,13 +119,7 @@ var TemplatePackReceiverListener = {
         try {
             var data = JSON.decode(message.getData());
             if(data.action=="require") {
-                var info = {};
-                UTIL.every(data.info, function(item) {
-                    info["package." + item[0]] = item[1];
-                });
-                info.domain = context.FirebugNetMonitorListener.context.window.location.hostname;
-                // Load the template pack to make it available to the renderer
-                TEMPLATE_PACK.factory(info).load();
+                TEMPLATE_PACK.requirePack(context.FirebugNetMonitorListener.context.window.location.hostname, TEMPLATE_PACK.newDescriptorForClientInfo(data.info));
             }
         } catch(e) {
             system.log.warn(e);
@@ -140,6 +133,7 @@ var ConsoleMessageListener = {
     onMessageGroupStart: function(context) {
         var renderer = RENDERER.factory({
             "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleOpenMessageGroup",
+            "domain": URI.parse(context.FirebugNetMonitorListener.file.href).domain,
             "cssTracker": FIREBUG_CONSOLE.getCSSTracker()
         });
         FIREBUG_CONSOLE.logRep(renderer.getRep(), {
@@ -150,6 +144,7 @@ var ConsoleMessageListener = {
     onMessageGroupEnd: function(context) {
         var renderer = RENDERER.factory({
             "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleCloseGroup",
+            "domain": URI.parse(context.FirebugNetMonitorListener.file.href).domain,
             "cssTracker": FIREBUG_CONSOLE.getCSSTracker()
         });
         FIREBUG_CONSOLE.logRep(renderer.getRep(), null, context.FirebugNetMonitorListener.context);
@@ -165,6 +160,7 @@ var ConsoleMessageListener = {
     
             var renderer = RENDERER.factory({
                 "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleMessage",
+                "domain": URI.parse(context.FirebugNetMonitorListener.file.href).domain,
                 "meta": data.meta,
                 "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
                 "eventListener": ConsoleTemplateEventListener

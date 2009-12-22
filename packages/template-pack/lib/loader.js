@@ -10,8 +10,6 @@ var sandboxDirty = true;
 var sandboxPackages = [];
 var repositoryPaths = [];
 var loadedPacks = {};
-var externalLoader;
-
 
 
 var externalLogger;
@@ -23,7 +21,6 @@ var logger = {
         if(externalLogger) externalLogger.log.apply(null, arguments);
     }
 }
-
 
 
 exports.markSandboxDirty = function() {
@@ -42,11 +39,6 @@ exports.addRepositoryPath = function(file) {
     sandboxDirty = true;
 }
 
-exports.setExternalLoader = function(loader) {
-    externalLoader = loader;    
-}
-
-
 
 function getLogger() {
     if(!logger) {
@@ -58,20 +50,20 @@ function getLogger() {
 }
 
 
-exports.requirePack = function(id, force, notSandboxed) {
+exports.requirePack = function(id, force, notSandboxed, externalLoader) {
     if(force || !UTIL.has(loadedPacks, id)) {
         loadedPacks[id] = loadTemplatePack(id, force, notSandboxed);
     }
-    return loadedPacks[id];
+    var pack = loadedPacks[id].newInstance();
+    pack.setExternalLoader(externalLoader);
+    return pack;
 }
 
 var sandboxRequire;
 function loadTemplatePack(id, force, notSandboxed) {
 
     if(notSandboxed) {
-        var pack = require("_pack_", id).Pack();
-        pack.setExternalLoader(externalLoader);
-        return pack;
+        return require("_pack_", id).Pack();
     }
 
     // Establish a sandbox for all template packs
@@ -111,7 +103,5 @@ function loadTemplatePack(id, force, notSandboxed) {
         // TODO: Potential security hole?
         sDOMPLATE.DomplateDebug.replaceInstance(DOMPLATE.DomplateDebug);
     }
-    var pack = sandboxRequire("_pack_", id).Pack();
-    pack.setExternalLoader(externalLoader);
-    return pack;
+    return sandboxRequire("_pack_", id).Pack();
 }

@@ -12,6 +12,10 @@
             "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
             "name": "common"
         },
+        "nr-extra": {
+            "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
+            "name": "extra"
+        },
         "dev-sidebar": {
             "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
             "name": "dev-sidebar"
