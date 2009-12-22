@@ -45,7 +45,9 @@ exports.main = function(args) {
     });
 */
 
-    SECURITY.initialize();
+    SECURITY.initialize({
+        "TemplatePackAuthorizationListener": TemplatePackAuthorizationListener
+    });
 
     MESSAGE_BUS.initialize({
         "ConsoleMessageListener": ConsoleMessageListener,
@@ -127,9 +129,39 @@ var TemplatePackReceiverListener = {
     }
 }
 
+var TemplatePackAuthorizationListener = {
+    isAuthorizing: false,
+    onAuthorize: function(domain, descriptor) {
+        this.isAuthorizing = true;
+    },
+    onDismiss: function(domain, descriptor) {
+        this.isAuthorizing = false;
+        if(ConsoleMessageListener.buffer.length>0) {
+            FIREBUG_CONSOLE.info("[FireConsole] Discarding message as required template pack is not authorized to load.");
+            ConsoleMessageListener.buffer = [];
+        }
+    },
+    onAccept: function(domain, descriptor) {
+        this.isAuthorizing = false;
+        if(ConsoleMessageListener.buffer.length>0) {
+            try {
+                for( var i=0 ; i<ConsoleMessageListener.buffer.length ; i++ ) {
+                    logMessage(ConsoleMessageListener.buffer[i][0], ConsoleMessageListener.buffer[i][1]);
+                }
+                ConsoleMessageListener.buffer = [];
+            } catch(e) {
+                system.log.warn(e);
+
+                FIREBUG_CONSOLE.error("[FireConsole] Error while logging buffered template", e);
+            }
+        }        
+    }
+};
 
 var ConsoleMessageListener = {
-    
+
+    buffer: [],
+
     onMessageGroupStart: function(context) {
         var renderer = RENDERER.factory({
             "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleOpenMessageGroup",
@@ -158,26 +190,34 @@ var ConsoleMessageListener = {
                 "og": OBJECT_GRAPH.generateFromMessage(message)
             }
     
-            var renderer = RENDERER.factory({
-                "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleMessage",
-                "domain": URI.parse(context.FirebugNetMonitorListener.file.href).domain,
-                "meta": data.meta,
-                "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
-                "eventListener": ConsoleTemplateEventListener
-            });
-    
-            FIREBUG_CONSOLE.logRep(renderer.getRep(), data, context.FirebugNetMonitorListener.context);
+            logMessage(context, data);
             
         } catch(e) {
+            
+            if(TemplatePackAuthorizationListener.isAuthorizing) {
+                // do not log error message yet - we are approving a template pack
+                this.buffer.push([context, data]);
+            } else {
+                system.log.warn(e);
 
-            system.log.warn(e);
-            
-            FIREBUG_CONSOLE.error("[FireConsole] Error while logging template", e);
-            
-            // TODO: Listen for template pack installs and re-log messages once pack is installed
+                FIREBUG_CONSOLE.error("[FireConsole] Error while logging template", e);
+            }
         }
     }
 }
+
+function logMessage(context, data) {
+    var renderer = RENDERER.factory({
+        "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleMessage",
+        "domain": URI.parse(context.FirebugNetMonitorListener.file.href).domain,
+        "meta": data.meta,
+        "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
+        "eventListener": ConsoleTemplateEventListener
+    });
+
+    FIREBUG_CONSOLE.logRep(renderer.getRep(), data, context.FirebugNetMonitorListener.context);
+}
+
 
 var ConsoleTemplateEventListener =  {
     onEvent: function(name, args) {

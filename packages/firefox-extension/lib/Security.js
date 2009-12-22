@@ -20,10 +20,13 @@ if(!domainPolicyStore.exists()) {
     });
 }
 
-var templatePackAuthorizationPanel;
+var templatePackAuthorizationPanel,
+    templatePackAuthorizationListener;
 
-exports.initialize = function()
+exports.initialize = function(options)
 {
+    templatePackAuthorizationListener = options["TemplatePackAuthorizationListener"];
+    
     templatePackAuthorizationPanel = new IFRAME_PANEL.IFramePanel().init({
         "id": "TemplatePackAuthorizationPanel",
         "title": "Install Template Pack",
@@ -72,6 +75,9 @@ exports.addDomainForTemplatePack = function(domain, descriptor) {
 }
 
 exports.installTemplatePack = function(domain, descriptor, installCallback) {
+
+    templatePackAuthorizationListener.onAuthorize(domain, descriptor);
+
     templatePackAuthorizationPanel.show();
     var iframe = templatePackAuthorizationPanel.getIFrame();
 
@@ -88,10 +94,12 @@ exports.installTemplatePack = function(domain, descriptor, installCallback) {
             installCallback(iframe.contentWindow, function () {
                 exports.addDomainForTemplatePack(domain, descriptor);
                 templatePackAuthorizationPanel.hide();
+                templatePackAuthorizationListener.onAccept(domain, descriptor);
             });
         },
         "dismissInstallCallback": function() {
             templatePackAuthorizationPanel.hide();
+            templatePackAuthorizationListener.onDismiss(domain, descriptor);
         }
     });
     iframe.contentWindow.setData(data);        
