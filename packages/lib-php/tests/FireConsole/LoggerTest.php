@@ -12,7 +12,7 @@ class FireConsole_LoggerTest extends PHPUnit_Framework_TestCase
     {
         $dispatcher = new FireConsole_Dispatcher();
                 
-        $channel = $dispatcher->setChannel('Test');
+        $channel = $dispatcher->getChannel();
 
         $var = array(
             'This is the table summary',
@@ -26,9 +26,9 @@ class FireConsole_LoggerTest extends PHPUnit_Framework_TestCase
         ));
         
         $messages = $channel->getOutgoing();
+
         foreach( $messages as $message ) {
-            $data = $message->getData();
-            $this->assertEquals($data, '{"origin":{"type":"array","array":[{"type":"string","string":"This is the table summary"},{"type":"array","array":[{"type":"array","array":[{"type":"string","string":"Column 1"},{"type":"string","string":"Column 2"}]},{"type":"array","array":[{"type":"string","string":"Hello World"},{"type":"object","instance":0}]}]}]},"instances":[{"class":"FireConsole_LoggerTest__TestObject","file":"' . str_replace('/','\\/', __FILE__) . '","fc.tpl.id":"examples\/simple-object","members":[{"name":"testVar","visibility":"public","value":{"type":"string","string":"Test Value"}}]}]}');
+            $this->assertEquals($message[0][3], '836|{"fc.tpl.id":"structures\/table"}|{"origin":{"type":"array","array":[{"type":"text","text":"This is the table summary","fc.lang.type":"string"},{"type":"array","array":[{"type":"array","array":[{"type":"text","text":"Column 1","fc.lang.type":"string"},{"type":"text","text":"Column 2","fc.lang.type":"string"}]},{"type":"array","array":[{"type":"text","text":"Hello World","fc.lang.type":"string"},{"type":"reference","reference":0}]}]}]},"instances":[{"type":"dictionary","fc.lang.class":"FireConsole_LoggerTest__TestObject","fc.lang.file":"' . str_replace('/','\\/', __FILE__) . '","fc.tpl.id":"examples\/simple-object","dictionary":{"testVar":{"type":"text","text":"Test Value","fc.lang.type":"string","fc.lang.visibility":"public"}}}]}|');
         }
     }
 }
@@ -89,7 +89,7 @@ class FireConsole_LoggerTest__TestObject
     "instances": [
         {
             "class": "FireConsole_LoggerTest__TestObject",
-            "file": "\/pinf\/packages-birth\/PINF\/OpenSource\/org.cadorn.github\/packages\/fireconsole\/packages\/lib-php\/tests\/FireConsole\/LoggerTest.php",
+            "file": "...\/fireconsole\/packages\/lib-php\/tests\/FireConsole\/LoggerTest.php",
             "fc.tpl.id": "examples\/simple-object",
             "members": [
                 {

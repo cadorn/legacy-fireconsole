@@ -10,6 +10,7 @@ if(!class_exists('ModularPHP_Bootstrap')) {
     ModularPHP_Bootstrap::Program($file, 'lib-php');
 }
 
+ob_start();
 
 require_once 'PHPUnit/Framework.php';
 require_once 'FireConsole/Dispatcher.php';
@@ -74,15 +75,22 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
         }
         
         for( $i=0 ; $i<sizeof($messages) ; $i++ ) {
+            
+            $msg = array();
+            for( $j=0 ; $j<sizeof($messages[$i]) ; $j++ ) {
+                $msg[] = $messages[$i][$j][3];
+            }
+            $msg = implode(" + ", $msg);
+            
             if(self::DEBUG) {
                 print('Comparison #'.$i.':'."\n");
-                print('     Got: '. $messages[$i]->getMeta() ."|". $messages[$i]->getData() ."\n");
+                print('     Got: '. $msg ."\n");
                 print('  Expect: '. $info[$this->getName()]['messages'][$i]."\n");
             }
-            
+
             $this->assertEquals(
                 $info[$this->getName()]['messages'][$i],
-                $messages[$i]->getMeta() ."|". $messages[$i]->getData()
+                $msg
             );
         }
         
@@ -93,7 +101,7 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
             
             if(isset($info[$this->getName()]['headers'])) {
 
-                $headers = $this->channel->getHeaders();
+                $headers = $this->channel->getMessageParts();
 
                 if(self::DEBUG) {
                     foreach( $headers as $header ) {
@@ -167,16 +175,20 @@ abstract class ObjectGraphTestCase extends PHPUnit_Framework_TestCase {
 
 class ObjectGraphTestCase__Channel extends Wildfire_Channel_HttpHeader {
     
-    private $headers = array();
+    private $parts = array();
        
-    public function setHeader($name, $value) {
-        $this->headers[$name] = $value;
+    public function setMessagePart($key, $value) {
+        $this->parts[$key] = $value;
     }
-    public function getHeaders() {
-        $headers = array();
-        foreach( $this->headers as $name => $value ) {
-            $headers[] = json_encode(array($name, $value));
+    public function getMessagePart($key) {
+        if(!isset($this->parts[$key])) return false;
+        return $this->parts[$key];
+    }
+    public function getMessageParts() {
+        $parts = array();
+        foreach( $this->parts as $key => $value ) {
+            $parts[] = json_encode(array($key, $value));
         }
-        return $headers;
+        return $parts;
     }
 }

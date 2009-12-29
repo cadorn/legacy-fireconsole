@@ -1,41 +1,41 @@
 
 testPriorities()[messages]:
 
-    {"fc.msg.priority":"log"}|{"origin":{"type":"text","text":"Hello Log"}}
-    {"fc.msg.priority":"info"}|{"origin":{"type":"text","text":"Hello Info"}}
-    {"fc.msg.priority":"warn"}|{"origin":{"type":"text","text":"Hello Warn"}}
-    {"fc.msg.priority":"error"}|{"origin":{"type":"text","text":"Hello Error"}}
+    71|{"fc.msg.priority":"log"}|{"origin":{"type":"text","text":"Hello Log"}}|
+    73|{"fc.msg.priority":"info"}|{"origin":{"type":"text","text":"Hello Info"}}|
+    73|{"fc.msg.priority":"warn"}|{"origin":{"type":"text","text":"Hello Warn"}}|
+    75|{"fc.msg.priority":"error"}|{"origin":{"type":"text","text":"Hello Error"}}|
 
 break;
 
 testLabel()[messages]:
 
-    {"fc.msg.label":"Label"}|{"origin":{"type":"text","text":"Hello World"}}
+    72|{"fc.msg.label":"Label"}|{"origin":{"type":"text","text":"Hello World"}}|
 
 break;
 
 testFileLineInfo()[messages]:
 
-    {"fc.msg.file":"\/path\/to\/file"}|{"origin":{"type":"text","text":"File only"}}
-    {"fc.msg.line":"10"}|{"origin":{"type":"text","text":"Line only"}}
-    {"fc.msg.file":"\/path\/to\/file","fc.msg.line":"10"}|{"origin":{"type":"text","text":"File and line"}}
+    80|{"fc.msg.file":"\/path\/to\/file"}|{"origin":{"type":"text","text":"File only"}}|
+    66|{"fc.msg.line":"10"}|{"origin":{"type":"text","text":"Line only"}}|
+    103|{"fc.msg.file":"\/path\/to\/file","fc.msg.line":"10"}|{"origin":{"type":"text","text":"File and line"}}|
 
 break;
 
 testGrouping()[messages]:
 
-    {"fc.group.start":true}|{"origin":{"type":"text","text":"Group 1 Label"}}
-    |{"origin":{"type":"text","text":"Hello World"}}
-    {"fc.group.start":true,"fc.group.collapsed":true,"fc.group.color":"magenta"}|{"origin":{"type":"text","text":"Group 2 Label"}}
-    |{"origin":{"type":"text","text":"Hello World"}}
-    {"fc.group.end":true}|{"origin":{"type":"text","text":""}}
-    {"fc.group.end":true}|{"origin":{"type":"text","text":""}}
-    |{"origin":{"type":"text","text":"Hello World"}}
+    73|{"fc.group.start":true}|{"origin":{"type":"text","text":"Group 1 Label"}}|
+    48||{"origin":{"type":"text","text":"Hello World"}}|
+    126|{"fc.group.start":true,"fc.group.collapsed":true,"fc.group.color":"magenta"}|{"origin":{"type":"text","text":"Group 2 Label"}}|
+    48||{"origin":{"type":"text","text":"Hello World"}}|
+    58|{"fc.group.end":true}|{"origin":{"type":"text","text":""}}|
+    58|{"fc.group.end":true}|{"origin":{"type":"text","text":""}}|
+    48||{"origin":{"type":"text","text":"Hello World"}}|
 
 break;
 
 testDebug()[messages]:
 
-    {"fc.tpl.debug":true}|{"origin":{"type":"text","text":"Hello World"}}
+    69|{"fc.tpl.debug":true}|{"origin":{"type":"text","text":"Hello World"}}|
 
 break;

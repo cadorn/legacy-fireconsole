@@ -16,21 +16,24 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         $options = array();
         
         $tests = array();
-        $tests[] = array(null, 'a:1:{s:6:"origin";a:1:{s:4:"type";s:4:"null";}}');
-        $tests[] = array(true, 'a:1:{s:6:"origin";a:2:{s:4:"type";s:7:"boolean";s:5:"value";s:1:"1";}}');
-        $tests[] = array(false, 'a:1:{s:6:"origin";a:2:{s:4:"type";s:7:"boolean";s:5:"value";s:1:"0";}}');
-        $tests[] = array(100, 'a:1:{s:6:"origin";a:2:{s:4:"type";s:7:"integer";s:5:"value";i:100;}}');
-        $tests[] = array(10.5, 'a:1:{s:6:"origin";a:2:{s:4:"type";s:5:"float";s:5:"value";d:10.5;}}');
-        $tests[] = array(0x33, 'a:1:{s:6:"origin";a:2:{s:4:"type";s:7:"integer";s:5:"value";i:51;}}');
-        $tests[] = array(tmpfile(), 'a:1:{s:6:"origin";a:2:{s:4:"type";s:8:"resource";s:5:"value";s:0:"";}}');
-        $tests[] = array(array('a','b'), 'a:1:{s:6:"origin";a:2:{s:4:"type";s:5:"array";s:5:"array";a:2:{i:0;a:2:{s:4:"type";s:6:"string";s:5:"value";s:1:"a";}i:1;a:2:{s:4:"type";s:6:"string";s:5:"value";s:1:"b";}}}}');
-        $tests[] = array(array('Hello'=>'World'), 'a:1:{s:6:"origin";a:2:{s:4:"type";s:3:"map";s:3:"map";a:1:{i:0;a:2:{i:0;a:2:{s:4:"type";s:6:"string";s:5:"value";s:5:"Hello";}i:1;a:2:{s:4:"type";s:6:"string";s:5:"value";s:5:"World";}}}}}');
+        $tests[] = array(null, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:8:"constant";s:8:"constant";s:4:"null";s:12:"fc.lang.type";s:4:"null";}}');
+        $tests[] = array(true, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:8:"constant";s:8:"constant";s:4:"true";s:12:"fc.lang.type";s:7:"boolean";}}');
+        $tests[] = array(false, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:8:"constant";s:8:"constant";s:5:"false";s:12:"fc.lang.type";s:7:"boolean";}}');
+        $tests[] = array(100, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:4:"text";s:4:"text";s:3:"100";s:12:"fc.lang.type";s:7:"integer";}}');
+        $tests[] = array(10.5, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:4:"text";s:4:"text";s:4:"10.5";s:12:"fc.lang.type";s:5:"float";}}');
+        $tests[] = array(0x33, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:4:"text";s:4:"text";s:2:"51";s:12:"fc.lang.type";s:7:"integer";}}');
+        $tests[] = array(tmpfile(), 'a:1:{s:6:"origin";a:3:{s:4:"type";s:4:"text";s:4:"text";s:12:"__RESOURCE__";s:12:"fc.lang.type";s:8:"resource";}}', '__RESOURCE__');
+        $tests[] = array(array('a','b'), 'a:1:{s:6:"origin";a:2:{s:4:"type";s:5:"array";s:5:"array";a:2:{i:0;a:3:{s:4:"type";s:4:"text";s:4:"text";s:1:"a";s:12:"fc.lang.type";s:6:"string";}i:1;a:3:{s:4:"type";s:4:"text";s:4:"text";s:1:"b";s:12:"fc.lang.type";s:6:"string";}}}}');
+        $tests[] = array(array('Hello'=>'World'), 'a:1:{s:6:"origin";a:2:{s:4:"type";s:3:"map";s:3:"map";a:1:{i:0;a:2:{i:0;a:3:{s:4:"type";s:4:"text";s:4:"text";s:5:"Hello";s:12:"fc.lang.type";s:6:"string";}i:1;a:3:{s:4:"type";s:4:"text";s:4:"text";s:5:"World";s:12:"fc.lang.type";s:6:"string";}}}}}');
         
         foreach( $tests as $test ) {
-
             $encoder = new FireConsole_Encoder_Default();
             $encoder->setOrigin($test[0]);
             $json = mp_json_to_array($encoder->encode());
+
+            if(isset($test[2]) && $test[2]=="__RESOURCE__") {
+                $json['origin']['text'] = '__RESOURCE__';
+            }
             
             if(!$test[1]) {
                 // NOTE: This is just to add tests. Leave the test pattern empty and it will print out result.
@@ -39,8 +42,8 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
                 $this->fail('You need to add a test pattern!');
             } else {
 
-                $this->assertEquals($json, unserialize($test[1]));
-                $this->assertEquals(serialize($json), $test[1]);
+                $this->assertEquals(unserialize($test[1]), $json, serialize($test[0]));
+                $this->assertEquals($test[1], serialize($json), serialize($test[0]));
                 
             }
         }
@@ -57,10 +60,11 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         $encoder->setOrigin($variable);
         $json = mp_json_to_array($encoder->encode());
         
-        $this->assertEquals($json['origin'], unserialize('a:2:{s:4:"type";s:6:"object";s:8:"instance";i:0;}'));
-        $this->assertEquals($json['instances'][0]['class'], 'FireConsole_Encoder_DefaultTest__Class1');
-        $this->assertEquals($json['instances'][0]['file'], __FILE__);
-        $this->assertEquals($json['instances'][0]['members'], unserialize('a:2:{i:0;a:3:{s:4:"name";s:4:"var1";s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:8:"Test Var";}}i:1;a:3:{s:10:"undeclared";i:1;s:4:"name";s:14:"undeclared_var";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:14:"Undecraled Var";}}}'));
+        $this->assertEquals($json['origin'], unserialize('a:2:{s:4:"type";s:9:"reference";s:9:"reference";i:0;}'));
+        $this->assertEquals($json['instances'][0]['type'], 'dictionary');
+        $this->assertEquals($json['instances'][0]['fc.lang.class'], 'FireConsole_Encoder_DefaultTest__Class1');
+        $this->assertEquals($json['instances'][0]['fc.lang.file'], __FILE__);
+        $this->assertEquals($json['instances'][0]['dictionary'], unserialize('a:2:{s:4:"var1";a:4:{s:4:"type";s:4:"text";s:4:"text";s:8:"Test Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";}s:14:"undeclared_var";a:4:{s:4:"type";s:4:"text";s:4:"text";s:14:"Undecraled Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.undeclared";i:1;}}'));
     }
     
     public function testObjectMembers()
@@ -73,20 +77,20 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         $encoder->setOrigin($variable);
         $json = mp_json_to_array($encoder->encode());
 
-        $this->assertEquals(sizeof($json['instances'][0]['members']), 6);
+        $this->assertEquals(sizeof($json['instances'][0]['dictionary']), 6);
 
-        $this->assertEquals($json['instances'][0]['members'][0], unserialize('a:3:{s:4:"name";s:10:"public_var";s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:10:"Public Var";}}'));
-        $this->assertEquals($json['instances'][0]['members'][1], unserialize('a:3:{s:4:"name";s:13:"protected_var";s:10:"visibility";s:9:"protected";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:13:"Protected Var";}}'));
-        $this->assertEquals($json['instances'][0]['members'][2], unserialize('a:3:{s:4:"name";s:11:"private_var";s:10:"visibility";s:7:"private";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:11:"Private Var";}}'));
-        $this->assertEquals($json['instances'][0]['members'][3], unserialize('a:4:{s:4:"name";s:16:"staic_public_var";s:6:"static";i:1;s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:17:"Static Public Var";}}'));
+        $this->assertEquals($json['instances'][0]['dictionary']['public_var'], unserialize('a:4:{s:4:"type";s:4:"text";s:4:"text";s:10:"Public Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";}'));
+        $this->assertEquals($json['instances'][0]['dictionary']['protected_var'], unserialize('a:4:{s:4:"type";s:4:"text";s:4:"text";s:13:"Protected Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:9:"protected";}'));
+        $this->assertEquals($json['instances'][0]['dictionary']['private_var'], unserialize('a:4:{s:4:"type";s:4:"text";s:4:"text";s:11:"Private Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:7:"private";}'));
+        $this->assertEquals($json['instances'][0]['dictionary']['staic_public_var'], unserialize('a:5:{s:4:"type";s:4:"text";s:4:"text";s:17:"Static Public Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";s:14:"fc.lang.static";i:1;}'));
 
         if(version_compare(phpversion(), '5.3','>=')) {
             
-            $this->fail('This needs to be implemented for PHP 5.3+');
+            $this->assertEquals($json['instances'][0]['dictionary']['static_protected_var'], unserialize('a:5:{s:4:"type";s:4:"text";s:4:"text";s:20:"Static Protected Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:9:"protected";s:14:"fc.lang.static";i:1;}'));
+            $this->assertEquals($json['instances'][0]['dictionary']['static_private_var'], unserialize('a:5:{s:4:"type";s:4:"text";s:4:"text";s:18:"Static Private Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:7:"private";s:14:"fc.lang.static";i:1;}'));
             
         } else {
-            $this->assertEquals($json['instances'][0]['members'][4], unserialize('a:5:{s:4:"name";s:20:"static_protected_var";s:6:"static";i:1;s:10:"visibility";s:9:"protected";s:5:"value";a:1:{s:4:"type";s:9:"undefined";}s:6:"notice";s:25:"Need PHP 5.3 to get value";}'));
-            $this->assertEquals($json['instances'][0]['members'][5], unserialize('a:5:{s:4:"name";s:18:"static_private_var";s:6:"static";i:1;s:10:"visibility";s:7:"private";s:5:"value";a:1:{s:4:"type";s:9:"undefined";}s:6:"notice";s:25:"Need PHP 5.3 to get value";}'));
+            $this->fail('This needs to be implemented for PHP <5.3');
         }
     }
     
@@ -100,22 +104,23 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         $encoder->setOrigin($variable);
         $json = mp_json_to_array($encoder->encode());
 
-        $this->assertEquals(sizeof($json['instances'][0]['members']), 7);
+        $this->assertEquals(sizeof($json['instances'][0]['dictionary']), 7);
 
-        $this->assertEquals($json['instances'][0]['members'][0], unserialize('a:3:{s:4:"name";s:10:"public_var";s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:10:"Public Var";}}'));
-        $this->assertEquals($json['instances'][0]['members'][1], unserialize('a:3:{s:4:"name";s:13:"protected_var";s:10:"visibility";s:9:"protected";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:22:"Modified Protected Var";}}'));
-        $this->assertEquals($json['instances'][0]['members'][3], unserialize('a:4:{s:4:"name";s:16:"staic_public_var";s:6:"static";i:1;s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:17:"Static Public Var";}}'));
-        $this->assertEquals($json['instances'][0]['members'][6], unserialize('a:3:{s:4:"name";s:18:"another_public_var";s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:18:"Another Public Var";}}'));
+        $this->assertEquals($json['instances'][0]['dictionary']['public_var'], unserialize('a:4:{s:4:"type";s:4:"text";s:4:"text";s:10:"Public Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";}'));
+        $this->assertEquals($json['instances'][0]['dictionary']['protected_var'], unserialize('a:4:{s:4:"type";s:4:"text";s:4:"text";s:22:"Modified Protected Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:9:"protected";}'));
+        $this->assertEquals($json['instances'][0]['dictionary']['staic_public_var'], unserialize('a:5:{s:4:"type";s:4:"text";s:4:"text";s:17:"Static Public Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";s:14:"fc.lang.static";i:1;}'));
+        $this->assertEquals($json['instances'][0]['dictionary']['another_public_var'], unserialize('a:4:{s:4:"type";s:4:"text";s:4:"text";s:18:"Another Public Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";}'));
 
         if(version_compare(phpversion(), '5.3','>=')) {
             
-            $this->fail('This needs to be implemented for PHP 5.3+');
+            $this->assertEquals($json['instances'][0]['dictionary']['private_var'], unserialize('a:4:{s:4:"type";s:4:"text";s:4:"text";s:11:"Private Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:7:"private";}'));
+            $this->assertEquals($json['instances'][0]['dictionary']['static_protected_var'], unserialize('a:5:{s:4:"type";s:4:"text";s:4:"text";s:20:"Static Protected Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:9:"protected";s:14:"fc.lang.static";i:1;}'));
+            $this->assertEquals($json['instances'][0]['dictionary']['static_private_var'], unserialize('a:5:{s:4:"type";s:4:"text";s:4:"text";s:18:"Static Private Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:7:"private";s:14:"fc.lang.static";i:1;}'));
             
         } else {
 
-            $this->assertEquals($json['instances'][0]['members'][2], unserialize('a:4:{s:4:"name";s:11:"private_var";s:10:"visibility";s:7:"private";s:5:"value";a:1:{s:4:"type";s:9:"undefined";}s:6:"notice";s:25:"Need PHP 5.3 to get value";}'));
-            $this->assertEquals($json['instances'][0]['members'][4], unserialize('a:5:{s:4:"name";s:20:"static_protected_var";s:6:"static";i:1;s:10:"visibility";s:9:"protected";s:5:"value";a:1:{s:4:"type";s:9:"undefined";}s:6:"notice";s:25:"Need PHP 5.3 to get value";}'));
-            $this->assertEquals($json['instances'][0]['members'][5], unserialize('a:5:{s:4:"name";s:18:"static_private_var";s:6:"static";i:1;s:10:"visibility";s:7:"private";s:5:"value";a:1:{s:4:"type";s:9:"undefined";}s:6:"notice";s:25:"Need PHP 5.3 to get value";}'));
+            $this->fail('This needs to be implemented for PHP <5.3');
+
         }
     }    
 
@@ -133,8 +138,8 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         $encoder->setOrigin($variable);
         $json = mp_json_to_array($encoder->encode());
 
-        $this->assertEquals($json['instances'][0]['members'], unserialize('a:3:{i:0;a:3:{s:4:"name";s:4:"var1";s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:8:"Test Var";}}i:1;a:3:{s:10:"undeclared";i:1;s:4:"name";s:7:"object1";s:5:"value";a:2:{s:4:"type";s:6:"object";s:8:"instance";i:0;}}i:2;a:3:{s:10:"undeclared";i:1;s:4:"name";s:7:"object2";s:5:"value";a:2:{s:4:"type";s:6:"object";s:8:"instance";i:1;}}}'));
-        $this->assertEquals($json['instances'][1]['members'], unserialize('a:3:{i:0;a:3:{s:4:"name";s:4:"var1";s:10:"visibility";s:6:"public";s:5:"value";a:2:{s:4:"type";s:6:"string";s:5:"value";s:8:"Test Var";}}i:1;a:3:{s:10:"undeclared";i:1;s:4:"name";s:7:"object1";s:5:"value";a:2:{s:4:"type";s:6:"object";s:8:"instance";i:1;}}i:2;a:3:{s:10:"undeclared";i:1;s:4:"name";s:7:"object2";s:5:"value";a:2:{s:4:"type";s:6:"object";s:8:"instance";i:0;}}}'));
+        $this->assertEquals($json['instances'][0]['dictionary'], unserialize('a:3:{s:4:"var1";a:4:{s:4:"type";s:4:"text";s:4:"text";s:8:"Test Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";}s:7:"object1";a:3:{s:4:"type";s:9:"reference";s:9:"reference";i:0;s:18:"fc.lang.undeclared";i:1;}s:7:"object2";a:3:{s:4:"type";s:9:"reference";s:9:"reference";i:1;s:18:"fc.lang.undeclared";i:1;}}'));
+        $this->assertEquals($json['instances'][1]['dictionary'], unserialize('a:3:{s:4:"var1";a:4:{s:4:"type";s:4:"text";s:4:"text";s:8:"Test Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";}s:7:"object1";a:3:{s:4:"type";s:9:"reference";s:9:"reference";i:1;s:18:"fc.lang.undeclared";i:1;}s:7:"object2";a:3:{s:4:"type";s:9:"reference";s:9:"reference";i:0;s:18:"fc.lang.undeclared";i:1;}}'));
     }
     
 }

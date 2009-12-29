@@ -30,6 +30,8 @@ class FireConsole_Dispatcher
             throw new Exception("'descriptor' > 'location' not provided!");
         }
         $message = $this->getNewMessage(null);
+        $message->setSender('http://github.com/cadorn/fireconsole/tree/master/packages/lib-php/');
+        $message->setProtocol('http://pinf.org/cadorn.org/wildfire/meta/Protocol/Component/0.1');
         $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/TemplatePack/0.1");
         $message->setData(json_encode(array(
             "action" => "require",
@@ -82,6 +84,8 @@ class FireConsole_Dispatcher
     public function sendRaw($data, $meta='')
     {
         $message = $this->getNewMessage($meta);
+        $message->setSender('http://github.com/cadorn/fireconsole/tree/master/packages/lib-php/');
+        $message->setProtocol('http://pinf.org/cadorn.org/wildfire/meta/Protocol/Component/0.1');
         $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
         if($meta) $message->setMeta($meta);
         $message->setData($data);

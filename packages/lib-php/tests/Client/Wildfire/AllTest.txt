@@ -1,7 +1,7 @@
 
 testSplitMessages()[messages]:
 
-    |{"origin":{"type":"text","text":"line 0\nline 1\nline 2"}}
-    |{"origin":{"type":"text","text":"line 0\nline 1\nline 2"}}
+    59||{"origin"|\ + |:{"type":"|\ + |text","tex|\ + |t":"line 0|\ + |\nline 1\n|\ + |line 2"}}|
+    59||{"origin"|\ + |:{"type":"|\ + |text","tex|\ + |t":"line 0|\ + |\nline 1\n|\ + |line 2"}}|
 
 break;

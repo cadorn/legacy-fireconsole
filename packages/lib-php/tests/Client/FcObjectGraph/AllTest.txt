@@ -1,65 +1,65 @@
 
 testText()[messages]:
 
-    |{"origin":{"type":"text","text":"Hello World"}}
-    |{"origin":{"type":"text","text":"1"}}
-    |{"origin":{"type":"text","text":"10.5"}}
-    |{"origin":{"type":"text","text":"51"}}
-    |{"origin":{"type":"text","text":"Resource id #460"}}
+    48||{"origin":{"type":"text","text":"Hello World"}}|
+    38||{"origin":{"type":"text","text":"1"}}|
+    41||{"origin":{"type":"text","text":"10.5"}}|
+    39||{"origin":{"type":"text","text":"51"}}|
+    53||{"origin":{"type":"text","text":"Resource id #460"}}|
 
 break;
 
 testConstant()[messages]:
 
-    |{"origin":{"type":"constant","constant":"null"}}
-    |{"origin":{"type":"constant","constant":"true"}}
-    |{"origin":{"type":"constant","constant":"false"}}
+    49||{"origin":{"type":"constant","constant":"null"}}|
+    49||{"origin":{"type":"constant","constant":"true"}}|
+    50||{"origin":{"type":"constant","constant":"false"}}|
 
 break;
 
 testArray()[messages]:
     
-    |{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}
-    |{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}
-    |{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}
-    |{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}
+    92||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}|
+    92||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}|
+    92||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}|
+    92||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}|
     
 break;
 
 testNestedArray()[messages]:
 
-    |{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"},{"type":"array","array":[{"type":"text","text":"element1"},{"type":"text","text":"element2"}]},{"type":"text","text":"4"}]}}
-    |{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"},{"type":"reference","reference":0},{"type":"text","text":"4"}]},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}
+    214||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"},{"type":"array","array":[{"type":"text","text":"element1"},{"type":"text","text":"element2"}]},{"type":"text","text":"4"}]}}|
+    242||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"},{"type":"reference","reference":0},{"type":"text","text":"4"}]},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}|
     
 break;
     
 testMap()[messages]:
 
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}
+    90||{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}|
+    90||{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}|
+    90||{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}|
+    90||{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}|
+    146||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}|
+    146||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}|
+    146||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}|
+    146||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}|
+    146||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}|
+    146||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}]]}}|
         
 break;
 
 testNestedMap()[messages]:
 
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}],[{"type":"text","text":"3"},{"type":"array","array":[{"type":"text","text":"element1"},{"type":"text","text":"element2"}]}],[{"type":"text","text":"4"},{"type":"array","array":[{"type":"text","text":"element1"},{"type":"map","map":[[{"type":"text","text":"element2"},{"type":"text","text":"element3"}]]}]}],[{"type":"text","text":"5"},{"type":"text","text":"5"}]]}}
-    |{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}],[{"type":"text","text":"3"},{"type":"reference","reference":0}],[{"type":"text","text":"4"},{"type":"reference","reference":1}],[{"type":"text","text":"5"},{"type":"text","text":"5"}]]},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":1},"var2":{"type":"text","text":"val2"}}}]}
+    509||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}],[{"type":"text","text":"3"},{"type":"array","array":[{"type":"text","text":"element1"},{"type":"text","text":"element2"}]}],[{"type":"text","text":"4"},{"type":"array","array":[{"type":"text","text":"element1"},{"type":"map","map":[[{"type":"text","text":"element2"},{"type":"text","text":"element3"}]]}]}],[{"type":"text","text":"5"},{"type":"text","text":"5"}]]}}|
+    572||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}],[{"type":"text","text":"3"},{"type":"reference","reference":0}],[{"type":"text","text":"4"},{"type":"reference","reference":1}],[{"type":"text","text":"5"},{"type":"text","text":"5"}]]},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":1},"var2":{"type":"text","text":"val2"}}}]}|
     
 break;
 
 testInstance()[messages]:
 
-    |{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary"}]}
-    |{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}
-    |{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":1},"var2":{"type":"text","text":"val2"}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":2}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}
-    |{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":1},"var2":{"type":"text","text":"val2"},"self":{"type":"reference","reference":0},"var3":{"type":"text","text":"val3"}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}
+    82||{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary"}]}|
+    134||{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}|
+    405||{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":1},"var2":{"type":"text","text":"val2"}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":2}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}|
+    367||{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":1},"var2":{"type":"text","text":"val2"},"self":{"type":"reference","reference":0},"var3":{"type":"text","text":"val3"}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}|
         
 break;
