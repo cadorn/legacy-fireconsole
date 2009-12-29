@@ -76,10 +76,11 @@ class app_test_RunTests extends PHPGI_App
             if($messages) {
                 $response['messages'] = array();
                 foreach($messages as $message ) {
-                    $response['messages'][] = array(
-                        'meta' => json_decode($message->getMeta()),
-                        'data' => json_decode($message->getData())
-                    );
+                    $msg = array();
+                    for( $i=0 ; $i<sizeof($message) ; $i++ ) {
+                        $msg[] = $message[$i][3];
+                    }
+                    $response['messages'][] = $msg;
                 }
             }
         }
