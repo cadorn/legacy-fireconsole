@@ -89,7 +89,7 @@ class FireConsole_Dispatcher
         $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
         if($meta) $message->setMeta($meta);
         $message->setData($data);
-        $this->channel->enqueueOutgoing($message);
+        $this->getChannel()->enqueueOutgoing($message);
         return true;
     }
 }

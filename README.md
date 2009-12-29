@@ -4,7 +4,12 @@ FireConsole Toolchain
 
 This project contains everything needed to work on the [FireConsole Firefox Extension](http://www.fireconsole.org/).
 
-**STATUS: Under development.**
+
+Libraries
+---------
+
+  * [PHP](http://github.com/cadorn/fireconsole/tree/master/packages/lib-php/)
+
 
 
 License

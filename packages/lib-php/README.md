@@ -7,7 +7,19 @@ Use this library to send messages to [FireConsole](http://www.fireconsole.org/) 
 Usage
 -----
 
-TODO
+    require_once 'FireConsole/Dispatcher.php';
+    
+    $dispatcher = new FireConsole_Dispatcher();
+    
+    $dispatcher->send('Hello World');
+    
+    $dispatcher->getChannel()->flush();
+
+
+Examples
+--------
+
+  * [Hello World](http://github.com/cadorn/fireconsole/tree/master/packages/lib-php/examples/HelloWorld.php)
 
 
 Testing
