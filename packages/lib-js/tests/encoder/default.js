@@ -13,6 +13,7 @@ exports.testBasicVariables = function() {
         [true, '{"origin":{"type":"constant","constant":"true","fc.lang.type":"boolean"}}'],
         [false, '{"origin":{"type":"constant","constant":"false","fc.lang.type":"boolean"}}'],
         ["a", '{"origin":{"type":"text","text":"a","fc.lang.type":"string"}}'],
+        ["a\nb", '{"origin":{"type":"text","text":"a\\nb","fc.lang.type":"string"}}'],
         [100, '{"origin":{"type":"text","text":100,"fc.lang.type":"number"}}'],
         [10.5, '{"origin":{"type":"text","text":10.5,"fc.lang.type":"number"}}'],
         [0x33, '{"origin":{"type":"text","text":51,"fc.lang.type":"number"}}'],

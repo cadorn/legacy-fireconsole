@@ -1,4 +1,9 @@
 
+
+function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
+
+
+
 var UTIL = require("util");
 var JSON = require("json");
 
@@ -27,7 +32,7 @@ Encoder.prototype.encode = function(data, meta) {
     if(typeof data != "undefined") {
         this.setOrigin(data);
     }
-    
+
     // TODO: Use meta["fc.encoder.options"] to control encoding
     
     var graph = {};
