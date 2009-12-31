@@ -19,12 +19,13 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         $tests[] = array(null, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:8:"constant";s:8:"constant";s:4:"null";s:12:"fc.lang.type";s:4:"null";}}');
         $tests[] = array(true, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:8:"constant";s:8:"constant";s:4:"true";s:12:"fc.lang.type";s:7:"boolean";}}');
         $tests[] = array(false, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:8:"constant";s:8:"constant";s:5:"false";s:12:"fc.lang.type";s:7:"boolean";}}');
+        $tests[] = array("a", 'a:1:{s:6:"origin";a:3:{s:4:"type";s:4:"text";s:4:"text";s:1:"a";s:12:"fc.lang.type";s:6:"string";}}');
         $tests[] = array(100, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:4:"text";s:4:"text";s:3:"100";s:12:"fc.lang.type";s:7:"integer";}}');
         $tests[] = array(10.5, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:4:"text";s:4:"text";s:4:"10.5";s:12:"fc.lang.type";s:5:"float";}}');
         $tests[] = array(0x33, 'a:1:{s:6:"origin";a:3:{s:4:"type";s:4:"text";s:4:"text";s:2:"51";s:12:"fc.lang.type";s:7:"integer";}}');
         $tests[] = array(tmpfile(), 'a:1:{s:6:"origin";a:3:{s:4:"type";s:4:"text";s:4:"text";s:12:"__RESOURCE__";s:12:"fc.lang.type";s:8:"resource";}}', '__RESOURCE__');
         $tests[] = array(array('a','b'), 'a:1:{s:6:"origin";a:2:{s:4:"type";s:5:"array";s:5:"array";a:2:{i:0;a:3:{s:4:"type";s:4:"text";s:4:"text";s:1:"a";s:12:"fc.lang.type";s:6:"string";}i:1;a:3:{s:4:"type";s:4:"text";s:4:"text";s:1:"b";s:12:"fc.lang.type";s:6:"string";}}}}');
-        $tests[] = array(array('Hello'=>'World'), 'a:1:{s:6:"origin";a:2:{s:4:"type";s:3:"map";s:3:"map";a:1:{i:0;a:2:{i:0;a:3:{s:4:"type";s:4:"text";s:4:"text";s:5:"Hello";s:12:"fc.lang.type";s:6:"string";}i:1;a:3:{s:4:"type";s:4:"text";s:4:"text";s:5:"World";s:12:"fc.lang.type";s:6:"string";}}}}}');
+        $tests[] = array(array('a'=>'b'), 'a:1:{s:6:"origin";a:2:{s:4:"type";s:3:"map";s:3:"map";a:1:{i:0;a:2:{i:0;a:3:{s:4:"type";s:4:"text";s:4:"text";s:1:"a";s:12:"fc.lang.type";s:6:"string";}i:1;a:3:{s:4:"type";s:4:"text";s:4:"text";s:1:"b";s:12:"fc.lang.type";s:6:"string";}}}}}');
         
         foreach( $tests as $test ) {
             $encoder = new FireConsole_Encoder_Default();

@@ -104,7 +104,7 @@ class FireConsole_Encoder_Default {
         } else
         if(is_object($Variable)) {
             
-            return array('type'=>'reference', 'reference'=> $this->_encodeInstance($Variable));
+            return array('type'=>'reference', 'reference'=> $this->_encodeInstance($Variable, $ObjectDepth, $ArrayDepth));
             
         } else
         if(is_array($Variable)) {
@@ -196,7 +196,7 @@ class FireConsole_Encoder_Default {
     protected function _encodeArray($Variable, $ObjectDepth = 1, $ArrayDepth = 1)
     {
         if ($ArrayDepth > $this->options['maxArrayDepth']) {
-          return '** Max Array Depth ('.$this->options['maxArrayDepth'].') **';
+          return array('notice'=>'Max Array Depth ('.$this->options['maxArrayDepth'].')');
         }
         $items = array();
         foreach ($Variable as $val) {
@@ -208,11 +208,11 @@ class FireConsole_Encoder_Default {
     
     protected function _encodeObject($Object, $ObjectDepth = 1, $ArrayDepth = 1)
     {
-        $return = array('type'=>'dictionary');
-
         if ($ObjectDepth > $this->options['maxObjectDepth']) {
           return array('notice'=>'Max Object Depth ('.$this->options['maxObjectDepth'].')');
         }
+
+        $return = array('type'=>'dictionary');
 
         $class = get_class($Object);
         if($this->options['includeLanguageMeta']) {
