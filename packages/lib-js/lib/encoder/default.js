@@ -11,8 +11,9 @@ var Encoder = exports.Encoder = function() {
     if (!(this instanceof exports.Encoder))
         return new exports.Encoder();
     this.options = {
-        "maxObjectDepth": 10,
-        "maxArrayDepth": 20,
+        "maxObjectDepth": 5,
+        "maxArrayDepth": 5,
+        "maxOverallDepth": 3,
         "includeLanguageMeta": true
     };
 }
@@ -51,9 +52,10 @@ Encoder.prototype.encode = function(data, meta) {
     return JSON.encode(graph);
 }
 
-Encoder.prototype.encodeVariable = function(variable, objectDepth, arrayDepth) {
+Encoder.prototype.encodeVariable = function(variable, objectDepth, arrayDepth, overallDepth) {
     objectDepth = objectDepth || 1;
     arrayDepth = arrayDepth || 1;
+    overallDepth = overallDepth || 1;
     
     if(variable===null) {
         var ret = {"type": "constant", "constant": "null"};
@@ -88,12 +90,12 @@ Encoder.prototype.encodeVariable = function(variable, objectDepth, arrayDepth) {
         if(UTIL.isArrayLike(variable)) {
             return {
                 "type": "array",
-                "array": this.encodeArray(variable, objectDepth, arrayDepth)
+                "array": this.encodeArray(variable, objectDepth, arrayDepth, overallDepth)
             };
         } else {
             return {
                 "type": "reference",
-                "reference": this.encodeInstance(variable, objectDepth, arrayDepth)
+                "reference": this.encodeInstance(variable, objectDepth, arrayDepth, overallDepth)
             };
         }
     }
@@ -101,16 +103,20 @@ Encoder.prototype.encodeVariable = function(variable, objectDepth, arrayDepth) {
     return "["+(typeof variable)+"]["+variable+"]";    
 }
 
-Encoder.prototype.encodeArray = function(variable, objectDepth, arrayDepth) {
+Encoder.prototype.encodeArray = function(variable, objectDepth, arrayDepth, overallDepth) {
     objectDepth = objectDepth || 1;
     arrayDepth = arrayDepth || 1;
+    overallDepth = overallDepth || 1;
     if(arrayDepth > this.options["maxArrayDepth"]) {
         return {"notice": "Max Array Depth (" + this.options["maxArrayDepth"] + ")"};
+    } else
+    if(overallDepth > this.options["maxOverallDepth"]) {
+        return {"notice": "Max Overall Depth (" + this.options["maxOverallDepth"] + ")"};
     }
     var self = this,
         items = [];
     UTIL.forEach(variable, function(item) {
-        items.push(self.encodeVariable(item, 1, arrayDepth + 1));
+        items.push(self.encodeVariable(item, 1, arrayDepth + 1, overallDepth + 1));
     });
     return items;
 }
@@ -124,9 +130,10 @@ Encoder.prototype.getInstanceId = function(object) {
     return null;
 }
 
-Encoder.prototype.encodeInstance = function(object, objectDepth, arrayDepth) {
+Encoder.prototype.encodeInstance = function(object, objectDepth, arrayDepth, overallDepth) {
     objectDepth = objectDepth || 1;
     arrayDepth = arrayDepth || 1;
+    overallDepth = overallDepth || 1;
     var id = this.getInstanceId(object);
     if(id!=null) {
         return id;
@@ -134,28 +141,36 @@ Encoder.prototype.encodeInstance = function(object, objectDepth, arrayDepth) {
     id = UTIL.len(this.instances);
     this.instances[id] = [
         object,
-        this.encodeObject(object, objectDepth, arrayDepth)
+        this.encodeObject(object, objectDepth, arrayDepth, overallDepth)
     ];
     return id;
 }
 
-Encoder.prototype.encodeObject = function(object, objectDepth, arrayDepth) {
+Encoder.prototype.encodeObject = function(object, objectDepth, arrayDepth, overallDepth) {
     objectDepth = objectDepth || 1;
     arrayDepth = arrayDepth || 1;
-    
+    overallDepth = overallDepth || 1;
+
     if(arrayDepth > this.options["maxObjectDepth"]) {
         return {"notice": "Max Object Depth (" + this.options["maxObjectDepth"] + ")"};
+    } else
+    if(overallDepth > this.options["maxOverallDepth"]) {
+        return {"notice": "Max Overall Depth (" + this.options["maxOverallDepth"] + ")"};
     }
     
     var self = this,
         ret = {"type": "dictionary", "dictionary": {}};
     
     UTIL.every(object, function(item) {
-        if(item[0]=="__fc_tpl_id") {
-            ret['fc.tpl.id'] = item[1];
-            return;
+        try {
+            if(item[0]=="__fc_tpl_id") {
+                ret['fc.tpl.id'] = item[1];
+                return;
+            }
+            ret["dictionary"][item[0]] = self.encodeVariable(item[1], objectDepth + 1, 1, overallDepth + 1);
+        } catch(e) {
+            ret["dictionary"]["__oops__"] = {"notice": "Error encoding member (" + e + ")"};
         }
-        ret["dictionary"][item[0]] = self.encodeVariable(item[1], objectDepth + 1, 1);
     });
     
     return ret;
