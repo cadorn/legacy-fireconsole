@@ -12,7 +12,7 @@ var MD5 = require("md5");
 var FIREBUG_CONSOLE = require("console", "firebug");
 var SEA = require("narwhal/tusk/sea");
 var APP = require("app", "nr-common").getApp();
-var JSON_STORE = require("json-store", "nr-extra");
+var JSON_STORE = require("json-store", "util");
 var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 var TEMPLATE_PACK_DESCRIPTOR = require("descriptor", "template-pack");
 

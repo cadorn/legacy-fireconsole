@@ -16,6 +16,10 @@
             "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
             "name": "extra"
         },
+        "util": {
+            "catalog": "http://github.com/cadorn/util/raw/master/catalog.json",
+            "name": "lib-js"
+        },
         "dev-sidebar": {
             "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
             "name": "dev-sidebar"

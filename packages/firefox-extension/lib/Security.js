@@ -6,11 +6,11 @@ var UTIL = require("util");
 var APP = require("app", "nr-common").getApp();
 var IFRAME_PANEL = require("IFramePanel", "xul-ui");
 var DEV = require("console", "dev-sidebar");
-var JSON_STORE = require("json-store", "nr-extra");
+var JSON_STORE = require("json-store", "util");
 
 
 var domainPolicyFile = APP.getChrome().getProfilePath().join("FireConsole", "Config", "DomainPolicies.json"),
-    domainPolicyStore = new JSON_STORE.JsonStore(domainPolicyFile),
+    domainPolicyStore = JSON_STORE.JsonStore(domainPolicyFile),
     domainPolicies;
 
 if(!domainPolicyStore.exists()) {
