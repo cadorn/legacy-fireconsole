@@ -1,8 +1,9 @@
 {
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/",
     "name": "firefox-extension",
     "dependencies": [
         "github.com/cadorn/narwhal/raw/experimental/catalogs/jack"
-     ],
+    ],
     "using": {
         "nr-extension": {
             "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
@@ -88,5 +89,12 @@
         "UpdateLinkURL": "{PINF.Location}{PINF.Release}.xpi",
         "UpdateInfoURL": "{PINF.Location}UpdateInfo.xml",
         "StatusURL": "http://contribute.fireconsole.org/"
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git",
+            "path": "packages/firefox-extension"
+        }
+    ]
 }

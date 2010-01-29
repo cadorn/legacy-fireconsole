@@ -1,10 +1,17 @@
 {
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/test-template-pack/",
     "name": "test-template-pack",
-    "type": "using",
     "using": {
         "template-pack": {
             "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
             "name": "template-pack"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git",
+            "path": "packages/test-template-pack"
+        }
+    ]
 }

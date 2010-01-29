@@ -1,4 +1,11 @@
 {
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/lib-js/",
     "name": "lib-js",
-    "type": "using"
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git",
+            "path": "packages/lib-js"
+        }
+    ]
 }

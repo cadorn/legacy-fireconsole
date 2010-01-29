@@ -1,7 +1,6 @@
 {
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/lib-php/",
     "name": "lib-php",
-    "type": "using",
-    "uid": "http://pinf.org/cadorn.org/fireconsole/packages/lib-php",
     "using": {
         "modular-php-core": {
             "catalog": "http://github.com/cadorn/modular-php/raw/master/catalog.json",
@@ -19,5 +18,12 @@
             "catalog": "http://github.com/cadorn/wildfire/raw/master/catalog.json",
             "name": "lib-php"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git",
+            "path": "packages/lib-php"
+        }
+    ]
 }

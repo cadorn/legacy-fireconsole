@@ -1,9 +1,16 @@
 {
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/template-pack/",
     "name": "template-pack",
-    "type": "using",
     "using": {
         "domplate": {
             "location": "http://github.com/cadorn/domplate/zipball/master/"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git",
+            "path": "packages/template-pack"
+        }
+    ]
 }

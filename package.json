@@ -1,4 +1,5 @@
 {
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/",
     "name": "fireconsole",
     "license": "MIT",
     "description": "FireConsole Firefox Extension development environment",
@@ -11,26 +12,10 @@
         "php"
     ],
     "author": "Christoph Dorn (http://www.christophdorn.com/)",
-    "using": {
-        "firefox-extension": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "firefox-extension"
-        },
-        "lib-php": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "lib-php"
-        },
-        "lib-js": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "lib-js"
-        },
-        "test-template-pack": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "test-template-pack"
-        },
-        "template-pack": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "template-pack"
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git"
         }
-    }
+    ]
 }
