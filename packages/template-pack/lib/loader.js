@@ -73,7 +73,11 @@ function loadTemplatePack(id, force, notSandboxed) {
         var ssystem = UTIL.copy(require("system"));
         // Load minimal system
         var loader = LOADER({
-            "paths": UTIL.copy(require.paths)
+            "paths": [
+                "resource://narwhal-xulrunner/lib",
+                "resource://narwhal/engines/default/lib",
+                "resource://narwhal/lib"
+            ]
         });
         var sandbox = SANDBOX({
             "system": ssystem,
@@ -93,6 +97,7 @@ function loadTemplatePack(id, force, notSandboxed) {
         sandboxPackages.forEach(function(name) {
             paths.push(PACKAGES.catalog[name].directory);
         });
+        paths.push("resource://narwhal");
         sandboxRequire("packages").load(paths);
         sandboxDirty = false;
         
