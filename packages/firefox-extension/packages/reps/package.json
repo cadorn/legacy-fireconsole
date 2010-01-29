@@ -1,21 +1,33 @@
 {
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/",
     "name": "reps",
-    "type": "using",
     "using": {
         "nr-common": {
-            "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
-            "name": "common"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+            "name": "common",
+            "revision": "master"
         },
         "firebug": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "firefox-extension-firebug"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
+            "name": "firebug",
+            "revision": "master"
         },
         "domplate": {
-            "location": "http://github.com/cadorn/domplate/zipball/master/"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+            "name": "domplate",
+            "revision": "master"
         },
         "template-pack": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "template-pack"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+            "name": "template-pack",
+            "revision": "master"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git",
+            "path": "packages/firefox-extension/packages/reps"
+        }
+    ]
 }

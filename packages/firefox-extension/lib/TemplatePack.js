@@ -51,8 +51,9 @@ function init() {   // This function is triggered at the end of this file
             }
         ],
         "download": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "firefox-extension-reps"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
+            "name": "reps",
+            "revision": "master"
         }        
     });
     addTemplatePack(descriptor);
@@ -67,8 +68,9 @@ function init() {   // This function is triggered at the end of this file
             }
         ],
         "download": {
-            "catalog": "http://github.com/cadorn/fireconsole-template-packs/raw/master/catalog.json",
-            "name": "fc-object-graph"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
+            "name": "fc-object-graph",
+            "revision": "master"
         }        
     });
     addTemplatePack(descriptor);

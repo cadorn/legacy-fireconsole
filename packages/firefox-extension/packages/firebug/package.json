@@ -1,10 +1,18 @@
 {
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/firebug/",
     "name": "firebug",
-    "type": "using",
     "using": {
         "nr-common": {
-            "catalog": "http://github.com/cadorn/narwhalrunner/raw/master/catalog.json",
-            "name": "common"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+            "name": "common",
+            "revision": "master"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git",
+            "path": "packages/firefox-extension/packages/firebug"
+        }
+    ]
 }
