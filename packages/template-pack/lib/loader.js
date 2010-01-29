@@ -1,4 +1,8 @@
 
+
+function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
+
+
 var UTIL = require("util");
 var SANDBOX = require("sandbox").Sandbox;
 var LOADER = require("loader").Loader;

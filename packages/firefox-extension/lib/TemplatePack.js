@@ -24,7 +24,7 @@ var templatePacks = {};
 
 var templatePackSeaPath = APP.getChrome().getProfilePath().join("FireConsole", "TemplatePacks"),
     templatePackMetaFile = APP.getChrome().getProfilePath().join("FireConsole", "Config", "TemplatePacks.json"),
-    templatePackMetaStore = new JSON_STORE.JsonStore(templatePackMetaFile);
+    templatePackMetaStore = JSON_STORE.JsonStore(templatePackMetaFile);
 
 if(!templatePackMetaStore.exists()) {
     templatePackMetaStore.init();
@@ -92,7 +92,6 @@ exports.getDescriptorForId = function(packId) {
         return false;
     }
     return new TEMPLATE_PACK_DESCRIPTOR.Descriptor(templatePacks[packId]);
-    
 }
 
 exports.requirePack = function(domain, descriptor) {
