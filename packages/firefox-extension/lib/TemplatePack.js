@@ -38,6 +38,14 @@ TEMPLATE_PACK_LOADER.addSandboxPackage(APP.getInfo().ID);
 // Tell the template loader where to find template packs
 TEMPLATE_PACK_LOADER.addRepositoryPath(templatePackSeaPath);
 
+
+// HACK: Until the template referencing is refactored
+TEMPLATE_PACK_LOADER.setIdMappings({
+    "reps": module.using["reps"],
+    "fc-object-graph": module.using["fireconsole-template-packs-fc-object-graph"]
+});
+
+
 function init() {   // This function is triggered at the end of this file
     var descriptor;
     

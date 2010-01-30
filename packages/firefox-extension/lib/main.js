@@ -1,6 +1,6 @@
 // ========================================================================
 // FireConsole -- Firebug Extension for Comprehensive Logging
-// Copyright ©2007-2009 Christoph Dorn licensed under MIT
+// Copyright ©2007-2010 Christoph Dorn licensed under MIT
 // ========================================================================
 
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };

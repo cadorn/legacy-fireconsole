@@ -27,6 +27,13 @@ var logger = {
 }
 
 
+// HACK: Until the template referencing is refactored
+var idMappings;
+exports.setIdMappings = function(mappings) {
+    idMappings = mappings;
+}
+
+
 exports.markSandboxDirty = function() {
     sandboxDirty = true;
 }
@@ -67,6 +74,15 @@ var sandboxRequire;
 function loadTemplatePack(id, force, notSandboxed) {
 
     if(notSandboxed) {
+        
+        // HACK: Until the template referencing is refactored
+        if(id=="registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master") {
+            id = idMappings["reps"];
+        } else
+        if(id=="registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master") {
+            id = idMappings["fc-object-graph"];
+        }
+       
         return require("_pack_", id).Pack();
     }
 
