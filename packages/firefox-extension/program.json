@@ -10,7 +10,6 @@
                         "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
                     }
                 },
-                
                 "common": {
                     "@": {
                         "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/common/",
@@ -366,7 +365,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                             "name": "template-pack",
-                            "revision": "0.0.0rev-249d16a7a5f962c085b9633f7e41d02464218139"
+                            "revision": "0.0.0rev-2f7c211c6778327358b8556593ba6f1dae89c675"
                         }
                     },
                     "domplate": {
@@ -387,7 +386,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                         "name": "template-pack",
-                        "revision": "0.0.0rev-249d16a7a5f962c085b9633f7e41d02464218139"
+                        "revision": "0.0.0rev-2f7c211c6778327358b8556593ba6f1dae89c675"
                     }
                 },
                 "domplate": {
@@ -416,7 +415,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                             "name": "template-pack",
-                            "revision": "0.0.0rev-249d16a7a5f962c085b9633f7e41d02464218139"
+                            "revision": "0.0.0rev-2f7c211c6778327358b8556593ba6f1dae89c675"
                         }
                     },
                     "domplate": {
