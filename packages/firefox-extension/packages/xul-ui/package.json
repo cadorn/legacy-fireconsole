@@ -1,5 +1,6 @@
 {
     "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/xul-ui/",
+    "type": "using",
     "name": "xul-ui",
     "using": {
         "nr-common": {

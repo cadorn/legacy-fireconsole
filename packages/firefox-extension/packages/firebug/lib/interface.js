@@ -5,7 +5,6 @@
  * @see http://groups.google.com/group/firebug-working-group/web/firebug-events-listeners
  */
 
-
 exports.getModuleId = function() {
     return module.id;
 }
@@ -160,7 +159,7 @@ var Interface = exports.Interface = function(global) {
     var self = this;
     
     self.global = global;
-    
+
     // only FBL is available at this time - firebug is still starting up
     self.FBL = global.FBL;
     
@@ -265,7 +264,7 @@ APP.subscribeTo("newChrome", function(chrome) {
             interfaces.list[i].attachListeners();
             break;
         }
-    }  
+    }
 });
 
 exports.getInterface = function() {

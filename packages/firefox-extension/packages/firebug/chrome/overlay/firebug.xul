@@ -4,7 +4,11 @@
 
     <script src="__Program.NarwhalizeURL__" type="application/x-javascript"/>
     <script type="application/x-javascript">
-        require("interface", "__module[package]__").init(this);
+        try {
+            require("interface", "__module[package]__").init(this);
+        } catch(e) {
+            system.log.error(e);
+        }
     </script>
 
 </overlay>

@@ -108,7 +108,7 @@ function loadTemplatePack(id, force, notSandboxed) {
         var sPACK = sandboxRequire("pack", module["package"]);       
         sPACK.setLogger(logger);
 
-        var sDOMPLATE = sandboxRequire("domplate", "github.com/cadorn/domplate/zipball/master");
+        var sDOMPLATE = sandboxRequire("domplate", "http://registry.pinf.org/cadorn.org/github/domplate/");
         // TODO: Potential security hole?
         sDOMPLATE.DomplateDebug.replaceInstance(DOMPLATE.DomplateDebug);
     }

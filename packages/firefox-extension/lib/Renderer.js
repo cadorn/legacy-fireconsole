@@ -23,12 +23,12 @@ var Renderer = function(options) {
     if(options.meta) {
         // grouping
         if(UTIL.has(options.meta, "fc.group.start") && options.meta["fc.group.start"]) {
-            var pack = TEMPLATE_PACK.requirePack(domainCallback, "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
+            var pack = TEMPLATE_PACK.requirePack(domainCallback, "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master");
             this.getRep = function() { return pack.getTemplate(domainCallback, "ConsoleOpenGroup", false, true).rep; };
             return;
         } else
         if(UTIL.has(options.meta, "fc.group.end") && options.meta["fc.group.end"]) {
-            var pack = TEMPLATE_PACK.requirePack(domainCallback, "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps");
+            var pack = TEMPLATE_PACK.requirePack(domainCallback, "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master");
             this.getRep = function() { return pack.getTemplate(domainCallback, "ConsoleCloseGroup", false, true).rep; };
             return;
         }
@@ -141,11 +141,9 @@ Renderer.prototype.replace = function(htmlNode, data) {
 
 function cssProcessor(code, info) {
     code = code.replace(/__KEY__/g, info.key);
-    var pkg;
-    if(TEMPLATE_PACK.getPackSea().hasPackage(info["package"])) {
-        pkg = TEMPLATE_PACK.getPackSea().getPackage(info["package"]);
-    } else {
-        pkg = APP.getSea().getPackage(info["package"]);
+    var pkg = TEMPLATE_PACK.getPackPackage(info["package"]);
+    if(!pkg) {
+        pkg = APP.getPackage(info["package"]);
     }
     code = code.replace(/__RESOURCE__/g, APP.getResourceUrlForPackage(pkg));
     return code;

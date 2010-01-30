@@ -10,16 +10,15 @@ var STRUCT = require("struct");
 var MD5 = require("md5");
 
 var FIREBUG_CONSOLE = require("console", "firebug");
-var SEA = require("narwhal/tusk/sea");
 var APP = require("app", "nr-common").getApp();
 var JSON_STORE = require("json-store", "util");
 var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 var TEMPLATE_PACK_DESCRIPTOR = require("descriptor", "template-pack");
+var PACKAGE = require("package", "nr-common");
 
 var SECURITY = require("./Security");
 
 
-var templatePackSea;
 var templatePacks = {};
 
 var templatePackSeaPath = APP.getChrome().getProfilePath().join("FireConsole", "TemplatePacks"),
@@ -77,11 +76,12 @@ function init() {   // This function is triggered at the end of this file
     exports.requirePack(null, descriptor);
 }
 
-exports.getPackSea = function() {
-    if(!templatePackSea) {
-        templatePackSea = SEA.Sea(templatePackSeaPath);
+exports.getPackPackage = function(id) {
+    var path = templatePackSeaPath.join("using", id);
+    if(!path.exists()) {
+        return false;
     }
-    return templatePackSea;
+    return PACKAGE.Package(path);
 }
 
 exports.newDescriptorForClientInfo = function(info) {
@@ -140,8 +140,8 @@ TemplatePack.prototype.authorize = function(domain) {
     var id = this.descriptor.getId();
 
     // these packs are shipped with fireconsole
-    if(id=="github.com/cadorn/fireconsole/raw/master/firefox-extension-reps" ||
-       id=="github.com/cadorn/fireconsole-template-packs/raw/master/fc-object-graph") {
+    if(id=="registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master" ||
+       id=="registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master") {
         return true;
     }
 
@@ -153,6 +153,7 @@ TemplatePack.prototype.authorize = function(domain) {
         // NOTE: The security manager assumes the template pack has an entry in /Config/TemplatePacks.json
         return SECURITY.authorizeTemplatePack(domain, self.descriptor);
     } else {
+        
         var uri = URI.parse(self.descriptor.getDownloadInfo().location);
         if(uri.scheme=="file") {
     
@@ -232,7 +233,7 @@ TemplatePack.prototype.load = function(domain, reload, notSandboxed) {
     }
     this.pack = TEMPLATE_PACK_LOADER.requirePack(this.descriptor.getId(), (forceLoad || reload), notSandboxed, function() { return {
         "seekTemplate": function(node) {
-            var pack = exports.requirePack(domain, "github.com/cadorn/fireconsole-template-packs/raw/master/fc-object-graph");
+            var pack = exports.requirePack(domain, "registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master");
             pack = pack.load(domain, reload);
             return pack.seekTemplate(node);
         },
@@ -262,7 +263,6 @@ function getFuncVarValue(subject) {
 
 function resetCache() {
     // reset some cached resources
-    templatePackSea = null;
     TEMPLATE_PACK_LOADER.markSandboxDirty();
 }
 

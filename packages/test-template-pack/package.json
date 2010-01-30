@@ -3,8 +3,9 @@
     "name": "test-template-pack",
     "using": {
         "template-pack": {
-            "catalog": "http://github.com/cadorn/fireconsole/raw/master/catalog.json",
-            "name": "template-pack"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+            "name": "template-pack",
+            "revision": "master"
         }
     },
     "repositories": [

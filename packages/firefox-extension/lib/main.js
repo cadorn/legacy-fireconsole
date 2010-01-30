@@ -31,7 +31,7 @@ exports.main = function(args) {
         var panel = FIREBUG_INTERFACE.getActiveContext().getPanel("console");
         print(panel.document.documentElement.innerHTML);
     });
-    
+
 /*    
     DEV.action('Reload Page', function() {
         FIREBUG_INTERFACE.enable();
@@ -86,7 +86,7 @@ exports.chrome = function(chrome) {
     
     // Mark-up JS objects logged with __fc_tpl_id
     var renderer = RENDERER.factory({
-        "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleMessage",
+        "template": "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master#ConsoleMessage",
         "domain": function() {
             var context = FIREBUG_INTERFACE.getActiveContext();
             if(!context) return null;
@@ -164,7 +164,7 @@ var ConsoleMessageListener = {
 
     onMessageGroupStart: function(context) {
         var renderer = RENDERER.factory({
-            "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleOpenMessageGroup",
+            "template": "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master#ConsoleOpenMessageGroup",
             "domain": URI.parse(context.FirebugNetMonitorListener.file.href).domain,
             "cssTracker": FIREBUG_CONSOLE.getCSSTracker()
         });
@@ -175,7 +175,7 @@ var ConsoleMessageListener = {
     
     onMessageGroupEnd: function(context) {
         var renderer = RENDERER.factory({
-            "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleCloseGroup",
+            "template": "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master#ConsoleCloseGroup",
             "domain": URI.parse(context.FirebugNetMonitorListener.file.href).domain,
             "cssTracker": FIREBUG_CONSOLE.getCSSTracker()
         });
@@ -208,7 +208,7 @@ var ConsoleMessageListener = {
 
 function logMessage(context, data) {
     var renderer = RENDERER.factory({
-        "template": "github.com/cadorn/fireconsole/raw/master/firefox-extension-reps#ConsoleMessage",
+        "template": "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master#ConsoleMessage",
         "domain": URI.parse(context.FirebugNetMonitorListener.file.href).domain,
         "meta": data.meta,
         "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),

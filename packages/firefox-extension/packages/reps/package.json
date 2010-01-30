@@ -1,5 +1,6 @@
 {
     "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/",
+    "type": "using",
     "name": "reps",
     "using": {
         "nr-common": {

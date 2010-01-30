@@ -1,5 +1,6 @@
 {
     "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/firebug/",
+    "type": "using",
     "name": "firebug",
     "using": {
         "nr-common": {

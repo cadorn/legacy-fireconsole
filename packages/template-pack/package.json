@@ -3,7 +3,9 @@
     "name": "template-pack",
     "using": {
         "domplate": {
-            "location": "http://github.com/cadorn/domplate/zipball/master/"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+            "name": "domplate",
+            "revision": "master"
         }
     },
     "repositories": [
