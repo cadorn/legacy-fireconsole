@@ -72,17 +72,16 @@ exports.requirePack = function(id, force, notSandboxed, externalLoader) {
 
 var sandboxRequire;
 function loadTemplatePack(id, force, notSandboxed) {
-
-    if(notSandboxed) {
         
-        // HACK: Until the template referencing is refactored
-        if(id=="registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master") {
-            id = idMappings["reps"];
-        } else
-        if(id=="registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master") {
-            id = idMappings["fc-object-graph"];
-        }
+    // HACK: Until the template referencing is refactored
+    if(id=="registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master") {
+        id = idMappings["reps"];
+    } else
+    if(id=="registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master") {
+        id = idMappings["fc-object-graph"];
+    }
        
+    if(notSandboxed) {
         return require("_pack_", id).Pack();
     }
 
