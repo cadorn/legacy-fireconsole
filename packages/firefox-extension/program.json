@@ -1,2 +1,143 @@
 {
+    "packages": {
+        "using": {
+            "nr-extension": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/extension/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                        "name": "extension",
+                        "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                    }
+                },
+                "common": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/common/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                            "name": "common",
+                            "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                        }
+                    },
+                    "observable": {
+                        "@": {
+                            "locator": {
+                                "location": "http://github.com/nrstott/observable-js/zipball/master/"
+                            }
+                        }
+                    },
+                    "pinf-common": {
+                        "@": {
+                            "uid": "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/",
+                            "locator": {
+                                "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
+                                "name": "common",
+                                "revision": "0.0.0rev-f114f19b376e96408d8e58bc2bb3c33fb666a070"
+                            }
+                        },
+                        "util": {
+                            "@": {
+                                "uid": "http://registry.pinf.org/cadorn.org/github/util/packages/lib-js/",
+                                "locator": {
+                                    "catalog": "http://registry.pinf.org/cadorn.org/github/util/packages/catalog.json",
+                                    "name": "lib-js",
+                                    "revision": "0.0.0rev-215d4899a34f849abd2eb2ab2b25485382c2979e"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "dev-sidebar": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/dev-sidebar/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                        "name": "dev-sidebar",
+                        "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                    }
+                }
+            },
+            "jack": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/jack/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+                        "name": "jack",
+                        "revision": "0.0.0rev-8036f02b0f44fc5cb53ed8bc600f0ed133c23004"
+                    }
+                }
+            },
+            "wildfire-js": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/wildfire/packages/lib-js/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/wildfire/packages/catalog.json",
+                        "name": "lib-js",
+                        "revision": "0.0.0rev-8285fd10f34543836a5c9133d1a2411db363a7c1"
+                    }
+                }
+            },
+            "firebug": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/firebug/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
+                        "name": "firebug",
+                        "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
+                    }
+                }
+            },
+            "xul-ui": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/xul-ui/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
+                        "name": "xul-ui",
+                        "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
+                    }
+                }
+            },
+            "reps": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
+                        "name": "reps",
+                        "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
+                    }
+                },
+                "domplate": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/domplate/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+                            "name": "domplate",
+                            "revision": "0.0.0rev-446966e22ddbc6249171ea4d8d22fc6545360df6"
+                        }
+                    }
+                },
+                "template-pack": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/template-pack/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+                            "name": "template-pack",
+                            "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
+                        }
+                    }
+                }
+            },
+            "fireconsole-template-packs-fc-object-graph": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
+                        "name": "fc-object-graph",
+                        "revision": "0.0.0rev-d2aa58ccea2879eaaac0c3fe5e49e4df974c598b"
+                    }
+                }
+            }
+        }
+    }
 }
