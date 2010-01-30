@@ -48,6 +48,53 @@
                     }
                 }
             },
+            "nr-common": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/common/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                        "name": "common",
+                        "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                    }
+                },
+                "observable": {
+                    "@": {
+                        "locator": {
+                            "location": "http://github.com/nrstott/observable-js/zipball/master/"
+                        }
+                    }
+                },
+                "pinf-common": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
+                            "name": "common",
+                            "revision": "0.0.0rev-f114f19b376e96408d8e58bc2bb3c33fb666a070"
+                        }
+                    },
+                    "util": {
+                        "@": {
+                            "uid": "http://registry.pinf.org/cadorn.org/github/util/packages/lib-js/",
+                            "locator": {
+                                "catalog": "http://registry.pinf.org/cadorn.org/github/util/packages/catalog.json",
+                                "name": "lib-js",
+                                "revision": "0.0.0rev-215d4899a34f849abd2eb2ab2b25485382c2979e"
+                            }
+                        }
+                    }
+                }
+            },
+            "util": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/util/packages/lib-js/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/util/packages/catalog.json",
+                        "name": "lib-js",
+                        "revision": "0.0.0rev-215d4899a34f849abd2eb2ab2b25485382c2979e"
+                    }
+                }
+            },
             "dev-sidebar": {
                 "@": {
                     "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/dev-sidebar/",
@@ -55,6 +102,43 @@
                         "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
                         "name": "dev-sidebar",
                         "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                    }
+                },
+                "nr-common": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/common/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                            "name": "common",
+                            "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                        }
+                    },
+                    "observable": {
+                        "@": {
+                            "locator": {
+                                "location": "http://github.com/nrstott/observable-js/zipball/master/"
+                            }
+                        }
+                    },
+                    "pinf-common": {
+                        "@": {
+                            "uid": "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/",
+                            "locator": {
+                                "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
+                                "name": "common",
+                                "revision": "0.0.0rev-f114f19b376e96408d8e58bc2bb3c33fb666a070"
+                            }
+                        },
+                        "util": {
+                            "@": {
+                                "uid": "http://registry.pinf.org/cadorn.org/github/util/packages/lib-js/",
+                                "locator": {
+                                    "catalog": "http://registry.pinf.org/cadorn.org/github/util/packages/catalog.json",
+                                    "name": "lib-js",
+                                    "revision": "0.0.0rev-215d4899a34f849abd2eb2ab2b25485382c2979e"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -86,6 +170,43 @@
                         "name": "firebug",
                         "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
                     }
+                },
+                "nr-common": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/common/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                            "name": "common",
+                            "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                        }
+                    },
+                    "observable": {
+                        "@": {
+                            "locator": {
+                                "location": "http://github.com/nrstott/observable-js/zipball/master/"
+                            }
+                        }
+                    },
+                    "pinf-common": {
+                        "@": {
+                            "uid": "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/",
+                            "locator": {
+                                "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
+                                "name": "common",
+                                "revision": "0.0.0rev-f114f19b376e96408d8e58bc2bb3c33fb666a070"
+                            }
+                        },
+                        "util": {
+                            "@": {
+                                "uid": "http://registry.pinf.org/cadorn.org/github/util/packages/lib-js/",
+                                "locator": {
+                                    "catalog": "http://registry.pinf.org/cadorn.org/github/util/packages/catalog.json",
+                                    "name": "lib-js",
+                                    "revision": "0.0.0rev-215d4899a34f849abd2eb2ab2b25485382c2979e"
+                                }
+                            }
+                        }
+                    }
                 }
             },
             "xul-ui": {
@@ -96,6 +217,43 @@
                         "name": "xul-ui",
                         "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
                     }
+                },
+                "nr-common": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/common/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                            "name": "common",
+                            "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                        }
+                    },
+                    "observable": {
+                        "@": {
+                            "locator": {
+                                "location": "http://github.com/nrstott/observable-js/zipball/master/"
+                            }
+                        }
+                    },
+                    "pinf-common": {
+                        "@": {
+                            "uid": "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/",
+                            "locator": {
+                                "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
+                                "name": "common",
+                                "revision": "0.0.0rev-f114f19b376e96408d8e58bc2bb3c33fb666a070"
+                            }
+                        },
+                        "util": {
+                            "@": {
+                                "uid": "http://registry.pinf.org/cadorn.org/github/util/packages/lib-js/",
+                                "locator": {
+                                    "catalog": "http://registry.pinf.org/cadorn.org/github/util/packages/catalog.json",
+                                    "name": "lib-js",
+                                    "revision": "0.0.0rev-215d4899a34f849abd2eb2ab2b25485382c2979e"
+                                }
+                            }
+                        }
+                    }
                 }
             },
             "reps": {
@@ -105,6 +263,90 @@
                         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
                         "name": "reps",
                         "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
+                    }
+                },
+                "nr-common": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/common/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                            "name": "common",
+                            "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                        }
+                    },
+                    "observable": {
+                        "@": {
+                            "locator": {
+                                "location": "http://github.com/nrstott/observable-js/zipball/master/"
+                            }
+                        }
+                    },
+                    "pinf-common": {
+                        "@": {
+                            "uid": "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/",
+                            "locator": {
+                                "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
+                                "name": "common",
+                                "revision": "0.0.0rev-f114f19b376e96408d8e58bc2bb3c33fb666a070"
+                            }
+                        },
+                        "util": {
+                            "@": {
+                                "uid": "http://registry.pinf.org/cadorn.org/github/util/packages/lib-js/",
+                                "locator": {
+                                    "catalog": "http://registry.pinf.org/cadorn.org/github/util/packages/catalog.json",
+                                    "name": "lib-js",
+                                    "revision": "0.0.0rev-215d4899a34f849abd2eb2ab2b25485382c2979e"
+                                }
+                            }
+                        }
+                    }
+                },
+                "firebug": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/firebug/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
+                            "name": "firebug",
+                            "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
+                        }
+                    },
+                    "nr-common": {
+                        "@": {
+                            "uid": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/common/",
+                            "locator": {
+                                "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                                "name": "common",
+                                "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                            }
+                        },
+                        "observable": {
+                            "@": {
+                                "locator": {
+                                    "location": "http://github.com/nrstott/observable-js/zipball/master/"
+                                }
+                            }
+                        },
+                        "pinf-common": {
+                            "@": {
+                                "uid": "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/",
+                                "locator": {
+                                    "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
+                                    "name": "common",
+                                    "revision": "0.0.0rev-f114f19b376e96408d8e58bc2bb3c33fb666a070"
+                                }
+                            },
+                            "util": {
+                                "@": {
+                                    "uid": "http://registry.pinf.org/cadorn.org/github/util/packages/lib-js/",
+                                    "locator": {
+                                        "catalog": "http://registry.pinf.org/cadorn.org/github/util/packages/catalog.json",
+                                        "name": "lib-js",
+                                        "revision": "0.0.0rev-215d4899a34f849abd2eb2ab2b25485382c2979e"
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "domplate": {
@@ -125,6 +367,36 @@
                             "name": "template-pack",
                             "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
                         }
+                    },
+                    "domplate": {
+                        "@": {
+                            "uid": "http://registry.pinf.org/cadorn.org/github/domplate/",
+                            "locator": {
+                                "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+                                "name": "domplate",
+                                "revision": "0.0.0rev-446966e22ddbc6249171ea4d8d22fc6545360df6"
+                            }
+                        }
+                    }
+                }
+            },
+            "template-pack": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/template-pack/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+                        "name": "template-pack",
+                        "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
+                    }
+                },
+                "domplate": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/domplate/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+                            "name": "domplate",
+                            "revision": "0.0.0rev-446966e22ddbc6249171ea4d8d22fc6545360df6"
+                        }
                     }
                 }
             },
@@ -135,6 +407,56 @@
                         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
                         "name": "fc-object-graph",
                         "revision": "0.0.0rev-d2aa58ccea2879eaaac0c3fe5e49e4df974c598b"
+                    }
+                },
+                "template-pack": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/template-pack/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+                            "name": "template-pack",
+                            "revision": "0.0.0rev-bd0f38723abfc526cccb415d51ef9cef91e68f10"
+                        }
+                    },
+                    "domplate": {
+                        "@": {
+                            "uid": "http://registry.pinf.org/cadorn.org/github/domplate/",
+                            "locator": {
+                                "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+                                "name": "domplate",
+                                "revision": "0.0.0rev-446966e22ddbc6249171ea4d8d22fc6545360df6"
+                            }
+                        }
+                    }
+                }
+            },
+            "domplate": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/domplate/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+                        "name": "domplate",
+                        "revision": "0.0.0rev-446966e22ddbc6249171ea4d8d22fc6545360df6"
+                    }
+                }
+            },
+            "pinf-common": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
+                        "name": "common",
+                        "revision": "0.0.0rev-f114f19b376e96408d8e58bc2bb3c33fb666a070"
+                    }
+                },
+                "util": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/util/packages/lib-js/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/util/packages/catalog.json",
+                            "name": "lib-js",
+                            "revision": "0.0.0rev-215d4899a34f849abd2eb2ab2b25485382c2979e"
+                        }
                     }
                 }
             }
