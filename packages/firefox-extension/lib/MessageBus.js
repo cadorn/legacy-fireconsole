@@ -85,13 +85,14 @@ var OnModifyRequestObserver = {
              * If firephp is not enabled remove header from request if it exists.
              */
             
-            if (httpChannel.getRequestHeader("User-Agent").match(/\sWildfire\s?/) == null) {
+//            if (httpChannel.getRequestHeader("User-Agent").match(/\sWildfire\s?/) == null) {
 //            if (this.isEnabled()) {
-                httpChannel.setRequestHeader("User-Agent", httpChannel.getRequestHeader("User-Agent") + ' ' +
-                "Wildfire", false);
+//                httpChannel.setRequestHeader("User-Agent", httpChannel.getRequestHeader("User-Agent") + ' ' +
+//                "Wildfire", false);
 //            }
-            }
+//            }
 
+            // This is for backwards compatibility only
             if (httpChannel.getRequestHeader("User-Agent").match(/\sFirePHP\/([\.|\d]*)\s?/) == null) {
 //            if (this.isEnabled()) {
                 httpChannel.setRequestHeader("User-Agent", httpChannel.getRequestHeader("User-Agent") + ' ' +

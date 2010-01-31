@@ -34,6 +34,10 @@ exports.Template = function(templateModule) {
     function getRep(pack) {
         var rep = {};
 
+        rep.toString = function() {
+            return "Rep["+templateModule.path+"]";
+        }
+
         // inject resources
         rep._resources = function() {
             return pack.getResources();

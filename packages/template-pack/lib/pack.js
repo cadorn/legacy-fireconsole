@@ -5,15 +5,22 @@ var MD5 = require("md5");
 var STRUCT = require("struct");
 
 
-var logger;
+var logger,
+    eventDispatcher;
 exports.setLogger = function(obj) {
     logger = obj;    
+}
+exports.setEventDispatcher = function(dispatcher) {
+    eventDispatcher = dispatcher;    
 }
 
 exports.Pack = function(factoryModule) {
     var Pack = function() {};
     var self = new Pack();
     self.logger = logger;
+    self.dispatchEvent = function(name, args) {
+        eventDispatcher.dispatch(name, args);
+    }
     
     var templates = [];
     var templatesDict = {};

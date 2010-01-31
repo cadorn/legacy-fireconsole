@@ -11,9 +11,9 @@ var Encoder = exports.Encoder = function() {
     if (!(this instanceof exports.Encoder))
         return new exports.Encoder();
     this.options = {
-        "maxObjectDepth": 5,
-        "maxArrayDepth": 5,
-        "maxOverallDepth": 3,
+        "maxObjectDepth": 8,
+        "maxArrayDepth": 8,
+        "maxOverallDepth": 10,
         "includeLanguageMeta": true
     };
 }
@@ -25,30 +25,37 @@ Encoder.prototype.setOption = function(name, value) {
 Encoder.prototype.setOrigin = function(variable) {
     this.origin = variable;
     // reset some variables
-    this.instances = {};
+    this.instances = [];
     return true;
 }
 
-Encoder.prototype.encode = function(data, meta) {
+Encoder.prototype.encode = function(data, meta, options) {
+
+    options = options || {};
+
     if(typeof data != "undefined") {
         this.setOrigin(data);
     }
 
     // TODO: Use meta["fc.encoder.options"] to control encoding
-    
+
     var graph = {};
-    
+
     if(typeof this.origin != "undefined") {
         graph["origin"] = this.encodeVariable(this.origin);
     }
-    
+
     if(UTIL.len(this.instances)>0) {
-        graph["instances"] = {};
-        UTIL.every(this.instances, function(instance) {
-            graph["instances"][instance[0]] = instance[1][1];
+        graph["instances"] = [];
+        this.instances.forEach(function(instance) {
+            graph["instances"].push(instance[1]);
         });
     }
-    
+
+    if(UTIL.has(options, "jsonEncode") && !options.jsonEncode) {
+        return graph;
+    }
+
     return JSON.encode(graph);
 }
 
@@ -122,9 +129,9 @@ Encoder.prototype.encodeArray = function(variable, objectDepth, arrayDepth, over
 }
 
 Encoder.prototype.getInstanceId = function(object) {
-    for( var key in this.instances ) {
-        if(this.instances[key][0]===object) {
-            return key;
+    for( var i=0 ; i<this.instances.length ; i++ ) {
+        if(this.instances[i][0]===object) {
+            return i;
         }
     }
     return null;
@@ -138,12 +145,11 @@ Encoder.prototype.encodeInstance = function(object, objectDepth, arrayDepth, ove
     if(id!=null) {
         return id;
     }
-    id = UTIL.len(this.instances);
-    this.instances[id] = [
+    this.instances.push([
         object,
         this.encodeObject(object, objectDepth, arrayDepth, overallDepth)
-    ];
-    return id;
+    ]);
+    return UTIL.len(this.instances)-1;
 }
 
 Encoder.prototype.encodeObject = function(object, objectDepth, arrayDepth, overallDepth) {

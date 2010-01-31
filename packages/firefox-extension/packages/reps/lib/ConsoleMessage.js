@@ -55,7 +55,7 @@ template.onLoad = function(pack, tags){with(tags) {
                 return "";
             }
         },
-    
+
         _getValue: function(object)
         {
             if(!object.og) {
@@ -81,7 +81,11 @@ template.onLoad = function(pack, tags){with(tags) {
             // set a class on our logRow parent identifying this log row as fireconsole controlled
             // this is used for hover and selected styling
             this.util.setClass(this._getMasterRow(event.target).parentNode, "logRow-" + pack.__KEY__ + "ConsoleMessage");
-            
+
+            if(this.util.getChildByClass(this._getMasterRow(event.target), "__fc_no_inspect")) {
+                return;
+            }
+
             // populate file/line info tip
             var meta = this._getMasterRow(event.target).repObject.meta;
             if(meta && (meta["fc.msg.file"] || meta["fc.msg.line"])) {
@@ -104,6 +108,10 @@ template.onLoad = function(pack, tags){with(tags) {
         
         onClick: function(event)
         {
+            if(this.util.getChildByClass(this._getMasterRow(event.target), "__fc_no_inspect")) {
+                return;
+            }
+
             this.dispatchEvent('click', [event, this._getMasterRow(event.target)]);
         },
         

@@ -186,8 +186,8 @@ var ConsoleMessageListener = {
         try {
             
             var data = {
-                "meta": JSON.decode(message.getMeta() || "{}"),
-                "og": OBJECT_GRAPH.generateFromMessage(message)
+                "og": OBJECT_GRAPH.generateFromMessage(message),
+                "meta": JSON.decode(message.getMeta() || "{}")
             }
     
             logMessage(context, data);

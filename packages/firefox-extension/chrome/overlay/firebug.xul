@@ -16,15 +16,12 @@
               label="FireConsole" insertafter="menu_firebug">
             <menupopup>
         
-                <menuitem class="menuitem-iconic fireconsoleMenuWelcomeItem" label="FireConsole Headquarters" oncommand="__PP__bridge.visitWebsite('hq')"/>
-                <menuseparator/>
                 <menuitem label="FireConsole Website" oncommand="__PP__bridge.visitWebsite('main')"/>
                 <menuitem label="Documentation" oncommand="__PP__bridge.visitWebsite('docs')"/>
                 <menuitem label="Forums / Help" oncommand="__PP__bridge.visitWebsite('discuss')"/>
                 <menuitem label="Issues Tracker" oncommand="__PP__bridge.visitWebsite('issues')"/>
                 <menuseparator/>
                 <menuitem label="About" oncommand="__PP__bridge.openAboutDialog()"/>
-                <menuitem label="Donate" oncommand="__PP__bridge.visitWebsite('donate')"/>
 
             </menupopup>
         </menu>
@@ -36,15 +33,12 @@
                     
             <menupopup id="fireconsoleMenuPopup">
                 
-                <menuitem class="menuitem-iconic fireconsoleMenuWelcomeItem" label="FireConsole Headquarters" oncommand="__PP__bridge.visitWebsite('hq')"/>
-                <menuseparator/>
                 <menuitem label="FireConsole Website" oncommand="__PP__bridge.visitWebsite('main')"/>
                 <menuitem label="Documentation" oncommand="__PP__bridge.visitWebsite('docs')"/>
                 <menuitem label="Forums / Help" oncommand="__PP__bridge.visitWebsite('discuss')"/>
                 <menuitem label="Issues Tracker" oncommand="__PP__bridge.visitWebsite('issues')"/>
                 <menuseparator/>
                 <menuitem label="About" oncommand="__PP__bridge.openAboutDialog()"/>
-                <menuitem label="Donate" oncommand="__PP__bridge.visitWebsite('donate')"/>
                 
             </menupopup>
 

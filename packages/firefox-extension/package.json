@@ -30,6 +30,11 @@
             "name": "jack",
             "revision": "master"
         },
+        "fireconsole-js": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+            "name": "lib-js",
+            "revision": "master"
+        },
         "wildfire-js": {
             "catalog": "http://registry.pinf.org/cadorn.org/github/wildfire/packages/catalog.json",
             "name": "lib-js",
@@ -58,6 +63,11 @@
         "fireconsole-template-packs-fc-object-graph": {
             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
             "name": "fc-object-graph",
+            "revision": "master"
+        },
+        "fireconsole-template-packs-lang-php": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
+            "name": "lang-php",
             "revision": "master"
         },
         "domplate": {

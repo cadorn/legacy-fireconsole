@@ -15,8 +15,11 @@ template.onLoad = function(pack, tags){with(tags) {
             var rep;
             if(object["__fc_tpl_id"]) {
                 rep = this.getRepForId(object["__fc_tpl_id"]);
-            } else {
+            } else
+            if(object.og && object.og.getOrigin) {
                 rep = this.getRepForNode(object.og.getOrigin());
+            } else {
+                rep = this.getRepForNode(object);
             }
             return rep.tag;
         },

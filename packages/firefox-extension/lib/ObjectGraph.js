@@ -6,15 +6,23 @@ function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
 var UTIL = require("util");
 var JSON = require("json");
+var ENCODER = require("encoder/default", "fireconsole-js");
 
 
 exports.generateFromMessage = function(message) {
-        
+
     var og = new ObjectGraph();
-    
-    var meta = JSON.decode(message.getMeta() || "{}");
-    
-    var data = JSON.decode(message.getData());
+
+    var meta = JSON.decode(message.getMeta() || "{}"),
+        data;
+
+    if(meta["fc.msg.preprocessor"] && meta["fc.msg.preprocessor"]=="FirePHPCoreCompatibility") {
+        var parts = convertFirePHPCoreData(meta, message.getData());
+        message.setMeta(JSON.encode(parts[0]));
+        data = parts[1];
+    } else {
+        data = JSON.decode(message.getData());
+    }
 
     if(data.instances) {
         for( var i=0 ; i<data.instances.length ; i++ ) {
@@ -24,7 +32,7 @@ exports.generateFromMessage = function(message) {
     }
 
     og.setOrigin(generateNodesFromData(og, data.origin));
-    
+
     return og;
 }
 
@@ -101,4 +109,14 @@ ObjectGraph.prototype.getInstance = function(index) {
     return this.instances[index];
 }
 
+
+
+
+var encoder = ENCODER.Encoder();
+function convertFirePHPCoreData(meta, data) {
+    data = encoder.encode(data, null, {
+        "jsonEncode": false
+    });
+    return [meta, data]; 
+}
 

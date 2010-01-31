@@ -53,3 +53,17 @@ VariableViewer.prototype.showFromConsoleRow = function(row) {
 
     self.panel.show();
 }
+
+VariableViewer.prototype.showFromConsoleNode = function(node) {
+    var self = this;
+
+    var doc = self.panel.getIFrame().contentDocument;
+    var renderer = RENDERER.factory({
+        "template": "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master#VariableViewer",
+        "cssTracker": self.cssTracker,
+        "document": doc
+    });
+    renderer.replace(doc.getElementById("content"), node);
+
+    self.panel.show();
+}

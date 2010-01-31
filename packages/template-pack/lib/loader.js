@@ -16,13 +16,28 @@ var repositoryPaths = [];
 var loadedPacks = {};
 
 
-var externalLogger;
+var externalLogger,
+    externalEventDispatcher;
 exports.setLogger = function(logger) {
     externalLogger = logger;
+}
+exports.setEventDispatcher = function(dispatcher) {
+    externalEventDispatcher = dispatcher;
 }
 var logger = {
     log: function() {
         if(externalLogger) externalLogger.log.apply(null, arguments);
+    },
+    warn: function() {
+        if(externalLogger) externalLogger.warn.apply(null, arguments);
+    },
+    error: function() {
+        if(externalLogger) externalLogger.error.apply(null, arguments);
+    }
+}
+var eventDispatcher = {
+    dispatch: function(name, args) {
+        if(externalEventDispatcher) externalEventDispatcher.dispatch.apply(null, arguments);
     }
 }
 
@@ -54,7 +69,9 @@ exports.addRepositoryPath = function(file) {
 function getLogger() {
     if(!logger) {
         logger = {
-            log: function() {}
+            log: function() {},
+            warn: function() {},
+            error: function() {}
         }
     }
     return logger;
@@ -76,6 +93,9 @@ function loadTemplatePack(id, force, notSandboxed) {
     // HACK: Until the template referencing is refactored
     if(id=="registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master") {
         id = idMappings["reps"];
+    } else
+    if(id=="registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/lang-php/master") {
+        id = idMappings["lang-php"];
     } else
     if(id=="registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master") {
         id = idMappings["fc-object-graph"];
@@ -122,6 +142,7 @@ function loadTemplatePack(id, force, notSandboxed) {
         
         var sPACK = sandboxRequire("pack", module["package"]);       
         sPACK.setLogger(logger);
+        sPACK.setEventDispatcher(eventDispatcher);
 
         var sDOMPLATE = sandboxRequire("domplate", "http://registry.pinf.org/cadorn.org/github/domplate/");
         // TODO: Potential security hole?

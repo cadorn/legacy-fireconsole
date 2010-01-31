@@ -33,6 +33,13 @@ if(!templatePackMetaStore.exists()) {
 }
 
 TEMPLATE_PACK_LOADER.setLogger(FIREBUG_CONSOLE);
+TEMPLATE_PACK_LOADER.setEventDispatcher({
+    "dispatch": function(name, args) {
+        if(name=="inspectNode") {
+            APP.getChrome().getInstance("VariableViewer").showFromConsoleNode(args.node);           
+        }
+    }
+});
 // Tell the template loader which extra packages to load into the sandbox
 TEMPLATE_PACK_LOADER.addSandboxPackage(APP.getInfo().ID);
 // Tell the template loader where to find template packs
@@ -42,7 +49,8 @@ TEMPLATE_PACK_LOADER.addRepositoryPath(templatePackSeaPath);
 // HACK: Until the template referencing is refactored
 TEMPLATE_PACK_LOADER.setIdMappings({
     "reps": module.using["reps"],
-    "fc-object-graph": module.using["fireconsole-template-packs-fc-object-graph"]
+    "fc-object-graph": module.using["fireconsole-template-packs-fc-object-graph"],
+    "lang-php": module.using["fireconsole-template-packs-lang-php"]
 });
 
 
@@ -77,6 +85,23 @@ function init() {   // This function is triggered at the end of this file
         "download": {
             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
             "name": "fc-object-graph",
+            "revision": "master"
+        }        
+    });
+    addTemplatePack(descriptor);
+    exports.requirePack(null, descriptor);
+
+    descriptor = new TEMPLATE_PACK_DESCRIPTOR.Descriptor({
+        "homepage": "http://github.com/cadorn/fireconsole-template-packs",
+        "repositories": [
+            {
+                "type": "www",
+                "url": "http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/lang-php/"
+            }
+        ],
+        "download": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
+            "name": "lang-php",
             "revision": "master"
         }        
     });
@@ -149,7 +174,8 @@ TemplatePack.prototype.authorize = function(domain) {
 
     // these packs are shipped with fireconsole
     if(id=="registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master" ||
-       id=="registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master") {
+       id=="registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master" ||
+       id=="registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/lang-php/master") {
         return true;
     }
 

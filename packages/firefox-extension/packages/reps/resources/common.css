@@ -10,10 +10,10 @@
 }
 
 DIV.logRow-__KEY__ConsoleMessage:hover {
-    background-color: #F0E68C;
+    background-color: #75FC53;
 }
 DIV.logRow-__KEY__ConsoleMessage.selected {
-    background-color: #FFA07A !important;
+    background-color: #35FC03 !important;
 }
 
 DIV.__KEY__ConsoleMessage > SPAN.label {
