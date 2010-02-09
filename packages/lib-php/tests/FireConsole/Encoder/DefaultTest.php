@@ -6,7 +6,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'FireConsole/Encoder/Default.php';
 
 
-mp_require('functions/mp_json_to_array', 'modular-php-util');
+mp_require('functions/mp_json_to_array');
 
 
 class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase

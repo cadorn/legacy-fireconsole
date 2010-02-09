@@ -57,7 +57,7 @@ class Zend_Reflection_Docblock_Tag implements Reflector
     public static function factory($tagDocblockLine)
     {
         $matches = array();
-        
+
         if (!preg_match('#^@(\w+)(\s|$)#', $tagDocblockLine, $matches)) {
             require_once 'Zend/Reflection/Exception.php';
             throw new Zend_Reflection_Exception('No valid tag name found within provided docblock line.');

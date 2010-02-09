@@ -1,26 +1,22 @@
 <?php
 
-// locate modular-php package to bootstrap program
-$path = DIRECTORY_SEPARATOR.implode(array('using','github.com','cadorn','modular-php','raw','master','core','lib','ModularPHP','Bootstrap.php'),DIRECTORY_SEPARATOR);
-if(!file_exists(($file = dirname(dirname(dirname(__FILE__)))).$path) && !file_exists(($file = dirname(dirname($file))).$path)) {
-    throw new Exception("Could not locate ModularPHP Core package!");
-}
-require_once($file.$path);
-ModularPHP_Bootstrap::Program($file, 'lib-php');
-
-
-// HACK: Remove this once PHPUnit is packaged
-set_include_path(
-    '/pinf/pear/PEAR' . 
-    PATH_SEPARATOR . 
-    get_include_path()
+ModularPHP_Bootstrap::Program("/Users/cadorn/pinf/builds/registry.pinf.org/cadorn.org/github/fireconsole/packages/lib-php/master/raw", 'lib-php',
+array(
+    "system" => array(
+        array("path" => "/Users/cadorn/pinf/workspaces/github.com/cadorn/modular-php-packages/packages/phpunit",
+              "locator" => array(
+                "catalog" => "http://registry.pinf.org/cadorn.org/github/modular-php-packages/packages/catalog.json",
+                "name" => "phpunit",
+                "revision" => "naster"
+              ))
+    )
+)
 );
-
 
 // initialize and run PHPGI wrapper and app
 
-mp_require('PHPGI/Wrapper', 'modular-php-phpgi');
-mp_require('PHPGI/App', 'modular-php-phpgi');
+mp_require('PHPGI/Wrapper');
+mp_require('PHPGI/App');
 
 class app extends PHPGI_App
 {

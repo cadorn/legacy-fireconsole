@@ -1,15 +1,5 @@
 <?php
 
-if(!class_exists('ModularPHP_Bootstrap')) {
-    // locate modular-php package to bootstrap program
-    $path = DIRECTORY_SEPARATOR.implode(array('using','github.com','cadorn','modular-php','raw','master','core','lib','ModularPHP','Bootstrap.php'),DIRECTORY_SEPARATOR);
-    if(!file_exists(($file = dirname(dirname(__FILE__))).$path) && !file_exists(($file = dirname(dirname($file))).$path)) {
-        throw new Exception("Could not locate ModularPHP Core package!");
-    }
-    require_once($file.$path);
-    ModularPHP_Bootstrap::Program($file, 'lib-php');
-}
-
 ob_start();
 
 require_once 'PHPUnit/Framework.php';

@@ -1,22 +1,26 @@
 {
     "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/lib-php/",
     "name": "lib-php",
-    "using": {
+    "dependencies": {
         "modular-php-core": {
-            "catalog": "http://github.com/cadorn/modular-php/raw/master/catalog.json",
-            "name": "core"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+            "name": "core",
+            "revision": "master"
         },
         "modular-php-phpgi": {
-            "catalog": "http://github.com/cadorn/modular-php/raw/master/catalog.json",
-            "name": "phpgi"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+            "name": "phpgi",
+            "revision": "master"
         },
         "modular-php-util": {
-            "catalog": "http://github.com/cadorn/modular-php/raw/master/catalog.json",
-            "name": "util"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+            "name": "util",
+            "revision": "master"
         },
         "wildfire": {
-            "catalog": "http://github.com/cadorn/wildfire/raw/master/catalog.json",
-            "name": "lib-php"
+            "catalog": "http://registry.pinf.org/cadorn.org/github/wildfire/packages/catalog.json",
+            "name": "lib-php",
+            "revision": "master"
         }
     },
     "repositories": [
@@ -25,5 +29,19 @@
             "url": "git://github.com/cadorn/fireconsole.git",
             "path": "packages/lib-php"
         }
-    ]
+    ],
+    "pinf": {
+        "builder": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+            "name": "core",
+            "revision": "master",
+            "module": "builders/package"
+        },
+        "tester": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+            "name": "test",
+            "revision": "master",
+            "module": "tester"
+        }
+    }
 }

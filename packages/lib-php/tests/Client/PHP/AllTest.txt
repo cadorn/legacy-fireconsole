@@ -1,0 +1,10 @@
+
+testBasic()[messages]:
+
+    72||{"origin":{"type":"text","text":"Hello World","fc.lang.type":"string"}}|
+    63||{"origin":{"type":"text","text":"1","fc.lang.type":"integer"}}|
+    64||{"origin":{"type":"text","text":"10.5","fc.lang.type":"float"}}|
+    64||{"origin":{"type":"text","text":"51","fc.lang.type":"integer"}}|
+    77||{"origin":{"type":"text","text":"Resource id #460","fc.lang.type":"string"}}|
+
+break;
