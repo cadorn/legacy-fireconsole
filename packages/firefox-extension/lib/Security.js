@@ -33,10 +33,11 @@ exports.initialize = function(options)
         "url": APP.getPackage(module["package"]).getContentBaseUrl() + 'TemplatePackAuthorizationPanel.htm',
         "close.button.label": "Dismiss"
     });
-    
+/*    
     DEV.action('Reload TemplatePackAuthPanel', function() {
         templatePackAuthorizationPanel.reload();
     });
+*/
 }
 
 exports.authorizeTemplatePack = function(domain, descriptor) {

@@ -32,10 +32,11 @@ var VariableViewer = exports.VariableViewer = function() {
             self.panel.hide();
         }
     });
-
+/*
     DEV.action('Dump VariableViewer HTML', function() {
         print(self.panel.getIFrame().contentDocument.documentElement.innerHTML);
     });
+*/
 }
 
 VariableViewer.prototype.showFromConsoleRow = function(row) {

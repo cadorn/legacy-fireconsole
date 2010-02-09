@@ -12,6 +12,36 @@ Libraries
 
 
 
+Install
+-------
+
+See [narwhalrunner](http://github.com/cadorn/narwhalrunner) for requirements.
+
+Checkout the fireconsole workspace and switch to it:
+
+    pinf checkout-workspace -s github.com/cadorn/fireconsole
+
+Make sure you have a firefox binary registered:
+
+    nr add-bin /Applications/Firefox.app/Contents/MacOS/firefox-bin
+
+Create a firefox profile. Install [Firebug 1.5+](http://getfirebug.com/) before closing the browser again.
+
+    nr create-profile --dev master
+    nr populate-profile master
+
+Add the firefox extension to the profile:
+
+    nr add-extension -l --profile master packages/firefox-extension
+
+Launch the profile:
+
+    nr launch --dev --profile master
+
+
+
+
+
 License
 =======
 

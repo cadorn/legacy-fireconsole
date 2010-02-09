@@ -27,10 +27,12 @@ var FORCE_REP_RELOAD = false;
 
 exports.main = function(args) {
     
+/*    
     DEV.action('Dump Console HTML', function() {
         var panel = FIREBUG_INTERFACE.getActiveContext().getPanel("console");
         print(panel.document.documentElement.innerHTML);
     });
+*/
 
 /*    
     DEV.action('Reload Page', function() {
