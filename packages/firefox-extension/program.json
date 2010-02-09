@@ -16,7 +16,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
                             "name": "common",
-                            "revision": "0.0.0rev-8b25ca010571f9d25421d4d6812ae5fd71af2e0a"
+                            "revision": "0.0.0rev-2a4ce8218dd72bf053c274ec430c36f77731df93"
                         }
                     },
                     "observable": {
@@ -32,7 +32,7 @@
                             "locator": {
                                 "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
                                 "name": "common",
-                                "revision": "0.0.0rev-1b09e4d2b548f04b8b42f200a3828e279226baae"
+                                "revision": "0.0.0rev-b403c7328e555276e2c574ef663c80b8925c5695"
                             }
                         },
                         "util": {
@@ -54,7 +54,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
                         "name": "common",
-                        "revision": "0.0.0rev-8b25ca010571f9d25421d4d6812ae5fd71af2e0a"
+                        "revision": "0.0.0rev-2a4ce8218dd72bf053c274ec430c36f77731df93"
                     }
                 },
                 "observable": {
@@ -70,7 +70,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
                             "name": "common",
-                            "revision": "0.0.0rev-1b09e4d2b548f04b8b42f200a3828e279226baae"
+                            "revision": "0.0.0rev-b403c7328e555276e2c574ef663c80b8925c5695"
                         }
                     },
                     "util": {
@@ -101,7 +101,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
                         "name": "dev-sidebar",
-                        "revision": "0.0.0rev-7de8b4445cfcdcb2c115e2a6f48d4e159a3c842b"
+                        "revision": "0.0.0rev-2a4ce8218dd72bf053c274ec430c36f77731df93"
                     }
                 },
                 "nr-common": {
@@ -110,7 +110,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
                             "name": "common",
-                            "revision": "0.0.0rev-8b25ca010571f9d25421d4d6812ae5fd71af2e0a"
+                            "revision": "0.0.0rev-2a4ce8218dd72bf053c274ec430c36f77731df93"
                         }
                     },
                     "observable": {
@@ -126,7 +126,7 @@
                             "locator": {
                                 "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
                                 "name": "common",
-                                "revision": "0.0.0rev-1b09e4d2b548f04b8b42f200a3828e279226baae"
+                                "revision": "0.0.0rev-b403c7328e555276e2c574ef663c80b8925c5695"
                             }
                         },
                         "util": {
@@ -177,7 +177,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
                             "name": "common",
-                            "revision": "0.0.0rev-8b25ca010571f9d25421d4d6812ae5fd71af2e0a"
+                            "revision": "0.0.0rev-2a4ce8218dd72bf053c274ec430c36f77731df93"
                         }
                     },
                     "observable": {
@@ -193,7 +193,7 @@
                             "locator": {
                                 "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
                                 "name": "common",
-                                "revision": "0.0.0rev-1b09e4d2b548f04b8b42f200a3828e279226baae"
+                                "revision": "0.0.0rev-b403c7328e555276e2c574ef663c80b8925c5695"
                             }
                         },
                         "util": {
@@ -224,7 +224,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
                             "name": "common",
-                            "revision": "0.0.0rev-8b25ca010571f9d25421d4d6812ae5fd71af2e0a"
+                            "revision": "0.0.0rev-2a4ce8218dd72bf053c274ec430c36f77731df93"
                         }
                     },
                     "observable": {
@@ -240,7 +240,7 @@
                             "locator": {
                                 "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
                                 "name": "common",
-                                "revision": "0.0.0rev-1b09e4d2b548f04b8b42f200a3828e279226baae"
+                                "revision": "0.0.0rev-b403c7328e555276e2c574ef663c80b8925c5695"
                             }
                         },
                         "util": {
@@ -271,7 +271,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
                             "name": "common",
-                            "revision": "0.0.0rev-8b25ca010571f9d25421d4d6812ae5fd71af2e0a"
+                            "revision": "0.0.0rev-2a4ce8218dd72bf053c274ec430c36f77731df93"
                         }
                     },
                     "observable": {
@@ -287,7 +287,7 @@
                             "locator": {
                                 "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
                                 "name": "common",
-                                "revision": "0.0.0rev-1b09e4d2b548f04b8b42f200a3828e279226baae"
+                                "revision": "0.0.0rev-b403c7328e555276e2c574ef663c80b8925c5695"
                             }
                         },
                         "util": {
@@ -317,7 +317,7 @@
                             "locator": {
                                 "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
                                 "name": "common",
-                                "revision": "0.0.0rev-8b25ca010571f9d25421d4d6812ae5fd71af2e0a"
+                                "revision": "0.0.0rev-2a4ce8218dd72bf053c274ec430c36f77731df93"
                             }
                         },
                         "observable": {
@@ -333,7 +333,7 @@
                                 "locator": {
                                     "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
                                     "name": "common",
-                                    "revision": "0.0.0rev-1b09e4d2b548f04b8b42f200a3828e279226baae"
+                                    "revision": "0.0.0rev-b403c7328e555276e2c574ef663c80b8925c5695"
                                 }
                             },
                             "util": {
@@ -406,7 +406,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
                         "name": "fc-object-graph",
-                        "revision": "0.0.0rev-17d5b7fe85c600d2f9332057aea92cfd5dff59c2"
+                        "revision": "0.0.0rev-55353c9a2085538f99323945da3991af4fb1cde5"
                     }
                 },
                 "template-pack": {
@@ -446,7 +446,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/pinf/packages/catalog.json",
                         "name": "common",
-                        "revision": "0.0.0rev-1b09e4d2b548f04b8b42f200a3828e279226baae"
+                        "revision": "0.0.0rev-b403c7328e555276e2c574ef663c80b8925c5695"
                     }
                 },
                 "util": {
