@@ -26,6 +26,25 @@ var FORCE_REP_RELOAD = false;
 
 
 exports.main = function(args) {
+
+/*
+    DEV.action('Test Log', function() {
+        
+        DEV.log("Hello World");
+
+
+        try {
+
+        throw new Error("oops 1!!!");
+            
+        } catch(e) {
+            system.log.error(e);
+        }
+
+        throw new Error("oops 2!!!");
+
+    });
+*/
     
 /*    
     DEV.action('Dump Console HTML', function() {
