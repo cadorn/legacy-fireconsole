@@ -267,8 +267,8 @@ APP.subscribeTo("newChrome", function(chrome) {
     }
 });
 
-exports.getInterface = function() {
-    if(!interfaces.map[APP.getChrome().chromeIndex]) {
+exports.getInterface = function(silent) {
+    if(!interfaces.map[APP.getChrome().chromeIndex] && !silent) {
         throw new Error("Firebug interface not available yet!");
     }
     return interfaces.map[APP.getChrome().chromeIndex];
@@ -307,7 +307,10 @@ exports.removeListener = function(type, listener)
 }
 
 exports.isAvailable = function() {
-    return (!!exports.getInterface().Firebug);
+    var obj = exports.getInterface(true);
+    if(!obj) return false;
+    if(!obj.Firebug) return false;
+    return true;
 }
 
 exports.getDomplate = function()

@@ -22,10 +22,16 @@ var JSON = require("json");
 var RENDERER = require("./Renderer");
 
 
+var FIREBUG_MIN_VERSION = "1.5";
 var FORCE_REP_RELOAD = false;
 
 
 exports.main = function(args) {
+
+
+var message = 'Another pop-up blocked'
+var nb = APP.getChrome().getBrowser().getNotificationBox()
+
 
 /*
     DEV.action('Test Log', function() {
@@ -97,11 +103,42 @@ exports.main = function(args) {
 
 exports.chrome = function(chrome) {
 
+    var notificationType = false;
     // ensure firebug is available
     if(!FIREBUG_INTERFACE.isAvailable()) {
-        APP.getChrome().openNewTab(APP.getAppPackage().getTemplateVariables()["Package.AccessibleContentBaseURL"] + "FirebugNotInstalled.htm");
-        return;
+        showNotification("Install");
+        return; // do not initialize our chrome
+    } else {
+        // ensure firebug is at least version FIREBUG_MIN_VERSION+
+        var version = FIREBUG_INTERFACE.getVersion().replace(/X/, "");
+        var result = Cc["@mozilla.org/xpcom/version-comparator;1"].getService(Ci.nsIVersionComparator).compare(version, FIREBUG_MIN_VERSION);
+        if(result<0) {
+            showNotification("Upgrade");
+            return; // do not initialize our chrome
+        }
     }
+    function showNotification(type) {
+        var notificationBox = APP.getChrome().getBrowser().getNotificationBox();
+        notificationBox.appendNotification(
+            "You need Firebug 1.5+ to use FireConsole!",
+            "fireconsole-upgrade-firebug",
+            APP.getAppPackage().getTemplateVariables()["Package.SkinBaseURL"] + "FireConsole_16.png",
+            notificationBox.PRIORITY_CRITICAL_HIGH, [
+                {
+                    label: type,
+                    callback: function(notification, button) {
+                        APP.getChrome().openNewTab("http://www.getfirebug.com/");
+                    }
+                }, {
+                    label: 'Dismiss',
+                    callback: function(notification, button) {
+                        // TODO: set preference to not show notification again
+                    }
+                }
+            ]
+        );
+    }
+
 
     chrome.registerInstance("VariableViewer", new VARIABLE_VIEWER.VariableViewer());
     
