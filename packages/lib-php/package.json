@@ -30,6 +30,13 @@
             "path": "packages/lib-php"
         }
     ],
+    "implements": {
+        "http://registry.pinf.org/cadorn.org/github/modular-php/packages/test/@meta/gateway/direct/0.1.0": {
+            "expose": [
+                "tests/raw-header/"
+            ]
+        }
+    },
     "pinf": {
         "builder": {
             "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
