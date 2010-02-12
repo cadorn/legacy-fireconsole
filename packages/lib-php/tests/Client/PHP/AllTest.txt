@@ -1,10 +1,11 @@
 
 testBasic()[messages]:
 
-    72||{"origin":{"type":"text","text":"Hello World","fc.lang.type":"string"}}|
-    63||{"origin":{"type":"text","text":"1","fc.lang.type":"integer"}}|
-    64||{"origin":{"type":"text","text":"10.5","fc.lang.type":"float"}}|
-    64||{"origin":{"type":"text","text":"51","fc.lang.type":"integer"}}|
-    77||{"origin":{"type":"text","text":"Resource id #460","fc.lang.type":"string"}}|
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
+    174|{"fc.lang.id":"registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/lang-php"}|{"origin":{"type":"text","text":"Hello World","fc.lang.type":"string"}}|
+    165|{"fc.lang.id":"registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/lang-php"}|{"origin":{"type":"text","text":"1","fc.lang.type":"integer"}}|
+    166|{"fc.lang.id":"registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/lang-php"}|{"origin":{"type":"text","text":"10.5","fc.lang.type":"float"}}|
+    166|{"fc.lang.id":"registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/lang-php"}|{"origin":{"type":"text","text":"51","fc.lang.type":"integer"}}|
+    179|{"fc.lang.id":"registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/lang-php"}|{"origin":{"type":"text","text":"Resource id #460","fc.lang.type":"string"}}|
 
 break;

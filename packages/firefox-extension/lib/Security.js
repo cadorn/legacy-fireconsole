@@ -83,7 +83,9 @@ exports.installTemplatePack = function(domain, descriptor, installCallback) {
     var iframe = templatePackAuthorizationPanel.getIFrame();
 
     var data = {
-        "package": descriptor.getInfo(),
+        "package": {
+            "downloadUrl": descriptor.getDownloadUrl(),
+        },
         "domain": domain,
         "installPath": APP.getChrome().getProfilePath().join("FireConsole", "TemplatePacks")
     };

@@ -24,12 +24,11 @@ class FireConsole_LoggerTest extends PHPUnit_Framework_TestCase
         $dispatcher->send($var, array(
             'fc.tpl.id' => 'structures/table'
         ));
-        
+
         $messages = $channel->getOutgoing();
 
-        foreach( $messages as $message ) {
-            $this->assertEquals((699+strlen(str_replace('/','\\/', __FILE__))).'|{"fc.tpl.id":"structures\/table"}|{"origin":{"type":"array","array":[{"type":"text","text":"This is the table summary","fc.lang.type":"string"},{"type":"array","array":[{"type":"array","array":[{"type":"text","text":"Column 1","fc.lang.type":"string"},{"type":"text","text":"Column 2","fc.lang.type":"string"}]},{"type":"array","array":[{"type":"text","text":"Hello World","fc.lang.type":"string"},{"type":"reference","reference":0}]}]}]},"instances":[{"type":"dictionary","fc.lang.class":"FireConsole_LoggerTest__TestObject","fc.lang.file":"' . str_replace('/','\\/', __FILE__) . '","fc.tpl.id":"examples\/simple-object","dictionary":{"testVar":{"type":"text","text":"Test Value","fc.lang.type":"string","fc.lang.visibility":"public"}}}]}|', $message[0][3]);
-        }
+        $this->assertEquals('179||{"action":"require","info":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|', $messages[0][0][3]);
+        $this->assertEquals((800+strlen(str_replace('/','\\/', __FILE__))).'|{"fc.tpl.id":"structures\/table","fc.lang.id":"registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/lang-php"}|{"origin":{"type":"array","array":[{"type":"text","text":"This is the table summary","fc.lang.type":"string"},{"type":"array","array":[{"type":"array","array":[{"type":"text","text":"Column 1","fc.lang.type":"string"},{"type":"text","text":"Column 2","fc.lang.type":"string"}]},{"type":"array","array":[{"type":"text","text":"Hello World","fc.lang.type":"string"},{"type":"reference","reference":0}]}]}]},"instances":[{"type":"dictionary","fc.lang.class":"FireConsole_LoggerTest__TestObject","fc.lang.file":"' . str_replace('/','\\/', __FILE__) . '","fc.tpl.id":"examples\/simple-object","dictionary":{"testVar":{"type":"text","text":"Test Value","fc.lang.type":"string","fc.lang.visibility":"public"}}}]}|', $messages[1][0][3]);
     }
 }
 

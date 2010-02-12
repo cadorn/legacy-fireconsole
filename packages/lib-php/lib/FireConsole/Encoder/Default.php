@@ -16,18 +16,22 @@ class FireConsole_Encoder_Default {
      */
     protected $_origin = self::UNDEFINED;
     
-    
+    /**
+     * @Insight Filter = On
+     */
+    protected $_meta = null;
+
     /**
      * @Insight Filter = On
      */
     protected $_instances = array();
-    
-    
+
+
     public function setOption($name, $value)
     {
         $this->options[$name] = $value;
     }    
-    
+
     public function setOrigin($variable)
     {
         $this->_origin = $variable;
@@ -37,11 +41,20 @@ class FireConsole_Encoder_Default {
 
         return true;
     }
-    
+
+    public function setMeta($meta)
+    {
+        $this->_meta = $meta;
+    }
+
     public function encode($data=self::UNDEFINED, $meta=self::UNDEFINED)
     {
         if($data!==self::UNDEFINED) {
             $this->setOrigin($data);
+        }
+        
+        if($meta!==self::UNDEFINED) {
+            $this->setMeta($meta);
         }
         
         // TODO: Use $meta['fc.encoder.options'] to control encoding
@@ -57,8 +70,17 @@ class FireConsole_Encoder_Default {
                 $graph['instances'][$key] = $value[1];
             }
         }
-        
-        return json_encode($graph);
+
+        if($this->options['includeLanguageMeta']) {
+            if(!$this->_meta) {
+                $this->_meta = array();
+            }
+            if(!isset($this->_meta['fc.lang.id'])) {
+                $this->_meta['fc.lang.id'] = 'registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/lang-php/master';
+            }
+        }
+
+        return array(json_encode($graph), ($this->_meta)?$this->_meta:false);
     }
 
 

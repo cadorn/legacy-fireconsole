@@ -53,3 +53,14 @@ SPAN.__KEY__say {
     font-size: 25px;
     height: 35px;
 }
+
+
+/*######################################################################
+#   string
+#####################################################################*/
+
+SPAN.__KEY__string {
+    color: magenta;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}

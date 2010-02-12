@@ -1,6 +1,7 @@
 
 testText()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     48||{"origin":{"type":"text","text":"Hello World"}}|
     38||{"origin":{"type":"text","text":"1"}}|
     41||{"origin":{"type":"text","text":"10.5"}}|
@@ -11,6 +12,7 @@ break;
 
 testConstant()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     49||{"origin":{"type":"constant","constant":"null"}}|
     49||{"origin":{"type":"constant","constant":"true"}}|
     50||{"origin":{"type":"constant","constant":"false"}}|
@@ -19,6 +21,7 @@ break;
 
 testArray()[messages]:
     
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     92||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}|
     92||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}|
     92||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"}]}}|
@@ -28,6 +31,7 @@ break;
 
 testNestedArray()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     214||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"},{"type":"array","array":[{"type":"text","text":"element1"},{"type":"text","text":"element2"}]},{"type":"text","text":"4"}]}}|
     242||{"origin":{"type":"array","array":[{"type":"text","text":"1"},{"type":"text","text":"2"},{"type":"reference","reference":0},{"type":"text","text":"4"}]},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}|
     
@@ -35,6 +39,7 @@ break;
     
 testMap()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     90||{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}|
     90||{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}|
     90||{"origin":{"type":"map","map":[[{"type":"text","text":"1"},{"type":"text","text":"2"}]]}}|
@@ -50,6 +55,7 @@ break;
 
 testNestedMap()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     509||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}],[{"type":"text","text":"3"},{"type":"array","array":[{"type":"text","text":"element1"},{"type":"text","text":"element2"}]}],[{"type":"text","text":"4"},{"type":"array","array":[{"type":"text","text":"element1"},{"type":"map","map":[[{"type":"text","text":"element2"},{"type":"text","text":"element3"}]]}]}],[{"type":"text","text":"5"},{"type":"text","text":"5"}]]}}|
     572||{"origin":{"type":"map","map":[[{"type":"text","text":"0"},{"type":"text","text":"1"}],[{"type":"text","text":"2"},{"type":"text","text":"3"}],[{"type":"text","text":"3"},{"type":"reference","reference":0}],[{"type":"text","text":"4"},{"type":"reference","reference":1}],[{"type":"text","text":"5"},{"type":"text","text":"5"}]]},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":1},"var2":{"type":"text","text":"val2"}}}]}|
     
@@ -57,6 +63,7 @@ break;
 
 testInstance()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     82||{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary"}]}|
     134||{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}|
     405||{"origin":{"type":"reference","reference":0},"instances":[{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":1},"var2":{"type":"text","text":"val2"}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"},"child":{"type":"reference","reference":2}}},{"type":"dictionary","dictionary":{"var1":{"type":"text","text":"val1"}}}]}|

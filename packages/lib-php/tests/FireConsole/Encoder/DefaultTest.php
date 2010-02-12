@@ -30,7 +30,8 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         foreach( $tests as $test ) {
             $encoder = new FireConsole_Encoder_Default();
             $encoder->setOrigin($test[0]);
-            $json = mp_json_to_array($encoder->encode());
+            list($data, $meta) = $encoder->encode();
+            $json = mp_json_to_array($data);
 
             if(isset($test[2]) && $test[2]=="__RESOURCE__") {
                 $json['origin']['text'] = '__RESOURCE__';
@@ -59,7 +60,8 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         
         $encoder = new FireConsole_Encoder_Default();
         $encoder->setOrigin($variable);
-        $json = mp_json_to_array($encoder->encode());
+        list($data, $meta) = $encoder->encode();
+        $json = mp_json_to_array($data);
         
         $this->assertEquals($json['origin'], unserialize('a:2:{s:4:"type";s:9:"reference";s:9:"reference";i:0;}'));
         $this->assertEquals($json['instances'][0]['type'], 'dictionary');
@@ -76,7 +78,8 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         
         $encoder = new FireConsole_Encoder_Default();
         $encoder->setOrigin($variable);
-        $json = mp_json_to_array($encoder->encode());
+        list($data, $meta) = $encoder->encode();
+        $json = mp_json_to_array($data);
 
         $this->assertEquals(sizeof($json['instances'][0]['dictionary']), 6);
 
@@ -103,7 +106,8 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         
         $encoder = new FireConsole_Encoder_Default();
         $encoder->setOrigin($variable);
-        $json = mp_json_to_array($encoder->encode());
+        list($data, $meta) = $encoder->encode();
+        $json = mp_json_to_array($data);
 
         $this->assertEquals(sizeof($json['instances'][0]['dictionary']), 7);
 
@@ -137,7 +141,8 @@ class FireConsole_Encoder_DefaultTest extends PHPUnit_Framework_TestCase
         
         $encoder = new FireConsole_Encoder_Default();
         $encoder->setOrigin($variable);
-        $json = mp_json_to_array($encoder->encode());
+        list($data, $meta) = $encoder->encode();
+        $json = mp_json_to_array($data);
 
         $this->assertEquals($json['instances'][0]['dictionary'], unserialize('a:3:{s:4:"var1";a:4:{s:4:"type";s:4:"text";s:4:"text";s:8:"Test Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";}s:7:"object1";a:3:{s:4:"type";s:9:"reference";s:9:"reference";i:0;s:18:"fc.lang.undeclared";i:1;}s:7:"object2";a:3:{s:4:"type";s:9:"reference";s:9:"reference";i:1;s:18:"fc.lang.undeclared";i:1;}}'));
         $this->assertEquals($json['instances'][1]['dictionary'], unserialize('a:3:{s:4:"var1";a:4:{s:4:"type";s:4:"text";s:4:"text";s:8:"Test Var";s:12:"fc.lang.type";s:6:"string";s:18:"fc.lang.visibility";s:6:"public";}s:7:"object1";a:3:{s:4:"type";s:9:"reference";s:9:"reference";i:1;s:18:"fc.lang.undeclared";i:1;}s:7:"object2";a:3:{s:4:"type";s:9:"reference";s:9:"reference";i:0;s:18:"fc.lang.undeclared";i:1;}}'));

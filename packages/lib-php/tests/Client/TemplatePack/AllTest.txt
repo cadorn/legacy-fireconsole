@@ -1,27 +1,30 @@
 
 testRemotePack()[messages]:
 
-    327||{"action":"require","info":{"project.url":"http:\/\/github.com\/cadorn\/fireconsole\/tree\/master","source.url":"http:\/\/github.com\/cadorn\/fireconsole\/tree\/master\/packages\/test-template-pack","descriptor":{"location":"http:\/\/github.com\/cadorn\/fireconsole\/zipball\/master\/","path":"packages\/test-template-pack"}}}|
+    144||{"action":"require","locator":{"location":"http:\/\/github.com\/cadorn\/fireconsole\/zipball\/master\/","path":"packages\/test-template-pack"}}|
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     153|{"fc.tpl.id":"github.com\/cadorn\/fireconsole\/zipball\/master\/packages\/test-template-pack#helloworld"}|{"origin":{"type":"text","text":"Hello World"}}|
 
 break;
 
 testRemotePack()[headers]:
 
-    ["x-wf-protocol-1","http:\/\/pinf.org\/cadorn.org\/wildfire\/meta\/Protocol\/Component\/0.1"]
-    ["x-wf-1-index",2]
-    ["x-wf-1-1-receiver","http:\/\/pinf.org\/cadorn.org\/fireconsole\/meta\/Receiver\/TemplatePack\/0.1"]
-    ["x-wf-1-1-1-sender","http:\/\/github.com\/cadorn\/fireconsole\/tree\/master\/packages\/lib-php\/"]
-    ["x-wf-1-1-1-1","327||{\"action\":\"require\",\"info\":{\"project.url\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/tree\\\/master\",\"source.url\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/tree\\\/master\\\/packages\\\/test-template-pack\",\"descriptor\":{\"location\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/zipball\\\/master\\\/\",\"path\":\"packages\\\/test-template-pack\"}}}|"]
-    ["x-wf-1-2-receiver","http:\/\/pinf.org\/cadorn.org\/fireconsole\/meta\/Receiver\/Console\/0.1"]
-    ["x-wf-1-2-1-sender","http:\/\/github.com\/cadorn\/fireconsole\/tree\/master\/packages\/lib-php\/"]
-    ["x-wf-1-2-1-2","153|{\"fc.tpl.id\":\"github.com\\\/cadorn\\\/fireconsole\\\/zipball\\\/master\\\/packages\\\/test-template-pack#helloworld\"}|{\"origin\":{\"type\":\"text\",\"text\":\"Hello World\"}}|"]
+    ["x-wf-protocol-1","http:\/\/registry.pinf.org\/cadorn.org\/github\/wildfire\/@meta\/protocol\/component\/0.1.0"]
+    ["x-wf-1-index",3]
+    ["x-wf-1-1-receiver","http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole\/@meta\/receiver\/template-pack\/0.1.0"]
+    ["x-wf-1-1-1-sender","http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole\/packages\/lib-php\/"]
+    ["x-wf-1-1-1-1","144||{\"action\":\"require\",\"locator\":{\"location\":\"http:\\\/\\\/github.com\\\/cadorn\\\/fireconsole\\\/zipball\\\/master\\\/\",\"path\":\"packages\\\/test-template-pack\"}}|"]
+    ["x-wf-1-1-1-2","182||{\"action\":\"require\",\"locator\":{\"catalog\":\"http:\\\/\\\/registry.pinf.org\\\/cadorn.org\\\/github\\\/fireconsole-template-packs\\\/packages\\\/catalog.json\",\"name\":\"lang-php\",\"revision\":\"master\"}}|"]
+    ["x-wf-1-2-receiver","http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole\/@meta\/receiver\/console\/0.1.0"]
+    ["x-wf-1-2-1-sender","http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole\/packages\/lib-php\/"]
+    ["x-wf-1-2-1-3","153|{\"fc.tpl.id\":\"github.com\\\/cadorn\\\/fireconsole\\\/zipball\\\/master\\\/packages\\\/test-template-pack#helloworld\"}|{\"origin\":{\"type\":\"text\",\"text\":\"Hello World\"}}|"]
 
 break;
 
 testReload()[messages]:
 
-    327||{"action":"require","info":{"project.url":"http:\/\/github.com\/cadorn\/fireconsole\/tree\/master","source.url":"http:\/\/github.com\/cadorn\/fireconsole\/tree\/master\/packages\/test-template-pack","descriptor":{"location":"http:\/\/github.com\/cadorn\/fireconsole\/zipball\/master\/","path":"packages\/test-template-pack"}}}|
+    144||{"action":"require","locator":{"location":"http:\/\/github.com\/cadorn\/fireconsole\/zipball\/master\/","path":"packages\/test-template-pack"}}|
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     174|{"fc.tpl.id":"github.com\/cadorn\/fireconsole\/zipball\/master\/packages\/test-template-pack#helloworld","fc.tpl.reload":true}|{"origin":{"type":"text","text":"Hello World"}}|
 
 break;

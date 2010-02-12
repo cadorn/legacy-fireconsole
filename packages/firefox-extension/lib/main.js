@@ -179,7 +179,7 @@ var TemplatePackReceiverListener = {
         try {
             var data = JSON.decode(message.getData());
             if(data.action=="require") {
-                TEMPLATE_PACK.requirePack(context.FirebugNetMonitorListener.context.window.location.hostname, TEMPLATE_PACK.newDescriptorForClientInfo(data.info));
+                TEMPLATE_PACK.requirePack(context.FirebugNetMonitorListener.context.window.location.hostname, TEMPLATE_PACK.newDescriptorForClientInfo(data));
             }
         } catch(e) {
             system.log.warn(e);

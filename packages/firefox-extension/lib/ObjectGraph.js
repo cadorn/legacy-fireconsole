@@ -31,6 +31,10 @@ exports.generateFromMessage = function(message) {
         og.setInstances(data.instances);
     }
 
+    if(meta["fc.lang.id"]) {
+        og.setLanguageId(meta["fc.lang.id"]);
+    }
+
     og.setOrigin(generateNodesFromData(og, data.origin));
 
     return og;
@@ -80,6 +84,9 @@ var Node = function(objectGraph, data) {
             return objectGraph.getInstance(self.value);
         }
     }
+    self.getObjectGraph = function() {
+        return objectGraph;
+    }
 }
 
 Node.prototype.getTemplateId = function() {
@@ -109,7 +116,13 @@ ObjectGraph.prototype.getInstance = function(index) {
     return this.instances[index];
 }
 
+ObjectGraph.prototype.setLanguageId = function(id) {
+    this.languageId = id;
+}
 
+ObjectGraph.prototype.getLanguageId = function() {
+    return this.languageId;
+}
 
 
 var encoder = ENCODER.Encoder();

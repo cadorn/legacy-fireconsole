@@ -82,9 +82,7 @@
             packData = data;
             map = {
                 "domain": packData.domain,
-                "project-url": packData["package"].homepage,
-                "source-url": packData["package"].repositories[0].url,
-                "download-url": packData["package"].download.location,
+                "download-url": packData["package"].downloadUrl,
                 "profile-fireconsole-path": packData.installPath
             };
             for( var id in map ) {
@@ -119,8 +117,6 @@
         
         <div class="template-pack-info">
             <h1>Template Pack Information</h1>
-            <p>Project: <a id="project-url" href="javascript:launchURL('project-url');"></a></p>
-            <p>Source: <a id="source-url" href="javascript:launchURL('source-url');"></a></p>
             <p>Download: <a id="download-url" href="javascript:launchURL('download-url');"></a></p>
         </div>
         

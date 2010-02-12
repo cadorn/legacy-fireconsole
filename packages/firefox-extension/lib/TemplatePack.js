@@ -15,6 +15,7 @@ var JSON_STORE = require("json-store", "util");
 var TEMPLATE_PACK_LOADER = require("loader", "template-pack");
 var TEMPLATE_PACK_DESCRIPTOR = require("descriptor", "template-pack");
 var PACKAGE = require("package", "nr-common");
+var PACKAGE_LOCATOR = require("package/locator", "pinf-common");
 
 var SECURITY = require("./Security");
 
@@ -57,54 +58,27 @@ TEMPLATE_PACK_LOADER.setIdMappings({
 function init() {   // This function is triggered at the end of this file
     var descriptor;
     
-    descriptor = new TEMPLATE_PACK_DESCRIPTOR.Descriptor({
-        "homepage": "http://github.com/cadorn/fireconsole",
-        "repositories": [
-            {
-                "type": "www",
-                "url": "http://github.com/cadorn/fireconsole/tree/master/packages/firefox-extension/packages/reps/"
-            }
-        ],
-        "download": {
-            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
-            "name": "reps",
-            "revision": "master"
-        }        
-    });
+    descriptor = new TEMPLATE_PACK_DESCRIPTOR.Descriptor(PACKAGE_LOCATOR.PackageLocator({
+        "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
+        "name": "reps",
+        "revision": "master"
+    }));
     addTemplatePack(descriptor);
     exports.requirePack(null, descriptor);
 
-    descriptor = new TEMPLATE_PACK_DESCRIPTOR.Descriptor({
-        "homepage": "http://github.com/cadorn/fireconsole-template-packs",
-        "repositories": [
-            {
-                "type": "www",
-                "url": "http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/fc-object-graph/"
-            }
-        ],
-        "download": {
-            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
-            "name": "fc-object-graph",
-            "revision": "master"
-        }        
-    });
+    descriptor = new TEMPLATE_PACK_DESCRIPTOR.Descriptor(PACKAGE_LOCATOR.PackageLocator({
+        "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
+        "name": "fc-object-graph",
+        "revision": "master"
+    }));
     addTemplatePack(descriptor);
     exports.requirePack(null, descriptor);
 
-    descriptor = new TEMPLATE_PACK_DESCRIPTOR.Descriptor({
-        "homepage": "http://github.com/cadorn/fireconsole-template-packs",
-        "repositories": [
-            {
-                "type": "www",
-                "url": "http://github.com/cadorn/fireconsole-template-packs/tree/master/packages/lang-php/"
-            }
-        ],
-        "download": {
-            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
-            "name": "lang-php",
-            "revision": "master"
-        }        
-    });
+    descriptor = new TEMPLATE_PACK_DESCRIPTOR.Descriptor(PACKAGE_LOCATOR.PackageLocator({
+        "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
+        "name": "lang-php",
+        "revision": "master"
+    }));
     addTemplatePack(descriptor);
     exports.requirePack(null, descriptor);
 }
@@ -118,7 +92,10 @@ exports.getPackPackage = function(id) {
 }
 
 exports.newDescriptorForClientInfo = function(info) {
-    return new TEMPLATE_PACK_DESCRIPTOR.Descriptor(info);
+    if(!info.locator) {
+        throw new Error("No 'locator' property in client info!");
+    }
+    return new TEMPLATE_PACK_DESCRIPTOR.Descriptor(PACKAGE_LOCATOR.PackageLocator(info.locator));
 }
 
 exports.getDescriptorForId = function(packId) {
@@ -266,8 +243,18 @@ TemplatePack.prototype.load = function(domain, reload, notSandboxed) {
         }
     }
     this.pack = TEMPLATE_PACK_LOADER.requirePack(this.descriptor.getId(), (forceLoad || reload), notSandboxed, function() { return {
-        "seekTemplate": function(node) {
-            var pack = exports.requirePack(domain, "registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master");
+        "seekTemplate": function(node) {            
+            var pack,
+                languageId = node.getObjectGraph().getLanguageId();
+            if(languageId) {
+                pack = exports.requirePack(domain, languageId);
+                pack = pack.load(domain, reload);
+                var tpl = pack.seekTemplate(node);
+                if(tpl) {
+                    return tpl;
+                }
+            }
+            pack = exports.requirePack(domain, "registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/fc-object-graph/master");
             pack = pack.load(domain, reload);
             return pack.seekTemplate(node);
         },
@@ -304,7 +291,7 @@ function addTemplatePack(descriptor) {
     var templatePacks = templatePackMetaStore.get();
     templatePacks[descriptor.getId()] = descriptor.getInfo();
     templatePackMetaStore.set(templatePacks);
-}    
+}
 
 function getTmpPath(logger, filename) {
     var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).get("ProfD", Components.interfaces.nsIFile);

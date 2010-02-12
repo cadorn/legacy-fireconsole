@@ -22,14 +22,17 @@ exports.initialize = function(options)
     OBSERVER_SERVICE.addObserver(OnModifyRequestObserver, "http-on-modify-request", false);
 
     templatePackReceiver = WILDFIRE.Receiver();
-    templatePackReceiver.setId("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/TemplatePack/0.1");
+    templatePackReceiver.setId("http://registry.pinf.org/cadorn.org/github/fireconsole/@meta/receiver/template-pack/0.1.0");
     templatePackReceiver.addListener(options.TemplatePackReceiverListener);
 
     fireConsoleReceiver = WILDFIRE.Receiver();
-    fireConsoleReceiver.setId("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
+    fireConsoleReceiver.setId("http://registry.pinf.org/cadorn.org/github/fireconsole/@meta/receiver/console/0.1.0");
     fireConsoleReceiver.addListener(options.ConsoleMessageListener);
 
     httpheaderChannel = WILDFIRE.HttpHeaderChannel();
+    httpheaderChannel.setNoReceiverCallback(function(id) {
+        system.log.warn("trying to log to unknown receiver: " + id);
+    });
     httpheaderChannel.addReceiver(templatePackReceiver);
     httpheaderChannel.addReceiver(fireConsoleReceiver);
 

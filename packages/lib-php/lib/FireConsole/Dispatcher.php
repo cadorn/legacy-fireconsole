@@ -1,10 +1,18 @@
 <?php
 
-class FireConsole_Dispatcher
+require_once('Wildfire/Channel/FlushListener.php');
+
+class FireConsole_Dispatcher implements Wildfire_Channel_FlushListener
 {
+    const PROTOCOL_ID = 'http://registry.pinf.org/cadorn.org/github/wildfire/@meta/protocol/component/0.1.0';
+    const SENDER_ID = 'http://registry.pinf.org/cadorn.org/github/fireconsole/packages/lib-php/';
+    
     private $channel = null;
     private $messageFactory = null;
     private $encoder = null;
+    
+    protected $_registeredLanguagePacks = array();
+    
     
     public function setChannel($channel)
     {
@@ -17,27 +25,24 @@ class FireConsole_Dispatcher
     }
 
     public function registerTemplatePack($info) {
-        if(!isset($info['project.url'])) {
-            throw new Exception("'project.url' not provided!");
+        $key = md5(serialize($info));
+        if(in_array($key, $this->_registeredLanguagePacks)) {
+            return;
         }
-        if(!isset($info['source.url'])) {
-            throw new Exception("'source.url' not provided!");
-        }
-        if(!isset($info['descriptor'])) {
-            throw new Exception("'descriptor' not provided!");
-        }
-        if(!isset($info['descriptor']['location'])) {
-            throw new Exception("'descriptor' > 'location' not provided!");
+        if(!isset($info['catalog']) && !isset($info['location'])) {
+            throw new Exception("'catalog' nor 'location' provided!");
         }
         $message = $this->getNewMessage(null);
-        $message->setSender('http://github.com/cadorn/fireconsole/tree/master/packages/lib-php/');
-        $message->setProtocol('http://pinf.org/cadorn.org/wildfire/meta/Protocol/Component/0.1');
-        $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/TemplatePack/0.1");
+        $message->setProtocol(self::PROTOCOL_ID);
+        $message->setSender(self::SENDER_ID);
+        $message->setReceiver('http://registry.pinf.org/cadorn.org/github/fireconsole/@meta/receiver/template-pack/0.1.0');
         $message->setData(json_encode(array(
             "action" => "require",
-            "info" => $info
+            "locator" => $info
         )));
         $this->channel->enqueueOutgoing($message);
+        
+        $this->_registeredLanguagePacks[] = $key;
     }
 
     public function setMessageFactory($messageFactory)
@@ -52,7 +57,24 @@ class FireConsole_Dispatcher
             require_once 'Wildfire/Channel/HttpHeader.php';
             $this->channel = new Wildfire_Channel_HttpHeader();
         }
+        $this->channel->addFlushListener($this);
+        $this->registerTemplatePack(array(
+            'catalog' => 'http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json',
+            'name' => 'lang-php',
+            'revision' => 'master'
+        ));
         return $this->channel;
+    }
+
+    /**
+     * @interface Wildfire_Channel_FlushListener
+     */
+    public function channelFlushed(Wildfire_Channel $channel)
+    {
+        if($channel===$this->getChannel()) {
+            // reset registered template packs
+            $this->_registeredLanguagePacks = array();
+        }
     }
     
     private function getNewMessage($meta)
@@ -73,10 +95,11 @@ class FireConsole_Dispatcher
         return $this->encoder;
     }
 
-    public function send($data, $meta='')
+    public function send($data, $meta=array())
     {
+        list($data, $meta) = $this->getEncoder()->encode($data, $meta);
         return $this->sendRaw(
-            $this->getEncoder()->encode($data, $meta),
+            $data,
             ($meta)?json_encode($meta):''
         );
     }
@@ -84,9 +107,9 @@ class FireConsole_Dispatcher
     public function sendRaw($data, $meta='')
     {
         $message = $this->getNewMessage($meta);
-        $message->setSender('http://github.com/cadorn/fireconsole/tree/master/packages/lib-php/');
-        $message->setProtocol('http://pinf.org/cadorn.org/wildfire/meta/Protocol/Component/0.1');
-        $message->setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
+        $message->setProtocol(self::PROTOCOL_ID);
+        $message->setSender(self::SENDER_ID);
+        $message->setReceiver('http://registry.pinf.org/cadorn.org/github/fireconsole/@meta/receiver/console/0.1.0');
         if($meta) $message->setMeta($meta);
         $message->setData($data);
         $this->getChannel()->enqueueOutgoing($message);

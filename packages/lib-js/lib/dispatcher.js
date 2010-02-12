@@ -23,9 +23,9 @@ Dispatcher.prototype.send = function(data, meta) {
 
 Dispatcher.prototype.sendRaw = function(data, meta) {
     var message = WILDFIRE.getBinding().newMessage();
-    message.setProtocol('http://pinf.org/cadorn.org/wildfire/meta/Protocol/Component/0.1');
-    message.setSender('http://github.com/cadorn/fireconsole/tree/master/packages/lib-js/');
-    message.setReceiver("http://pinf.org/cadorn.org/fireconsole/meta/Receiver/Console/0.1");
+    message.setProtocol('http://registry.pinf.org/cadorn.org/github/wildfire/@meta/protocol/component/0.1.0');
+    message.setSender('http://registry.pinf.org/cadorn.org/github/fireconsole/packages/lib-js/');
+    message.setReceiver("http://registry.pinf.org/cadorn.org/github/fireconsole/@meta/receiver/console/0.1.0");
     if(meta) message.setMeta(meta);
     message.setData(data);
     return message.dispatch();

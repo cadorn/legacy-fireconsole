@@ -1,9 +1,12 @@
 
 var URI = require("uri");
-var PACKAGES = require("packages");
+//var PACKAGES = require("packages");
 
-var Descriptor = exports.Descriptor = function(info) {
+var Descriptor = exports.Descriptor = function(locator) {
     
+    this.locator = locator;
+
+/*    
     this.info = {};
     
     // for backwards compatibility
@@ -37,22 +40,29 @@ var Descriptor = exports.Descriptor = function(info) {
     } else {
         this.info = info;
     }
-    
+*/
+
 }
 
 Descriptor.prototype.getId = function() {
-    if(this.id) {
-        return this.id;
-    }
-    this.id = PACKAGES.normalizePackageDescriptor(this.info.download);
-    return this.id;
+    return this.locator.getTopLevelId();
 }
-
 
 Descriptor.prototype.getInfo = function() {
-    return this.info;
+    return this.locator.getSpec(true);
 }
 
+
+Descriptor.prototype.getDownloadUrl = function() {
+    if(!this.locator.isDirect()) {
+        throw new Error("Only direct download locators are supported for template packs at this time");
+    }
+    return this.locator.getUrl();
+}
+
+
+/*
 Descriptor.prototype.getDownloadInfo = function() {
     return this.info.download;
 }
+*/

@@ -1,6 +1,7 @@
 
 testSplitMessages()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     59||{"origin"|\ + |:{"type":"|\ + |text","tex|\ + |t":"line 0|\ + |\nline 1\n|\ + |line 2"}}|
     59||{"origin"|\ + |:{"type":"|\ + |text","tex|\ + |t":"line 0|\ + |\nline 1\n|\ + |line 2"}}|
 

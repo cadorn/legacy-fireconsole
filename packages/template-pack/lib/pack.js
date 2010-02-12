@@ -1,4 +1,8 @@
 
+
+function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
+
+
 var FILE = require("file");
 var UTIL = require("util");
 var MD5 = require("md5");

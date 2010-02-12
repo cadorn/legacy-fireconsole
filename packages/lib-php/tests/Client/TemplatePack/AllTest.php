@@ -10,12 +10,8 @@ class Client_TemplatePack_AllTest extends ObjectGraphTestCase
     private function _registerRemotePack()
     {
         $this->dispatcher->registerTemplatePack(array(
-            "project.url" => "http://github.com/cadorn/fireconsole/tree/master",
-            "source.url" => "http://github.com/cadorn/fireconsole/tree/master/packages/test-template-pack",
-            "descriptor" => array(
-                "location" => "http://github.com/cadorn/fireconsole/zipball/master/",
-                "path" => "packages/test-template-pack"
-            )
+            "location" => "http://github.com/cadorn/fireconsole/zipball/master/",
+            "path" => "packages/test-template-pack"
         ));
     }
 
@@ -58,15 +54,19 @@ class Client_TemplatePack_AllTest extends ObjectGraphTestCase
         $id = realpath(dirname(dirname(dirname(dirname(dirname(__FILE__))))).DIRECTORY_SEPARATOR.'test-template-pack'.DIRECTORY_SEPARATOR);
         
         $this->dispatcher->registerTemplatePack(array(
-            "project.url" => "http://github.com/cadorn/fireconsole/tree/master",
-            "source.url" => "http://github.com/cadorn/fireconsole/tree/master/packages/test-template-pack",
-            "descriptor" => array(
-                "location" => "file://" . $id
-            )
+            "location" => "file://" . $id
         ));
 
         $this->dispatcher->send('Hello World', array(
             "fc.tpl.id" => substr($id, strpos($id, DIRECTORY_SEPARATOR)+1) . "#helloworld"
+        ));
+
+        $this->dispatcher->getEncoder()->setOption('includeLanguageMeta', true);
+        
+        $this->dispatcher->send('default renderer');
+
+        $this->dispatcher->send('custom lang:string template', array(
+            "fc.lang.id" => substr($id, strpos($id, DIRECTORY_SEPARATOR)+1)
         ));
     }
 

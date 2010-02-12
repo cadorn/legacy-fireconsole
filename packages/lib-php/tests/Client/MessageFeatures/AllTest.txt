@@ -1,6 +1,7 @@
 
 testPriorities()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     71|{"fc.msg.priority":"log"}|{"origin":{"type":"text","text":"Hello Log"}}|
     73|{"fc.msg.priority":"info"}|{"origin":{"type":"text","text":"Hello Info"}}|
     73|{"fc.msg.priority":"warn"}|{"origin":{"type":"text","text":"Hello Warn"}}|
@@ -10,12 +11,14 @@ break;
 
 testLabel()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     72|{"fc.msg.label":"Label"}|{"origin":{"type":"text","text":"Hello World"}}|
 
 break;
 
 testFileLineInfo()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     80|{"fc.msg.file":"\/path\/to\/file"}|{"origin":{"type":"text","text":"File only"}}|
     66|{"fc.msg.line":"10"}|{"origin":{"type":"text","text":"Line only"}}|
     103|{"fc.msg.file":"\/path\/to\/file","fc.msg.line":"10"}|{"origin":{"type":"text","text":"File and line"}}|
@@ -24,6 +27,7 @@ break;
 
 testGrouping()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     73|{"fc.group.start":true}|{"origin":{"type":"text","text":"Group 1 Label"}}|
     48||{"origin":{"type":"text","text":"Hello World"}}|
     126|{"fc.group.start":true,"fc.group.collapsed":true,"fc.group.color":"magenta"}|{"origin":{"type":"text","text":"Group 2 Label"}}|
@@ -36,6 +40,7 @@ break;
 
 testDebug()[messages]:
 
+    182||{"action":"require","locator":{"catalog":"http:\/\/registry.pinf.org\/cadorn.org\/github\/fireconsole-template-packs\/packages\/catalog.json","name":"lang-php","revision":"master"}}|
     69|{"fc.tpl.debug":true}|{"origin":{"type":"text","text":"Hello World"}}|
 
 break;
