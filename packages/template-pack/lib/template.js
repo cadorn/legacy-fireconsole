@@ -94,7 +94,8 @@ exports.Template = function(templateModule) {
             parts.push(path.basename());
             path = path.dirname();
         }
-        path = parts.join("/");   
+        parts.reverse();
+        path = parts.join("/");
         return path.substring(0,path.length-3);
     }
 
