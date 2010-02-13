@@ -1,0 +1,33 @@
+
+/*######################################################################
+#   console
+#####################################################################*/
+
+DIV.__KEY__console {
+    color: #FF0000;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    border: 2px solid blue;
+    padding: 10px;
+}
+
+
+/*######################################################################
+#   object
+#####################################################################*/
+
+DIV.__KEY__object SPAN.class {
+    color: #00FF00;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+}
+
+DIV.__KEY__object SPAN.saying {
+    color: #0000FF;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+DIV.__KEY__object SPAN.console {
+    color: magenta;
+}

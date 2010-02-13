@@ -1,0 +1,10 @@
+{
+    "name": "CustomTemplates",
+    "using": {
+        "template-pack": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+            "name": "template-pack",
+            "revision": "master"
+        }
+    }
+}

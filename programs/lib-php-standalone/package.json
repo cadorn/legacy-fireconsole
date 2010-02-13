@@ -1,0 +1,26 @@
+{
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/programs/lib-php-standalone/",
+    "name": "lib-php-standalone",
+    "dependencies": {
+        "lib-php": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+            "name": "lib-php",
+            "revision": "master"
+        }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git",
+            "path": "programs/lib-php-standalone"
+        }
+    ],
+    "pinf": {
+        "publisher": {
+            "catalog": "http://registry.cadorn.com/cadorn.com/workflow/packages/catalog.json",
+            "name": "publishers",
+            "revision": "master",
+            "module": "fireconsole-lib-php"
+        }
+    }
+}
