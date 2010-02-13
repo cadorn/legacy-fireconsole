@@ -1,0 +1,56 @@
+{
+    "packages": {
+        "system": {
+            "lib-php": {
+                "@": {
+                    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/lib-php/",
+                    "locator": {
+                        "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+                        "name": "lib-php",
+                        "revision": "0.0.0rev-495518658f67af94ab99eeb260234182a8ff37be"
+                    }
+                },
+                "modular-php-core": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/core/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+                            "name": "core",
+                            "revision": "0.0.0rev-62ea45ddca78173e4a4e46657c46668bb2378174"
+                        }
+                    }
+                },
+                "modular-php-phpgi": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/phpgi/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+                            "name": "phpgi",
+                            "revision": "0.0.0rev-62ea45ddca78173e4a4e46657c46668bb2378174"
+                        }
+                    }
+                },
+                "modular-php-util": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/util/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+                            "name": "util",
+                            "revision": "0.0.0rev-62ea45ddca78173e4a4e46657c46668bb2378174"
+                        }
+                    }
+                },
+                "wildfire": {
+                    "@": {
+                        "uid": "http://registry.pinf.org/cadorn.org/github/wildfire/packages/lib-php/",
+                        "locator": {
+                            "catalog": "http://registry.pinf.org/cadorn.org/github/wildfire/packages/catalog.json",
+                            "name": "lib-php",
+                            "revision": "0.0.0rev-c79f83abec52392f972d1ef90ecc3668bb9e92f1"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

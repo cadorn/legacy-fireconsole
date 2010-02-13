@@ -22,7 +22,7 @@ Builder.prototype.build = function(targetPackage, buildOptions) {
 
     var buildPath = targetPackage.getBuildPath(),
         rawBuildPath = buildPath.join("raw"),
-        targetBasePath = buildPath.join("bundle"),
+        targetBasePath = buildPath.join(targetPackage.getName()),
         sourcePath,
         targetPath,
         command;
@@ -45,6 +45,10 @@ Builder.prototype.build = function(targetPackage, buildOptions) {
     command = "rsync -r --copy-links --exclude \"- .DS_Store\" --exclude \"- .git/\" --exclude \"- .tmp_*/\" " + sourcePath + "/* " + targetPath;
     print(command);
     OS.command(command);
-
+    
+    
+    var descriptor = JSON.decode(rawBuildPath.join("package.json").read().toString());
+    descriptor.version = targetPackage.getVersion();
+    targetBasePath.join("package.json").write(JSON.encode(descriptor, null, "    "));
 }    
 
