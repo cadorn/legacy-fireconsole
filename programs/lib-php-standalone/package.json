@@ -16,6 +16,9 @@
         }
     ],
     "pinf": {
+        "builder": {
+            "module": "builder"
+        },
         "publisher": {
             "catalog": "http://registry.cadorn.com/cadorn.com/workflow/packages/catalog.json",
             "name": "publishers",

@@ -10,6 +10,10 @@ var PACKAGES = require("packages");
 var DOMPLATE = require("domplate", "domplate");
 var JAR_LOADER = require("jar-loader");
 
+var sandbox;
+var sandboxModules;
+var sandboxBaseModules;
+var sandboxRequire;
 var sandboxDirty = true;
 var sandboxPackages = [];
 var repositoryPaths = [];
@@ -87,7 +91,6 @@ exports.requirePack = function(id, force, notSandboxed, externalLoader) {
     return pack;
 }
 
-var sandboxRequire;
 function loadTemplatePack(id, force, notSandboxed) {
         
     // HACK: Until the template referencing is refactored
@@ -108,38 +111,59 @@ function loadTemplatePack(id, force, notSandboxed) {
     // Establish a sandbox for all template packs
     // If the sandbox is marked dirty we re-create it
     if(force || sandboxDirty) {
-        // TODO: Properly destroy old sandbox for better memory usage?
-        var ssystem = UTIL.copy(require("system"));
-        // Load minimal system
-        var loader = LOADER({
-            "paths": [
-                "resource://narwhal-xulrunner/lib",
-                "resource://narwhal/engines/default/lib",
-                "resource://narwhal/lib"
-            ]
-        });
-        var sandbox = SANDBOX({
-            "system": ssystem,
-            "loader": loader,
-            "modules": {
+
+        function loadPackages() {
+            var paths = UTIL.copy(repositoryPaths);
+            sandboxPackages.forEach(function(name) {
+                paths.push(PACKAGES.catalog[name].directory);
+            });
+            paths.push("resource://narwhal");
+            sandboxRequire("packages").load(paths);
+            sandboxDirty = false;
+        }
+        
+        if(!sandbox) {
+            var ssystem = UTIL.copy(require("system"));
+            // Load minimal system
+            var loader = LOADER({
+                "paths": [
+                    "resource://narwhal-xulrunner/lib",
+                    "resource://narwhal/engines/default/lib",
+                    "resource://narwhal/lib"
+                ]
+            });
+            sandboxModules = {
                 "system": ssystem,
                 // TODO: This needs to be moved out of this module and package to make it more generic
                 "jar-loader": JAR_LOADER        // prevents module from being re-loaded in the sandbox
+            };
+            sandbox = SANDBOX({
+                "system": ssystem,
+                "loader": loader,
+                "modules": sandboxModules
+            });
+            sandbox.force("system");
+            sandboxRequire = function(id, pkg) {
+                return sandbox(id, null, pkg);
             }
-        });
-        sandbox.force("system");
-        sandboxRequire = function(id, pkg) {
-            return sandbox(id, null, pkg);
+            sandboxRequire("global");
+            loadPackages();
+            sandboxBaseModules = {};
+            UTIL.keys(sandboxModules).forEach(function(id) {
+                sandboxBaseModules[id] = true;
+            });
+        } else {
+            // TODO: Only reload template pack that needs reloading (at the moment we reload all template packs)
+            UTIL.keys(sandboxModules).forEach(function(id) {
+                if(!sandboxBaseModules[id]) {
+                    delete sandboxModules[id];
+                }
+            });
+            if(sandboxDirty) {
+                loadPackages();
+            }
         }
-        sandboxRequire("global");
-        var paths = UTIL.copy(repositoryPaths);
-        sandboxPackages.forEach(function(name) {
-            paths.push(PACKAGES.catalog[name].directory);
-        });
-        paths.push("resource://narwhal");
-        sandboxRequire("packages").load(paths);
-        sandboxDirty = false;
-        
+
         var sPACK = sandboxRequire("pack", module["package"]);       
         sPACK.setLogger(logger);
         sPACK.setEventDispatcher(eventDispatcher);
@@ -150,3 +174,4 @@ function loadTemplatePack(id, force, notSandboxed) {
     }
     return sandboxRequire("_pack_", id).Pack();
 }
+

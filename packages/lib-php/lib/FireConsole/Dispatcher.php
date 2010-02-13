@@ -24,7 +24,7 @@ class FireConsole_Dispatcher implements Wildfire_Channel_FlushListener
         return $this->channel = $channel;
     }
 
-    public function registerTemplatePack($info) {
+    public function registerTemplatePack($info, $channel=null) {
         $key = md5(serialize($info));
         if(in_array($key, $this->_registeredLanguagePacks)) {
             return;
@@ -40,7 +40,10 @@ class FireConsole_Dispatcher implements Wildfire_Channel_FlushListener
             "action" => "require",
             "locator" => $info
         )));
-        $this->channel->enqueueOutgoing($message);
+        if(!$channel) {
+            $channel = $this->getChannel();
+        }
+        $channel->enqueueOutgoing($message);
         
         $this->_registeredLanguagePacks[] = $key;
     }
@@ -62,7 +65,7 @@ class FireConsole_Dispatcher implements Wildfire_Channel_FlushListener
             'catalog' => 'http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json',
             'name' => 'lang-php',
             'revision' => 'master'
-        ));
+        ), $this->channel);
         return $this->channel;
     }
 
