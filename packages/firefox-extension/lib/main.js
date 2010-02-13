@@ -246,9 +246,10 @@ var ConsoleMessageListener = {
             
             var data = {
                 "og": OBJECT_GRAPH.generateFromMessage(message),
-                "meta": JSON.decode(message.getMeta() || "{}")
+                "meta": JSON.decode(message.getMeta() || "{}"),
+                "domain": URI.parse(context.FirebugNetMonitorListener.file.href).domain
             }
-    
+
             logMessage(context, data);
             
         } catch(e) {

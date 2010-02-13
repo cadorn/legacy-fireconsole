@@ -1,4 +1,7 @@
 
+function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
+
+
 var UTIL = require("util");
 var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
@@ -11,7 +14,7 @@ var RENDERER = require("./Renderer");
 var VariableViewer = exports.VariableViewer = function() {
     var self = this;
     
-    self.cssTracker = FIREBUG_CONSOLE.CSSTracker();
+    self.cssTracker = FIREBUG_CONSOLE.getCSSTracker();
     
     self.panel = new IFRAME_PANEL.IFramePanel().init({
         id: "VariableViewer",
@@ -62,6 +65,8 @@ VariableViewer.prototype.showForNode = function(node) {
     var renderer = RENDERER.factory({
         "template": "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master#VariableViewer",
         "cssTracker": self.cssTracker,
+        "meta": node.meta || {},
+        "domain": node.domain || null,
         "document": doc
     });
     renderer.replace(doc.getElementById("content"), node);

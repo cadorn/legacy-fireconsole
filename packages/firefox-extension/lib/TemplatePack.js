@@ -9,6 +9,7 @@ var FILE = require("file");
 var STRUCT = require("struct");
 var MD5 = require("md5");
 
+var FIREBUG_INTERFACE = require("interface", "firebug");
 var FIREBUG_CONSOLE = require("console", "firebug");
 var APP = require("app", "nr-common").getApp();
 var JSON_STORE = require("json-store", "util");
@@ -37,7 +38,9 @@ TEMPLATE_PACK_LOADER.setLogger(FIREBUG_CONSOLE);
 TEMPLATE_PACK_LOADER.setEventDispatcher({
     "dispatch": function(name, args) {
         if(name=="inspectNode") {
-            APP.getChrome().getInstance("VariableViewer").showFromConsoleNode(args.node);           
+            var obj = UTIL.copy(args.node);
+            obj["domain"] = FIREBUG_INTERFACE.getActiveContext().window.location.hostname;
+            APP.getChrome().getInstance("VariableViewer").showFromConsoleNode(obj);           
         }
     }
 });
