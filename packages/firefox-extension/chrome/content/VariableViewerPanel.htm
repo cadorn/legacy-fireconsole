@@ -4,9 +4,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style id="style"></style>
+    <script type="text/javascript" src="__Package.AccessibleContentBaseURL__jquery-1.4.1.min.js"></script>
+    <link rel="stylesheet" href="__Package.SkinBaseURL__VariableViewer.css" type="text/css">
+    <script>
+        var desiredIndicatorStatus = "hidden";
+        function showLoadingIndicator() {
+            desiredIndicatorStatus = "showing";
+            $("#loading-indicator").show();
+            setTimeout(function() {
+                if(desiredIndicatorStatus=="showing") {
+                    desiredIndicatorStatus = "hide";
+                    hideLoadingIndicator();
+                }
+            }, 500);
+        }
+        function hideLoadingIndicator() {
+            if(desiredIndicatorStatus=="showing") {
+                return;
+            }
+            desiredIndicatorStatus = "hidden";
+            $("#loading-indicator").hide();
+        }
+    </script>
 </head>
 <body>
+<div id="loading-indicator"><img with="16" height="11" src="__Package.SkinBaseURL__vv-loading-bar.gif" border="0"/></div>
 <div id="content"></div>
 </body>
 </html>

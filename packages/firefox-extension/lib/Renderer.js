@@ -16,7 +16,12 @@ exports.factory = function(options) {
 
 var Renderer = function(options) {
     
-    var domainCallback = function() { return getDomain(); };
+    var domainCallback = function() { 
+        if(typeof options.domain == "function") {
+            return options.domain();
+        }
+        return options.domain;
+    };
 
     var reload = false;
 
@@ -39,8 +44,7 @@ var Renderer = function(options) {
     }
     
     var parts = options.template.split("#");
-    
-    var pack = TEMPLATE_PACK.requirePack(domainCallback, parts[0]);
+    var pack = TEMPLATE_PACK.requirePack(domainCallback, parts[0], (options.cacheTemplatePack===false)?false:true);
     if(!pack) {
         throw new Error("Template pack for id '"+parts[0]+"' not installed nor registered");
     }
@@ -84,13 +88,13 @@ var Renderer = function(options) {
                     break;
             }
         }
-    
+
         // debugging
         rep._debug = false;
         if(options.meta && options.meta["fc.tpl.debug"]) {
             rep._debug = true;
         }
-    
+
         rep._resourceListener = {
             register: function(resources) {
                 if(!options.cssTracker) {
@@ -118,14 +122,6 @@ var Renderer = function(options) {
         }
         
         return DOMPLATE.domplate(self.template.getRep(freshCompile), rep);
-    }
-    
-    
-    function getDomain() {
-        if(typeof options.domain == "function") {
-            return options.domain();
-        }
-        return options.domain;
     }
 };
 

@@ -36,29 +36,29 @@ var VariableViewer = exports.VariableViewer = function() {
     DEV.action('Dump VariableViewer HTML', function() {
         print(self.panel.getIFrame().contentDocument.documentElement.innerHTML);
     });
+    DEV.action('Reload VariableViewer', function() {
+        self.panel.reload();
+    });
 */
 }
 
 VariableViewer.prototype.showFromConsoleRow = function(row) {
-    var self = this;
-
     FIREBUG_CONSOLE.selectRow(row);
-
-    var doc = self.panel.getIFrame().contentDocument;
-    var renderer = RENDERER.factory({
-        "template": "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master#VariableViewer",
-        "cssTracker": self.cssTracker,
-        "document": doc
-    });
-    renderer.replace(doc.getElementById("content"), row.repObject);
-
-    self.panel.show();
+    this.showForNode(row.repObject);
 }
 
 VariableViewer.prototype.showFromConsoleNode = function(node) {
+    this.showForNode(node);
+}
+
+VariableViewer.prototype.showForNode = function(node) {
     var self = this;
 
-    var doc = self.panel.getIFrame().contentDocument;
+    var doc = self.panel.getIFrame().contentDocument,
+        win = self.panel.getIFrame().contentWindow;
+
+    win.showLoadingIndicator();
+
     var renderer = RENDERER.factory({
         "template": "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master#VariableViewer",
         "cssTracker": self.cssTracker,
@@ -67,4 +67,6 @@ VariableViewer.prototype.showFromConsoleNode = function(node) {
     renderer.replace(doc.getElementById("content"), node);
 
     self.panel.show();
+
+    win.hideLoadingIndicator();
 }

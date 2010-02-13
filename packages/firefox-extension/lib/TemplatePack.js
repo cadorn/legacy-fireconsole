@@ -57,7 +57,6 @@ TEMPLATE_PACK_LOADER.setIdMappings({
 
 function init() {   // This function is triggered at the end of this file
     var descriptor;
-    
     descriptor = new TEMPLATE_PACK_DESCRIPTOR.Descriptor(PACKAGE_LOCATOR.PackageLocator({
         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
         "name": "reps",
@@ -103,10 +102,12 @@ exports.getDescriptorForId = function(packId) {
     if(!templatePacks[packId]) {
         return false;
     }
-    return new TEMPLATE_PACK_DESCRIPTOR.Descriptor(templatePacks[packId]);
+    return new TEMPLATE_PACK_DESCRIPTOR.Descriptor(PACKAGE_LOCATOR.PackageLocator(templatePacks[packId]));
 }
 
-exports.requirePack = function(domain, descriptor) {
+exports.requirePack = function(domain, descriptor, cacheTemplatePack) {
+    cacheTemplatePack = (cacheTemplatePack===false)?false:true;
+    
     var id;
     if(!(descriptor instanceof TEMPLATE_PACK_DESCRIPTOR.Descriptor)) {
         id = descriptor;
@@ -116,11 +117,17 @@ exports.requirePack = function(domain, descriptor) {
     } else {
         id = descriptor.getId();
     }
-    if(!UTIL.has(templatePacks, id)) {
-        templatePacks[id] = new TemplatePack(descriptor);
+    if(cacheTemplatePack) {
+        if(!UTIL.has(templatePacks, id)) {
+            templatePacks[id] = new TemplatePack(descriptor);
+        }
+        templatePacks[id].authorize(domain);
+        return templatePacks[id];
+    } else {
+        var pack = new TemplatePack(descriptor);
+        pack.authorize(domain);
+        return pack;
     }
-    templatePacks[id].authorize(domain);
-    return templatePacks[id];
 }
 
 
@@ -146,7 +153,7 @@ TemplatePack.prototype.isInstalled = function() {
 }
 
 TemplatePack.prototype.authorize = function(domain) {
-    
+
     var id = this.descriptor.getId();
 
     // these packs are shipped with fireconsole
@@ -165,7 +172,7 @@ TemplatePack.prototype.authorize = function(domain) {
         return SECURITY.authorizeTemplatePack(domain, self.descriptor);
     } else {
         
-        var uri = URI.parse(self.descriptor.getDownloadInfo().location);
+        var uri = URI.parse(self.descriptor.getDownloadUrl());
         if(uri.scheme=="file") {
     
             SECURITY.installTemplatePack(domain, self.descriptor, function(feedback, success) {
@@ -243,7 +250,7 @@ TemplatePack.prototype.load = function(domain, reload, notSandboxed) {
         }
     }
     this.pack = TEMPLATE_PACK_LOADER.requirePack(this.descriptor.getId(), (forceLoad || reload), notSandboxed, function() { return {
-        "seekTemplate": function(node) {            
+        "seekTemplate": function(node) {
             var pack,
                 languageId = node.getObjectGraph().getLanguageId();
             if(languageId) {

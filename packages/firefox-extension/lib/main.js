@@ -141,7 +141,7 @@ exports.chrome = function(chrome) {
 
 
     chrome.registerInstance("VariableViewer", new VARIABLE_VIEWER.VariableViewer());
-    
+
     // Mark-up JS objects logged with __fc_tpl_id
     var renderer = RENDERER.factory({
         "template": "registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/reps/master#ConsoleMessage",
@@ -156,7 +156,8 @@ exports.chrome = function(chrome) {
             if(!context) return null;
             return context.getPanel('console').document;
         },
-        "eventListener": ConsoleTemplateEventListener
+        "eventListener": ConsoleTemplateEventListener,
+        "cacheTemplatePack": false
     });
     FIREBUG_INTERFACE.getFirebug().registerRep(renderer.getRep(true));
 }
@@ -272,7 +273,6 @@ function logMessage(context, data) {
         "cssTracker": FIREBUG_CONSOLE.getCSSTracker(),
         "eventListener": ConsoleTemplateEventListener
     });
-
     FIREBUG_CONSOLE.logRep(renderer.getRep(), data, context.FirebugNetMonitorListener.context);
 }
 
