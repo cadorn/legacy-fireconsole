@@ -262,7 +262,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/firefox-extension/packages/catalog.json",
                         "name": "reps",
-                        "revision": "0.0.0rev-0f427a003444ddb1199a3418c0599f386e7f4bfe"
+                        "revision": "0.0.0rev-1ada59e111516c5e76beefa080360a17e42af0be"
                     }
                 },
                 "nr-common": {
@@ -365,7 +365,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                             "name": "template-pack",
-                            "revision": "0.0.0rev-495518658f67af94ab99eeb260234182a8ff37be"
+                            "revision": "0.1.0alpha"
                         }
                     },
                     "domplate": {
@@ -386,7 +386,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                         "name": "template-pack",
-                        "revision": "0.0.0rev-495518658f67af94ab99eeb260234182a8ff37be"
+                        "revision": "0.1.0alpha"
                     }
                 },
                 "domplate": {
@@ -406,7 +406,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
                         "name": "fc-object-graph",
-                        "revision": "0.0.0rev-752a7bec52543b62fa6dd0376e155d9fb78f37b4"
+                        "revision": "0.0.0rev-b7ef86ed0bafab24a6b22db351658c9a82f944c3"
                     }
                 },
                 "template-pack": {
@@ -415,7 +415,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                             "name": "template-pack",
-                            "revision": "0.0.0rev-495518658f67af94ab99eeb260234182a8ff37be"
+                            "revision": "0.1.0alpha"
                         }
                     },
                     "domplate": {
