@@ -476,7 +476,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
                         "name": "lang-php",
-                        "revision": "0.0.0rev-752a7bec52543b62fa6dd0376e155d9fb78f37b4"
+                        "revision": "0.0.0rev-e40c38e41463282391f13f886cd738d354472c87"
                     }
                 },
                 "template-pack": {
@@ -485,7 +485,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                             "name": "template-pack",
-                            "revision": "0.0.0rev-495518658f67af94ab99eeb260234182a8ff37be"
+                            "revision": "0.1.0alpha1"
                         }
                     },
                     "domplate": {
