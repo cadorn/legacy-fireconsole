@@ -95,9 +95,13 @@ exports.installTemplatePack = function(domain, descriptor, installCallback) {
         },
         "confirmInstallCallback": function() {
             installCallback(iframe.contentWindow, function () {
-                exports.addDomainForTemplatePack(domain, descriptor);
-                templatePackAuthorizationPanel.hide();
-                templatePackAuthorizationListener.onAccept(domain, descriptor);
+                try {
+                    exports.addDomainForTemplatePack(domain, descriptor);
+                    templatePackAuthorizationPanel.hide();
+                    templatePackAuthorizationListener.onAccept(domain, descriptor);
+                } catch(e) {
+                    system.log.error(e);
+                }
             });
         },
         "dismissInstallCallback": function() {
