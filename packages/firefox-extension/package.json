@@ -58,7 +58,7 @@
         "template-pack": {
             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
             "name": "template-pack",
-            "revision": "master"
+            "revision": "0.1.0alpha1"
         },
         "fireconsole-template-packs-fc-object-graph": {
             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole-template-packs/packages/catalog.json",
