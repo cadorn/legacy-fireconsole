@@ -46,9 +46,6 @@ Builder.prototype.build = function(targetPackage, buildOptions) {
     print(command);
     OS.command(command);
     
-    
-    var descriptor = JSON.decode(rawBuildPath.join("package.json").read().toString());
-    descriptor.version = targetPackage.getVersion();
-    targetBasePath.join("package.json").write(JSON.encode(descriptor, null, "    "));
+    rawBuildPath.join("package.json").copy(targetBasePath.join("package.json"));
 }    
 
