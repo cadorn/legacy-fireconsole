@@ -365,7 +365,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                             "name": "template-pack",
-                            "revision": "0.1.0alpha"
+                            "revision": "0.1.0alpha1"
                         }
                     },
                     "domplate": {
@@ -386,7 +386,7 @@
                     "locator": {
                         "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                         "name": "template-pack",
-                        "revision": "0.1.0alpha"
+                        "revision": "0.1.0alpha1"
                     }
                 },
                 "domplate": {
@@ -415,7 +415,7 @@
                         "locator": {
                             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
                             "name": "template-pack",
-                            "revision": "0.1.0alpha"
+                            "revision": "0.1.0alpha1"
                         }
                     },
                     "domplate": {
