@@ -31,7 +31,9 @@ exports.initialize = function(options)
         "id": "TemplatePackAuthorizationPanel",
         "title": "Install Template Pack",
         "url": APP.getPackage(module["package"]).getContentBaseUrl() + 'TemplatePackAuthorizationPanel.htm',
-        "close.button.label": "Dismiss"
+        "close.button.label": "Dismiss",
+        "width": 700,
+        "height": 650
     });
 /*    
     DEV.action('Reload TemplatePackAuthPanel', function() {

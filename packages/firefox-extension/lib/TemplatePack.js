@@ -180,7 +180,7 @@ TemplatePack.prototype.authorize = function(domain) {
     
             SECURITY.installTemplatePack(domain, self.descriptor, function(feedback, success) {
                 
-                var sourcePath = FILE.Path(uri.path);
+                var sourcePath = FILE.Path(uri.url.substr(7));
                 var targetPath = self.getPath();
                 if(!targetPath.dirname().exists()) {
                     targetPath.dirname().mkdirs();

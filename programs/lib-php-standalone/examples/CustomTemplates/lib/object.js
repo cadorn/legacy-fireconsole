@@ -26,6 +26,9 @@ template.onLoad = function(pack, tags){with(tags) {
         },
 
         getSaying: function(node) {
+
+// pack.logger.log(node);   // log objects to firebug console to inspect
+
             return node.value.say.value;
         }
     }

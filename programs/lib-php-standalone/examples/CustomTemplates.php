@@ -15,9 +15,13 @@ $id = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CustomTemplates');
 $dispatcher->registerTemplatePack(array(
     "location" => "file://" . $id
 ));
-// prepare the ID for further use below by trimming beginning slash
-$id = substr($id, 1);
-
+// prepare the ID for further use below
+$id = preg_replace('/\\\+/i', '/', $id);              // windows
+if(preg_match_all('/^(\w):(\/\w.*)/s', $id, $m)) {    // windows
+    $id = $m[1][0] . $m[2][0];
+} else {
+    $id = substr($id, 1);
+}
 
 // render messages using the "console" template defined in ./CustomTemplates/lib/console.js
 $dispatcher->send('This text is being rendered by the "console" template!', array(

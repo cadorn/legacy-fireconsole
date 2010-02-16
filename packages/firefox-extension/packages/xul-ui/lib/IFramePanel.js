@@ -42,6 +42,13 @@ IFramePanel.prototype.init = function (options) {
     
     this.id = this.options.id;
     
+    if(UTIL.has(this.options, "width")) {
+        this.width = this.options.width;
+    }
+    if(UTIL.has(this.options, "height")) {
+        this.height = this.options.height;
+    }
+    
     var self = this;
 
     // Create panel using bindings
@@ -235,13 +242,16 @@ IFramePanel.prototype.show = function()
         var bw = browser.boxObject.width;
         var bh = browser.boxObject.height;
 
-        var w = bw - 200;
-        var h = bh - 40;
+        var w = this.width || (bw - 200);
+        var h = this.height || (bh - 40);
 
         this.sizeTo(w, h);
         
         this.x = (bx + (bw - w) / 2);
         this.y = (by + (bh - h) / 2);
+        if(this.y < by) {
+            this.y = by + 10;
+        }
 
         this.binding.panel.openPopupAtScreen(this.x, this.y);
     } else {
