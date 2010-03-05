@@ -117,7 +117,7 @@ function loadTemplatePack(id, force, notSandboxed) {
             sandboxPackages.forEach(function(name) {
                 paths.push(PACKAGES.catalog[name].directory);
             });
-            paths.push("resource://narwhal");
+            paths.push("chrome://narwhal-xulrunner/content/narwhal");
             sandboxRequire("packages").load(paths);
             sandboxDirty = false;
         }
@@ -127,9 +127,9 @@ function loadTemplatePack(id, force, notSandboxed) {
             // Load minimal system
             var loader = LOADER({
                 "paths": [
-                    "resource://narwhal-xulrunner/lib",
-                    "resource://narwhal/engines/default/lib",
-                    "resource://narwhal/lib"
+                    "chrome://narwhal-xulrunner/content/lib",
+                    "chrome://narwhal-xulrunner/content/narwhal/engines/default/lib",
+                    "chrome://narwhal-xulrunner/content/narwhal/lib"
                 ]
             });
             sandboxModules = {
