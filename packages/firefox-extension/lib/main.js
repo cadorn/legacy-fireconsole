@@ -129,11 +129,11 @@ exports.chrome = function(chrome) {
                     callback: function(notification, button) {
                         APP.getChrome().openNewTab("http://www.getfirebug.com/");
                     }
-                }, {
-                    label: 'Dismiss',
-                    callback: function(notification, button) {
-                        // TODO: set preference to not show notification again
-                    }
+//                }, {
+//                    label: 'Dismiss',
+//                    callback: function(notification, button) {
+//                        // TODO: set preference to not show notification again
+//                    }
                 }
             ]
         );
