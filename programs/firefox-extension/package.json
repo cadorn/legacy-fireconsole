@@ -1,0 +1,18 @@
+{
+    "uid": "http://registry.pinf.org/cadorn.org/github/fireconsole/programs/firefox-extension/",
+    "name": "firefox-extension",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/fireconsole.git",
+            "path": "programs/firefox-extension"
+        }
+    ],
+    "using": {
+        "program": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
+            "name": "firefox-extension",
+            "revision": "master"
+        }
+    }
+}
