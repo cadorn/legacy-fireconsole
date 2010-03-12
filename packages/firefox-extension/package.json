@@ -81,14 +81,6 @@
             "revision": "master"
         }
     },
-    "pinf": {
-        "builder": {
-            "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
-            "name": "devtools",
-            "revision": "master",
-            "module": "builders/extension"
-        }
-    },
     "narwhalrunner": {
         "InternalName": "fireconsole",
         "ID": "fireconsole@id.cadorn.org",

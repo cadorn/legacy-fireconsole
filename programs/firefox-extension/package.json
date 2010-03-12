@@ -9,10 +9,22 @@
         }
     ],
     "using": {
-        "program": {
+        "extension": {
             "catalog": "http://registry.pinf.org/cadorn.org/github/fireconsole/packages/catalog.json",
             "name": "firefox-extension",
             "revision": "master"
+        }
+    },
+    "implements": {
+        "http://registry.pinf.org/cadorn.org/github/pinf/@meta/program/package/0.1.0": {
+            "builders": {
+                "extension": {
+                    "catalog": "http://registry.pinf.org/cadorn.org/github/narwhalrunner/packages/catalog.json",
+                    "name": "devtools",
+                    "revision": "master",
+                    "module": "builders/extension"
+                }
+            }
         }
     }
 }
