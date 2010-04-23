@@ -8,9 +8,9 @@ class FireConsole_Encoder_Default {
     
     protected $options = array('maxObjectDepth' => 10,
                                'maxArrayDepth' => 20,
-                               'includeLanguageMeta' => true);    
-    
-    
+                               'includeLanguageMeta' => true,
+                               'treatArrayMapAsDictionary' => false);
+
     /**
      * @Insight Filter = On
      */
@@ -25,7 +25,7 @@ class FireConsole_Encoder_Default {
      * @Insight Filter = On
      */
     protected $_instances = array();
-
+    
 
     public function setOption($name, $value)
     {
@@ -134,6 +134,9 @@ class FireConsole_Encoder_Default {
             // Check if we have an indexed array (list) or an associative array (map)
             if(self::is_list($Variable)) {
                 return array('type'=>'array', 'array'=> $this->_encodeArray($Variable, $ObjectDepth, $ArrayDepth));
+            } else
+            if($this->options['treatArrayMapAsDictionary']) {
+                return array('type'=>'dictionary', 'dictionary'=> $this->_encodeAssociativeArray($Variable, $ObjectDepth, $ArrayDepth));
             } else {
                 return array('type'=>'map', 'map'=> $this->_encodeAssociativeArray($Variable, $ObjectDepth, $ArrayDepth));
             }
@@ -197,7 +200,7 @@ class FireConsole_Encoder_Default {
         if ($ArrayDepth > $this->options['maxArrayDepth']) {
           return '** Max Array Depth ('.$this->options['maxArrayDepth'].') **';
         }
-      
+
         foreach ($Variable as $key => $val) {
           
           // Encoding the $GLOBALS PHP array causes an infinite loop
@@ -209,8 +212,12 @@ class FireConsole_Encoder_Default {
              && array_key_exists('GLOBALS',$val)) {
             $val['GLOBALS'] = '** Recursion (GLOBALS) **';
           }
-          
-          $return[] = array($this->_encodeVariable($key), $this->_encodeVariable($val, 1, $ArrayDepth + 1));
+
+          if($this->options['treatArrayMapAsDictionary']) {
+              $return[$key] = $this->_encodeVariable($val, 1, $ArrayDepth + 1);
+          } else {
+              $return[] = array($this->_encodeVariable($key), $this->_encodeVariable($val, 1, $ArrayDepth + 1));
+          }
         }
         return $return;    
     }

@@ -35,15 +35,19 @@
             "expose": [
                 "tests/raw-header/"
             ]
+        },
+        "http://registry.pinf.org/cadorn.org/github/pinf/@meta/program/package/0.1.0": {
+            "builders": {
+                "raw": {
+                    "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+                    "name": "core",
+                    "revision": "master",
+                    "module": "builders/package"
+                }
+            }
         }
     },
     "pinf": {
-        "builder": {
-            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
-            "name": "core",
-            "revision": "master",
-            "module": "builders/package"
-        },
         "tester": {
             "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
             "name": "test",

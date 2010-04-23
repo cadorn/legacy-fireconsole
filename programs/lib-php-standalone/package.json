@@ -15,10 +15,16 @@
             "path": "programs/lib-php-standalone"
         }
     ],
+    "implements": {
+        "http://registry.pinf.org/cadorn.org/github/pinf/@meta/program/package/0.1.0": {
+            "builders": {
+                "lib-php-standalone": {
+                    "module": "builder"
+                }
+            }
+        }
+    },
     "pinf": {
-        "builder": {
-            "module": "builder"
-        },
         "publisher": {
             "catalog": "http://registry.cadorn.com/cadorn.com/workflow/packages/catalog.json",
             "name": "publishers",

@@ -6,13 +6,22 @@ class FireConsole_Dispatcher implements Wildfire_Channel_FlushListener
 {
     const PROTOCOL_ID = 'http://registry.pinf.org/cadorn.org/github/wildfire/@meta/protocol/component/0.1.0';
     const SENDER_ID = 'http://registry.pinf.org/cadorn.org/github/fireconsole/packages/lib-php/';
+    const RECEIVER_ID = 'http://registry.pinf.org/cadorn.org/github/fireconsole/@meta/receiver/console/0.1.0';
     
     private $channel = null;
     private $messageFactory = null;
     private $encoder = null;
     
     protected $_registeredLanguagePacks = array();
+
     
+    protected function getSenderID() {
+        return self::SENDER_ID;
+    }
+    
+    protected function getReceiverID() {
+        return self::RECEIVER_ID;
+    }
     
     public function setChannel($channel)
     {
@@ -34,7 +43,7 @@ class FireConsole_Dispatcher implements Wildfire_Channel_FlushListener
         }
         $message = $this->getNewMessage(null);
         $message->setProtocol(self::PROTOCOL_ID);
-        $message->setSender(self::SENDER_ID);
+        $message->setSender($this->getSenderID());
         $message->setReceiver('http://registry.pinf.org/cadorn.org/github/fireconsole/@meta/receiver/template-pack/0.1.0');
         $message->setData(json_encode(array(
             "action" => "require",
@@ -111,8 +120,8 @@ class FireConsole_Dispatcher implements Wildfire_Channel_FlushListener
     {
         $message = $this->getNewMessage($meta);
         $message->setProtocol(self::PROTOCOL_ID);
-        $message->setSender(self::SENDER_ID);
-        $message->setReceiver('http://registry.pinf.org/cadorn.org/github/fireconsole/@meta/receiver/console/0.1.0');
+        $message->setSender($this->getSenderID());
+        $message->setReceiver($this->getReceiverID());
         if($meta) $message->setMeta($meta);
         $message->setData($data);
         $this->getChannel()->enqueueOutgoing($message);

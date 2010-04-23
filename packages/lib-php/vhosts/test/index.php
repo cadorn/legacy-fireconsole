@@ -1,5 +1,12 @@
 <?php
 
+// HACK: Until PHP platform hooks are working properly
+set_include_path("/Users/cadorn/pinf/workspaces/github.com/cadorn/modular-php/packages/core/lib" . PATH_SEPARATOR . get_include_path());
+require_once("ModularPHP/Bootstrap.php");
+
+
+
+
 ModularPHP_Bootstrap::Program("/Users/cadorn/pinf/builds/registry.pinf.org/cadorn.org/github/fireconsole/packages/lib-php/master/raw", 'lib-php',
 array(
     "system" => array(
