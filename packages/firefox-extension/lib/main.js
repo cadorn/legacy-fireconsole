@@ -22,6 +22,11 @@ var JSON = require("json");
 var RENDERER = require("./Renderer");
 
 
+var INSIGHT_PLUGINS = require("./Insight/Plugins");
+var INSIGHT_MESSAGEBUS = require("./Insight/MessageBus");
+var INSIGHT_FIREBUG = require("./Insight/Firebug");
+
+
 var FIREBUG_MIN_VERSION = "1.5";
 var FORCE_REP_RELOAD = false;
 
@@ -82,6 +87,10 @@ var nb = APP.getChrome().getBrowser().getNotificationBox()
         "ContentEventListener": ContentEventListener
     });
 
+
+    INSIGHT_PLUGINS.initialize();
+    INSIGHT_MESSAGEBUS.initialize();
+    INSIGHT_FIREBUG.initialize();
 
 
     // handle clean shutdown

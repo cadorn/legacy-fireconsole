@@ -9,7 +9,14 @@ var JSON = require("json");
 var ENCODER = require("encoder/default", "fireconsole-js");
 
 
-exports.generateFromMessage = function(message) {
+
+exports.EXTENDED = "EXTENDED";
+exports.SIMPLE = "SIMPLE";
+
+
+exports.generateFromMessage = function(message, format) {
+
+    format = format || exports.EXTENDED;
 
     var og = new ObjectGraph();
 
@@ -34,12 +41,51 @@ exports.generateFromMessage = function(message) {
     if(meta["fc.lang.id"]) {
         og.setLanguageId(meta["fc.lang.id"]);
     }
-
-    og.setOrigin(generateNodesFromData(og, data.origin));
+    
+    if(UTIL.has(data, "origin")) {
+        if(format==exports.EXTENDED) {
+            og.setOrigin(generateNodesFromData(og, data.origin));
+        } else
+        if(format==exports.SIMPLE) {
+            og.setOrigin(generateObjectsFromData(og, data.origin));
+        } else {
+            throw new Error("unsupported format: " + format);
+        }
+    }
 
     return og;
 }
 
+function generateObjectsFromData(objectGraph, data) {
+
+    var node;
+
+    if(data.type=="array") {
+        node = [];
+        for( var i=0 ; i<data[data.type].length ; i++ ) {
+            node.push(generateObjectsFromData(objectGraph, data[data.type][i]));
+        }
+    } else
+    if(data.type=="map") {
+        node = [];
+        for( var i=0 ; i<data[data.type].length ; i++ ) {
+            node.push([
+                generateObjectsFromData(objectGraph, data[data.type][i][0]),
+                generateObjectsFromData(objectGraph, data[data.type][i][1])
+            ]);
+        }
+    } else
+    if(data.type=="dictionary") {
+        node = {};
+        for( var name in data[data.type] ) {
+            node[name] = generateObjectsFromData(objectGraph, data[data.type][name]);
+        }
+    } else {
+        node = data[data.type];
+    }
+
+    return node;
+}
 
 
 function generateNodesFromData(objectGraph, data) {

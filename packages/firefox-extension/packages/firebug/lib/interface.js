@@ -40,7 +40,11 @@ var Listener = {
     {
         for( var i=0 ; i<this.listeners.length ; i++ ) {
             if(UTIL.array.hasItem(this.listeners[i][0],event)) {
-                this.listeners[i][1][event].apply(this.listeners[i][1], arguments);
+                try {
+                    this.listeners[i][1][event].apply(this.listeners[i][1], arguments);
+                } catch(e) {
+                    system.log.error(e);
+                }
             }
         }
     },
@@ -58,10 +62,6 @@ var ModuleListener = UTIL.object.extend(Listener, {});
  * Firebug.NetMonitor
  **********************************************************************/
 var NetMonitorListener = UTIL.object.extend(Listener, {
-    
-    /**********************************************************************
-     * Network Activity
-     **********************************************************************/
     
     /**
      * A network request has been sent.
@@ -93,12 +93,15 @@ var NetMonitorListener = UTIL.object.extend(Listener, {
     onResponseBody: function(context, file)
     {
         this._dispatch('onResponseBody', [context, file]);
-    },
-    
-    /**********************************************************************
-     * Request Info
-     **********************************************************************/
-    
+    }
+});
+
+/**********************************************************************
+ * Firebug.NetInfoBody
+ **********************************************************************/
+
+var NetInfoBodyListener = UTIL.object.extend(Listener, {
+
     /**
      * A network reqeust has been expanded and all info-tabs should be created now.
      */
@@ -154,6 +157,9 @@ var interfaces = {
     "list": [],
     "map": {}
 };
+
+var onReadyCallbacks = [];
+
 
 var Interface = exports.Interface = function(global) {
     var self = this;
@@ -244,6 +250,7 @@ var Interface = exports.Interface = function(global) {
 
 Interface.prototype.attachListeners = function() {
     NetMonitorListener._attach(this.Firebug.NetMonitor);
+    NetInfoBodyListener._attach(this.Firebug.NetMonitor.NetInfoBody);
     ConsoleListener._attach(this.Firebug.Console);
 }
 
@@ -265,22 +272,35 @@ APP.subscribeTo("newChrome", function(chrome) {
             break;
         }
     }
+    // fire all callbacks waiting for the interface to be ready
+    var obj = exports.getInterface(true);
+    if(obj) {
+        onReadyCallbacks.forEach(function(callback) {
+            callback(obj);
+        });
+        onReadyCallbacks = [];
+    }
 });
 
 exports.getInterface = function(silent) {
-    if(!interfaces.map[APP.getChrome().chromeIndex] && !silent) {
-        throw new Error("Firebug interface not available yet!");
+    if(!interfaces.map[APP.getChrome().chromeIndex]) {
+        if(!silent) {
+            throw new Error("Firebug interface not available yet!");
+        } else {
+            return null;
+        }
     }
     return interfaces.map[APP.getChrome().chromeIndex];
 };
-
-
 
 exports.addListener = function(type, events, listener)
 {
     switch (type) {
         case 'NetMonitor':
             NetMonitorListener._addListener(events, listener);
+            break;
+        case 'NetInfoBody':
+            NetInfoBodyListener._addListener(events, listener);
             break;
         case 'Module':
             ModuleListener._addListener(events, listener);
@@ -297,6 +317,9 @@ exports.removeListener = function(type, listener)
         case 'NetMonitor':
             NetMonitorListener._removeListener(listener);
             break;
+        case 'NetInfoBody':
+            NetInfoBodyListener._removeListener(listener);
+            break;
         case 'Module':
             ModuleListener._removeListener(listener);
             break;
@@ -305,6 +328,15 @@ exports.removeListener = function(type, listener)
             break;
     }
 }
+
+exports.onReady = function(callback) {
+    var obj = exports.getInterface(true);
+    if(obj) {
+        callback(obj);
+    } else {
+        onReadyCallbacks.push(callback);
+    }
+};
 
 exports.isAvailable = function() {
     var obj = exports.getInterface(true);
@@ -332,7 +364,7 @@ exports.getFirebug = function()
 exports.getFBL = function()
 {
     if(!exports.getInterface().FBL) {
-        throw "FBL not initialized";
+        throw "Firebug FBL not initialized";
     }
     return exports.getInterface().FBL;
 }

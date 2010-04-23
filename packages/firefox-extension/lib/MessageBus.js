@@ -15,7 +15,8 @@ var PAGE_INJECTOR = require("./PageInjector");
 var contentEventListener,
     httpheaderChannel,
     templatePackReceiver,
-    fireConsoleReceiver;
+    fireConsoleReceiver,
+    onReadyCallbacks = [];
 
 exports.initialize = function(options)
 {
@@ -40,6 +41,11 @@ exports.initialize = function(options)
     FIREBUG_INTERFACE.addListener('Console', ['onConsoleInjected'], FirebugConsoleListener);
 
     contentEventListener = options.ContentEventListener;
+    
+    onReadyCallbacks.forEach(function(callback) {
+        callback();
+    });
+    onReadyCallbacks = [];
 }
 
 exports.shutdown = function()
@@ -47,6 +53,14 @@ exports.shutdown = function()
     FIREBUG_INTERFACE.removeListener('NetMonitor', httpheaderChannel.getFirebugNetMonitorListener());
     FIREBUG_INTERFACE.removeListener('Console', ['onConsoleInjected'], FirebugConsoleListener);
     OBSERVER_SERVICE.removeObserver(OnModifyRequestObserver, "http-on-modify-request");
+}
+
+exports.onReady = function(callback) {
+    onReadyCallbacks.push(callback);
+}
+
+exports.getHttpHeaderChannel = function() {
+    return httpheaderChannel;
 }
 
 
