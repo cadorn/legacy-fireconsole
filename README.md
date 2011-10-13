@@ -1,3 +1,22 @@
+NOTE
+====
+
+**THIS PROJECT IS CURRENTLY NOT FUNCTIONAL!**
+
+The open source *FireConsole Extension* (which will be replacing the open source *FirePHP Extension*) is
+currently incubating as part of [DeveloperCompanion](http://developercompanion.com/).
+
+Once the *FireConsole* related functionality stabilizes within *DeveloperCompanion* this project
+will be updated with the latest open source code.
+
+To use the advanced features of [FirePHP 1.0](http://sourcemint.com/firephp.org/firephp/1) please install 
+*DeveloperCompanion* for now.
+
+See here for more details:
+
+  * [http://sourcemint.com/github.com/firephp/firephp/1:1.0.0b1rc3/-docs/Clients#fireconsole](http://sourcemint.com/github.com/firephp/firephp/1/-docs/Clients#fireconsole)
+  * [http://www.christophdorn.com/Blog/2011/08/03/firephp-and-firebug-1-8/](http://www.christophdorn.com/Blog/2011/08/03/firephp-and-firebug-1-8/)
+
 
 FireConsole Toolchain
 =====================
